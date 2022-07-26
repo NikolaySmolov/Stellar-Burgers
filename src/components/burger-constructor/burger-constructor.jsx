@@ -54,7 +54,7 @@ export default function BurgerConstructor() {
         {incluedesFilling ? (
           <ul className={`${styles.fills} custom-scroll`}>
             {constructor.filling.map((item, index) => (
-              <ConstructorRow key={index} data={item} position={index} />
+              <ConstructorRow key={item.tempId} data={item} position={index} />
             ))}
           </ul>
         ) : null}

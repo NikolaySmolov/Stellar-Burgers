@@ -33,11 +33,15 @@ export const burgerReducer = (state = initialState, action) => {
 
       const draggableItem = increasedIngredients.find(ing => ing._id === action.itemId);
 
-      if (draggableItem.type === BUN) {
-        increasedConstructor.bun[0] = draggableItem;
+      const draggedItem = { ...draggableItem };
+
+      draggedItem.tempId = new Date().getTime() + draggableItem._id;
+
+      if (draggedItem.type === BUN) {
+        increasedConstructor.bun[0] = draggedItem;
         increasedIngredients.forEach(ing => (ing.type === BUN ? (ing.qty = 0) : null));
       } else {
-        increasedConstructor.filling.push(draggableItem);
+        increasedConstructor.filling.push(draggedItem);
       }
 
       draggableItem.qty++;

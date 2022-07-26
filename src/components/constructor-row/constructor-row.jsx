@@ -8,7 +8,7 @@ import { useDispatch } from 'react-redux';
 import { DECREASE_INGREDIENT, SORT_INGREDIENT } from '../../services/actions/burger';
 import { useDrag, useDrop } from 'react-dnd';
 
-export const ConstructorRow = ({ isBun = false, type, data, position }) => {
+export const ConstructorRow = React.memo(({ isBun = false, type, data, position }) => {
   const dispatch = useDispatch();
 
   const [, dragRef] = useDrag({
@@ -58,7 +58,7 @@ export const ConstructorRow = ({ isBun = false, type, data, position }) => {
       </div>
     </li>
   );
-};
+});
 
 ConstructorRow.propTypes = {
   isBun: PropTypes.bool,
