@@ -3,22 +3,16 @@ import styles from './burger-ingredients.module.css';
 import { TabBar } from '../tab-bar/tab-bar';
 import { IngredientsSection } from '../ingredients-section/ingredients-section';
 import Modal from '../modal/modal';
-import ModalError from '../modal-error/modal-error';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import { useSelector, useDispatch } from 'react-redux';
-import { getIngredients, CLOSE_INGREDIENT_DETAILS } from '../../services/actions/burger';
+import { CLOSE_INGREDIENT_DETAILS } from '../../services/actions/burger';
 
 export default function BurgerIngredients() {
   const [currentTab, setCurrentTab] = React.useState('buns');
 
-  const { ingredients, ingredientDetails, showModal, ingredientsRequest, ingredientsFailed } =
-    useSelector(store => store.burger);
+  const { ingredients, ingredientDetails, showModal } = useSelector(store => store.burger);
 
   const dispatch = useDispatch();
-
-  React.useEffect(() => {
-    dispatch(getIngredients());
-  }, [dispatch]);
 
   const handleCloseModal = () => {
     dispatch({ type: CLOSE_INGREDIENT_DETAILS });
@@ -87,9 +81,7 @@ export default function BurgerIngredients() {
     );
   }, [ingredients]);
 
-  return ingredientsRequest ? null : ingredientsFailed ? (
-    <ModalError />
-  ) : (
+  return (
     <>
       <section>
         <h1 className="text text_type_main-large mt-10 mb-5">Соберите бургер</h1>
