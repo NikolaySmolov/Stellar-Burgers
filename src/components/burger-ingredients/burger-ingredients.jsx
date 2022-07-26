@@ -1,41 +1,52 @@
 import React from 'react';
 import styles from './burger-ingredients.module.css';
 import { TabBar } from '../tab-bar/tab-bar';
-import IngredientsSection from '../ingredients-section/ingredients-section';
+import { IngredientsSection } from '../ingredients-section/ingredients-section';
 import Modal from '../modal/modal';
 import IngredientDetails from '../ingredient-details/ingredient-details';
-import { modalStateReducer, modalInitialState } from './utils';
-import { OPEN, CLOSE } from '../../utils/constants';
-import { BurgerContext } from '../../services/burger-context';
+import { useSelector, useDispatch } from 'react-redux';
+import { CLOSE_INGREDIENT_DETAILS } from '../../services/actions/burger';
 
 export default function BurgerIngredients() {
-  const [modalState, modalDispatcher] = React.useReducer(modalStateReducer, modalInitialState);
-  const { burgerContext } = React.useContext(BurgerContext);
+  const [currentTab, setCurrentTab] = React.useState('buns');
+
+  const { ingredients, ingredientDetails, showModal } = useSelector(store => store.burger);
+
+  const dispatch = useDispatch();
 
   const handleCloseModal = () => {
-    modalDispatcher({ type: CLOSE });
+    dispatch({ type: CLOSE_INGREDIENT_DETAILS });
   };
 
-  const handleOpenModal = details => {
-    modalDispatcher({ type: OPEN, payload: details });
-  };
-
-  const modal = modalState.details ? (
+  const modal = showModal ? (
     <Modal onClose={handleCloseModal}>
-      <IngredientDetails {...modalState.details} />
+      <IngredientDetails {...ingredientDetails} />
     </Modal>
   ) : null;
 
-  const bunSection = React.useRef(null);
-  const sauceSection = React.useRef(null);
-  const mainSection = React.useRef(null);
+  const bunHeading = React.useRef(null);
+  const saucesHeading = React.useRef(null);
+  const mainHeading = React.useRef(null);
+
+  const tabsFollowing = () => {
+    const saucesHeadingBox = saucesHeading.current.getBoundingClientRect();
+    const mainHeadingBox = mainHeading.current.getBoundingClientRect();
+
+    if (saucesHeadingBox.y < 275 && mainHeadingBox.y > 275 && currentTab !== 'sauces') {
+      setCurrentTab('sauces');
+    } else if (mainHeadingBox.y < 275 && currentTab !== 'main') {
+      setCurrentTab('filling');
+    } else if (saucesHeadingBox.y > 275 && currentTab !== 'buns') {
+      setCurrentTab('buns');
+    }
+  };
 
   const content = React.useMemo(() => {
     const buns = [];
     const sauces = [];
     const main = [];
 
-    burgerContext.ingredients.forEach(ingredient => {
+    ingredients.forEach(ingredient => {
       switch (ingredient.type) {
         case 'bun':
           buns.push(ingredient);
@@ -53,38 +64,36 @@ export default function BurgerIngredients() {
 
     return (
       <>
+        <IngredientsSection menuSection="Булки" ingredientList={buns} ref={bunHeading} />
         <IngredientsSection
-          menuSection="Булки"
-          handleShowDetails={handleOpenModal}
-          data={buns}
-          ref={bunSection}
-        />
-        <IngredientsSection
+          headingRef={saucesHeading}
           menuSection="Соусы"
-          handleShowDetails={handleOpenModal}
-          data={sauces}
-          ref={sauceSection}
+          ingredientList={sauces}
+          ref={saucesHeading}
         />
         <IngredientsSection
+          headingRef={mainHeading}
           menuSection="Начинки"
-          handleShowDetails={handleOpenModal}
-          data={main}
-          ref={mainSection}
+          ingredientList={main}
+          ref={mainHeading}
         />
       </>
     );
-  }, [burgerContext]);
+  }, [ingredients]);
 
   return (
     <>
       <section>
         <h1 className="text text_type_main-large mt-10 mb-5">Соберите бургер</h1>
         <TabBar
-          bunSectionRef={bunSection}
-          sauceSectionRef={sauceSection}
-          mainSectionRef={mainSection}
+          bunSectionRef={bunHeading}
+          sauceSectionRef={saucesHeading}
+          mainSectionRef={mainHeading}
+          currentTab={currentTab}
         />
-        <ul className={`${styles.menu} custom-scroll`}>{content}</ul>
+        <ul onScroll={tabsFollowing} className={`${styles.menu} custom-scroll`}>
+          {content}
+        </ul>
       </section>
       {modal}
     </>

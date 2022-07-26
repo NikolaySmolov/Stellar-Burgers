@@ -1,33 +1,30 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import { refPropTypes } from '../../utils/constants';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './tab-bar.module.css';
 
-export const TabBar = React.memo(({ bunSectionRef, sauceSectionRef, mainSectionRef }) => {
-  const [current, setCurrent] = React.useState('buns');
-
+export const TabBar = ({ bunSectionRef, sauceSectionRef, mainSectionRef, currentTab }) => {
   const scrollToMain = () => {
-    setCurrent('filling');
     mainSectionRef.current.scrollIntoView({ behavior: 'smooth' });
   };
 
   const scrollToSauces = () => {
-    setCurrent('sauces');
     sauceSectionRef.current.scrollIntoView({ behavior: 'smooth' });
   };
 
   const scrollToBun = () => {
-    setCurrent('buns');
     bunSectionRef.current.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
     <ul className={`${styles.tabBar}`}>
       <li className={styles.item}>
-        <Tab active={current === 'buns'} value="buns" onClick={scrollToBun} children="Булки" />
+        <Tab active={currentTab === 'buns'} value="buns" onClick={scrollToBun} children="Булки" />
       </li>
       <li className={styles.item}>
         <Tab
-          active={current === 'sauces'}
+          active={currentTab === 'sauces'}
           value="sauces"
           onClick={scrollToSauces}
           children="Соусы"
@@ -35,7 +32,7 @@ export const TabBar = React.memo(({ bunSectionRef, sauceSectionRef, mainSectionR
       </li>
       <li className={styles.item}>
         <Tab
-          active={current === 'filling'}
+          active={currentTab === 'filling'}
           value="filling"
           onClick={scrollToMain}
           children="Начинка"
@@ -43,4 +40,11 @@ export const TabBar = React.memo(({ bunSectionRef, sauceSectionRef, mainSectionR
       </li>
     </ul>
   );
-});
+};
+
+TabBar.propTypes = {
+  bunSectionRef: refPropTypes,
+  sauceSectionRef: refPropTypes,
+  mainSectionRef: refPropTypes,
+  currentTab: PropTypes.string.isRequired,
+};

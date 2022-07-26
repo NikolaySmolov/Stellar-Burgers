@@ -1,12 +1,16 @@
-.ingredient {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.wrapper {
   padding: 0;
   list-style: none;
 }
 
-.ingredient > svg {
+.wrapper_dropHover {
+  opacity: 0.5;
+}
+
+.ingredient {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   cursor: grab;
 }
 
