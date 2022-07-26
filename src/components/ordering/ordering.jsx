@@ -10,9 +10,10 @@ import { useSelector, useDispatch } from 'react-redux';
 import { sendOrder } from '../../services/actions/order';
 import { CLOSE_ORDER_DETAILS } from '../../services/actions/order';
 import { CLEAR_CONSTRUCTOR } from '../../services/actions/burger';
+import { Loader } from '../loader/loader';
 
 export default function Ordering({ totalPrice, orderList, isDisabled }) {
-  const { showModal, orderStatus, orderFailed } = useSelector(store => store.order);
+  const { showModal, orderStatus, orderRequest, orderFailed } = useSelector(store => store.order);
 
   const dispatch = useDispatch();
 
@@ -41,9 +42,12 @@ export default function Ordering({ totalPrice, orderList, isDisabled }) {
         <p className="text text_type_digits-medium mr-2">{totalPrice}</p>
         <CurrencyIcon type="primary" />
       </div>
-      <Button type="primary" size="large" onClick={handleSendOrder} disabled={isDisabled}>
-        Оформить заказ
-      </Button>
+      <div className={styles.button}>
+        <Button type="primary" size="large" onClick={handleSendOrder} disabled={isDisabled}>
+          Оформить заказ
+        </Button>
+        {orderRequest ? <Loader /> : null}
+      </div>
       {modal}
     </div>
   );
