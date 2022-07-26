@@ -50,16 +50,18 @@ export default function BurgerConstructor() {
   return (
     <section className={styles.constructor}>
       <div className={styles.elements} ref={dropRef}>
-        {includesBun ? <ConstructorRow isBun={true} type="top" data={constructor.bun[0]} /> : null}
+        {includesBun ? (
+          <ConstructorRow isBun={true} type="top" data={constructor.bun[0]} position={0} />
+        ) : null}
         {incluedesFilling ? (
           <ul className={`${styles.fills} custom-scroll`}>
             {constructor.filling.map((item, index) => (
-              <ConstructorRow key={item.tempId} data={item} position={index} />
+              <ConstructorRow isBun={false} key={item.tempId} data={item} position={index} />
             ))}
           </ul>
         ) : null}
         {includesBun ? (
-          <ConstructorRow isBun={true} type="bottom" data={constructor.bun[0]} />
+          <ConstructorRow isBun={true} type="bottom" data={constructor.bun[0]} position={0} />
         ) : null}
       </div>
       <Ordering isDisabled={!canOrder} orderList={orderList} totalPrice={totalPrice} />

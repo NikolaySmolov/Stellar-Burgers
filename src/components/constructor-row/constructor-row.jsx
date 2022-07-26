@@ -62,7 +62,7 @@ export const ConstructorRow = React.memo(({ isBun = false, type, data, position 
 
 ConstructorRow.propTypes = {
   isBun: PropTypes.bool.isRequired,
-  type: PropTypes.string.isRequired,
+  type: PropTypes.string,
   data: ingredientPropTypes.isRequired,
   position: PropTypes.number.isRequired,
 };
