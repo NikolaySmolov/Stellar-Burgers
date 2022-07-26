@@ -46,5 +46,5 @@ TabBar.propTypes = {
   bunSectionRef: refPropTypes,
   sauceSectionRef: refPropTypes,
   mainSectionRef: refPropTypes,
-  currentTab: PropTypes.string,
+  currentTab: PropTypes.string.isRequired,
 };

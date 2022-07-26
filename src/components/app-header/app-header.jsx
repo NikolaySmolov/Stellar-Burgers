@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import styles from './app-header.module.css';
 import NavLink from '../nav-link/nav-link';
 import { Logo } from '@ya.praktikum/react-developer-burger-ui-components';
@@ -63,10 +62,3 @@ export const AppHeader = React.memo(() => {
     </header>
   );
 });
-
-NavLink.propTypes = {
-  href: PropTypes.string.isRequired,
-  isActive: PropTypes.bool.isRequired,
-  text: PropTypes.string.isRequired,
-  handleOnClick: PropTypes.func.isRequired,
-};
