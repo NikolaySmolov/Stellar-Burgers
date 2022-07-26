@@ -9,6 +9,7 @@ import ModalError from '../modal-error/modal-error';
 import { useSelector, useDispatch } from 'react-redux';
 import { sendOrder } from '../../services/actions/order';
 import { CLOSE_ORDER_DETAILS } from '../../services/actions/order';
+import { CLEAR_CONSTRUCTOR } from '../../services/actions/burger';
 
 export default function Ordering({ totalPrice, orderList, isDisabled }) {
   const { showModal, orderStatus, orderFailed } = useSelector(store => store.order);
@@ -21,6 +22,7 @@ export default function Ordering({ totalPrice, orderList, isDisabled }) {
 
   const handleCloseModal = () => {
     dispatch({ type: CLOSE_ORDER_DETAILS });
+    dispatch({ type: CLEAR_CONSTRUCTOR });
   };
 
   const modal = showModal ? (

@@ -8,6 +8,7 @@ import {
   OPEN_INGREDIENT_DETAILS,
   CLOSE_INGREDIENT_DETAILS,
   SORT_INGREDIENT,
+  CLEAR_CONSTRUCTOR,
 } from '../actions/burger';
 
 const initialState = {
@@ -82,6 +83,11 @@ export const burgerReducer = (state = initialState, action) => {
       sortedFillings.splice(action.payload.dropTargetPos, 0, sortableItem);
 
       return { ...state, constructor: { ...state.constructor, filling: sortedFillings } };
+    case CLEAR_CONSTRUCTOR:
+      const clearedIngredients = [...state.ingredients];
+      clearedIngredients.forEach(item => (item.qty = 0));
+
+      return { ...state, ingredients: clearedIngredients, constructor: { bun: [], filling: [] } };
     default:
       return state;
   }
