@@ -1,33 +1,32 @@
-import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { DndProvider } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
-import styles from './app.module.css';
 import { AppHeader } from '../app-header/app-header';
-import ModalError from '../modal-error/modal-error';
-import BurgerIngredients from '../burger-ingredients/burger-ingredients';
-import BurgerConstructor from '../burger-constructor/burger-constructor';
-import { getIngredients } from '../../services/actions/burger';
+import { ConstructorPage } from '../../pages/constructor/constructor';
+import { LoginPage } from '../../pages/login/login';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { RegisterPage } from '../../pages/register/register';
+import { ForgotPasswordPage } from '../../pages/forgot-password/forgot-password';
+import { ResetPasswordPage } from '../../pages/reset-password/reset-password';
 
 export default function App() {
-  const { ingredientsRequest, ingredientsFailed } = useSelector(store => store.burger);
-  const dispatch = useDispatch();
-
-  React.useEffect(() => {
-    dispatch(getIngredients());
-  }, [dispatch]);
-
-  return ingredientsRequest ? null : ingredientsFailed ? (
-    <ModalError />
-  ) : (
-    <>
+  return (
+    <Router>
       <AppHeader />
-      <main className={styles.content}>
-        <DndProvider backend={HTML5Backend}>
-          <BurgerIngredients />
-          <BurgerConstructor />
-        </DndProvider>
-      </main>
-    </>
+      <Switch>
+        <Route path="/" exact={true}>
+          <ConstructorPage />
+        </Route>
+        <Route path="/login" exact={true}>
+          <LoginPage />
+        </Route>
+        <Route path="/register" exact={true}>
+          <RegisterPage />
+        </Route>
+        <Route path="/forgot-password" exact={true}>
+          <ForgotPasswordPage />
+        </Route>
+        <Route path="/reset-password" exact={true}>
+          <ResetPasswordPage />
+        </Route>
+      </Switch>
+    </Router>
   );
 }

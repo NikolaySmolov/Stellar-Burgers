@@ -1,0 +1,32 @@
+.main {
+  display: flex;
+  justify-content: center;
+  padding-top: 180px;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 480px;
+}
+
+.title {
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+.form {
+  display: grid;
+  row-gap: 24px;
+  justify-items: center;
+}
+
+.form [class='input__container'],
+[class~='input'] {
+  width: 100%;
+}
+
+.form [class~='input__error'] {
+  margin-bottom: 0;
+}
