@@ -1,0 +1,14 @@
+.form {
+  display: grid;
+  row-gap: calc(var(--offset-base-size) * 6);
+  justify-items: center;
+}
+
+.form [class='input__container'],
+[class~='input'] {
+  width: 100%;
+}
+
+.form [class~='input__error'] {
+  margin-bottom: 0;
+}

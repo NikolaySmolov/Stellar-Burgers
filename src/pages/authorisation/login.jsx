@@ -1,6 +1,7 @@
 import { Button, Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useCallback } from 'react';
 import { AdditionalAction } from '../../components/additional-action/additional-action';
+import { Form } from '../../components/form/form';
 import styles from './login.module.css';
 
 export const LoginPage = () => {
@@ -8,7 +9,7 @@ export const LoginPage = () => {
 
   const handleChangePassword = useCallback(() => console.log('fire input password'));
 
-  const handleSignIn = useCallback(event => {
+  const handleSignIn = useCallback((event) => {
     event.preventDefault();
     console.log('fire submit form');
   });
@@ -22,10 +23,10 @@ export const LoginPage = () => {
   });
 
   return (
-    <main className={styles.main}>
-      <section className={styles.wrapper}>
-        <h1 className={`${styles.title} text text_type_main-medium`}>Вход</h1>
-        <form name="login" className={`${styles.form} mt-6 mb-20`}>
+    <main className={'authentication'}>
+      <section className={'authentication__content'}>
+        <h1 className={'authentication__title text text_type_main-medium mb-6'}>Вход</h1>
+        <Form formName={'login'}>
           <Input
             type={'email'}
             placeholder={'E-mail'}
@@ -39,17 +40,19 @@ export const LoginPage = () => {
           <Button htmlType={'submit'} onClick={handleSignIn}>
             Войти
           </Button>
-        </form>
-        <AdditionalAction
-          text={'Вы\xA0\u2014 новый пользователь?'}
-          buttonText={'Зарегистрироваться'}
-          onClick={handleSignUp}
-        />
-        <AdditionalAction
-          text={'Забыли пароль?'}
-          buttonText={'Восстановить пароль'}
-          onClick={handleRestorePassword}
-        />
+        </Form>
+        <div className={'authentication__additional-actions mt-20'}>
+          <AdditionalAction
+            text={'Вы\xA0\u2014 новый пользователь?'}
+            buttonText={'Зарегистрироваться'}
+            onClick={handleSignUp}
+          />
+          <AdditionalAction
+            text={'Забыли пароль?'}
+            buttonText={'Восстановить пароль'}
+            onClick={handleRestorePassword}
+          />
+        </div>
       </section>
     </main>
   );

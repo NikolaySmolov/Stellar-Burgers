@@ -1,7 +1,7 @@
 import { Button, Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useCallback } from 'react';
 import { AdditionalAction } from '../../components/additional-action/additional-action';
-import styles from './register.module.css';
+import { Form } from '../../components/form/form';
 
 export const RegisterPage = () => {
   const handleChangeName = useCallback(() => console.log('fire input name'));
@@ -10,7 +10,7 @@ export const RegisterPage = () => {
 
   const handleChangePassword = useCallback(() => console.log('fire input password'));
 
-  const handleSignUp = useCallback(event => {
+  const handleSignUp = useCallback((event) => {
     event.preventDefault();
     console.log('fire submit form');
   });
@@ -20,10 +20,10 @@ export const RegisterPage = () => {
   });
 
   return (
-    <main className={styles.main}>
-      <section className={styles.wrapper}>
-        <h1 className={`${styles.title} text text_type_main-medium`}>Регистрация</h1>
-        <form name="login" className={`${styles.form} mt-6 mb-20`}>
+    <main className={'authentication'}>
+      <section className={'authentication__content'}>
+        <h1 className={'authentication__title text text_type_main-medium mb-6'}>Регистрация</h1>
+        <Form formName={'registration'}>
           <Input
             type={'text'}
             placeholder={'Имя'}
@@ -46,12 +46,14 @@ export const RegisterPage = () => {
           <Button htmlType={'submit'} onClick={handleSignUp}>
             Зарегистрироваться
           </Button>
-        </form>
-        <AdditionalAction
-          text={'Уже зарегистрированы?'}
-          buttonText={'Войти'}
-          onClick={handleToSignIn}
-        />
+        </Form>
+        <div className={'authentication__additional-actions mt-20'}>
+          <AdditionalAction
+            text={'Уже зарегистрированы?'}
+            buttonText={'Войти'}
+            onClick={handleToSignIn}
+          />
+        </div>
       </section>
     </main>
   );

@@ -1,12 +1,12 @@
-import { Button, Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
+import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useCallback } from 'react';
 import { AdditionalAction } from '../../components/additional-action/additional-action';
-import styles from './forgot-password.module.css';
+import { Form } from '../../components/form/form';
 
 export const ForgotPasswordPage = () => {
   const handleChangeEmail = useCallback(() => console.log('fire input email'));
 
-  const handleRestorePassword = useCallback(event => {
+  const handleRestorePassword = useCallback((event) => {
     event.preventDefault();
     console.log('fire submit form');
   });
@@ -16,10 +16,12 @@ export const ForgotPasswordPage = () => {
   });
 
   return (
-    <main className={styles.main}>
-      <section className={styles.wrapper}>
-        <h1 className={`${styles.title} text text_type_main-medium`}>Восстановление пароля</h1>
-        <form name="login" className={`${styles.form} mt-6 mb-20`}>
+    <main className={'authentication'}>
+      <section className={'authentication__content'}>
+        <h1 className={'authentication__title text text_type_main-medium mb-6'}>
+          Восстановление пароля
+        </h1>
+        <Form formName={'forgotPassword'}>
           <Input
             type={'email'}
             placeholder={'Укажите e-mail'}
@@ -32,12 +34,14 @@ export const ForgotPasswordPage = () => {
           <Button htmlType={'submit'} onClick={handleRestorePassword}>
             Восстановить
           </Button>
-        </form>
-        <AdditionalAction
-          text={'Вспомнили пароль?'}
-          buttonText={'Войти'}
-          onClick={handleToSignIn}
-        />
+        </Form>
+        <div className={'authentication__additional-actions mt-20'}>
+          <AdditionalAction
+            text={'Вспомнили пароль?'}
+            buttonText={'Войти'}
+            onClick={handleToSignIn}
+          />
+        </div>
       </section>
     </main>
   );

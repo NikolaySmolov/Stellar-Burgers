@@ -1,10 +1,10 @@
 import { AppHeader } from '../app-header/app-header';
 import { ConstructorPage } from '../../pages/constructor/constructor';
-import { LoginPage } from '../../pages/login/login';
+import { LoginPage } from '../../pages/authorisation/login';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import { RegisterPage } from '../../pages/register/register';
-import { ForgotPasswordPage } from '../../pages/forgot-password/forgot-password';
-import { ResetPasswordPage } from '../../pages/reset-password/reset-password';
+import { RegisterPage } from '../../pages/authorisation/register';
+import { ForgotPasswordPage } from '../../pages/authorisation/forgot-password';
+import { ResetPasswordPage } from '../../pages/authorisation/reset-password';
 
 export default function App() {
   return (
