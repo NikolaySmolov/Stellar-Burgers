@@ -1,10 +1,11 @@
-import { AppHeader } from '../app-header/app-header';
-import { ConstructorPage } from '../../pages/constructor/constructor';
-import { LoginPage } from '../../pages/authorisation/login';
+import { AppHeader } from './components/app-header/app-header';
+import { ConstructorPage } from './pages/constructor/constructor';
+import { LoginPage } from './pages/authorisation/login';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import { RegisterPage } from '../../pages/authorisation/register';
-import { ForgotPasswordPage } from '../../pages/authorisation/forgot-password';
-import { ResetPasswordPage } from '../../pages/authorisation/reset-password';
+import { RegisterPage } from './pages/authorisation/register';
+import { ForgotPasswordPage } from './pages/authorisation/forgot-password';
+import { ResetPasswordPage } from './pages/authorisation/reset-password';
+import { ProfilePage } from './pages/profile/profile';
 
 export default function App() {
   return (
@@ -25,6 +26,9 @@ export default function App() {
         </Route>
         <Route path="/reset-password" exact={true}>
           <ResetPasswordPage />
+        </Route>
+        <Route path="/profile">
+          <ProfilePage />
         </Route>
       </Switch>
     </Router>

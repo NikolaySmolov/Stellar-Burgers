@@ -1,0 +1,38 @@
+.main {
+  display: grid;
+  justify-content: center;
+  grid-template-columns: 320px 860px;
+  column-gap: 60px;
+}
+
+.navLinkList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.navLinkWrapper {
+  padding: 17px 0;
+}
+
+.navLink {
+  text-decoration: none;
+  color: var(--text-inactive-color);
+  transition: var(--common-transition);
+}
+
+.navLink:hover {
+  color: var(--text-primary-color);
+}
+
+.navLinkActive {
+  color: var(--text-primary-color);
+}
+
+.caption {
+  opacity: 0.4;
+}
+
+.contentProfile {
+  max-width: 480px;
+}
