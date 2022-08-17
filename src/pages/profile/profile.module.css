@@ -36,3 +36,10 @@
 .contentProfile {
   max-width: 480px;
 }
+
+.formActions {
+  display: grid;
+  justify-self: end;
+  column-gap: 20px;
+  grid-auto-flow: column;
+}

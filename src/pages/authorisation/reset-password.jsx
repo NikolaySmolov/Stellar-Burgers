@@ -1,19 +1,20 @@
-import { Button, Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useCallback, useLayoutEffect, useState } from 'react';
+import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
+import { useCallback } from 'react';
 import { AdditionalAction } from '../../components/additional-action/additional-action';
 import { Form } from '../../components/form/form';
+import { useInputLogic } from '../../utils/hooks';
 
 export const ResetPasswordPage = () => {
-  const [passwordValue, setPasswordValue] = useState('');
+  const passwordInputLogic = useInputLogic({ initType: 'password', initIcon: 'ShowIcon' });
+  const inputCodeLogic = useInputLogic({ initType: 'text', initIcon: null });
 
   const handleChangeCode = useCallback(() => console.log('fire input code'));
 
-  const handleChangePassword = useCallback((event) => {
+  const handleChangePassword = useCallback(event => {
     console.log('fire input password');
-    setPasswordValue(() => event.target.value);
   });
 
-  const handleSignUp = useCallback((event) => {
+  const handleSignUp = useCallback(event => {
     event.preventDefault();
     console.log('fire submit form');
   });
@@ -29,14 +30,20 @@ export const ResetPasswordPage = () => {
           Восстановление пароля
         </h1>
         <Form formName={'reset-password'}>
-          <PasswordInput value={passwordValue} name={'password'} onChange={handleChangePassword} />
           <Input
-            type={'text'}
+            {...passwordInputLogic}
+            name={'password'}
+            placeholder={'Введите новый пароль'}
+            value={''}
+            errorText={'Error message'}
+            onChange={handleChangePassword}
+          />
+          <Input
+            {...inputCodeLogic}
             placeholder={'Введите код из письма'}
             name={'name'}
             value={''}
             onChange={handleChangeCode}
-            error={false}
             errorText={'Ошибка'}
           />
           <Button htmlType={'submit'} onClick={handleSignUp}>

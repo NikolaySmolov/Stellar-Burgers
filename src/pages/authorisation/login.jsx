@@ -9,7 +9,7 @@ export const LoginPage = () => {
 
   const handleChangePassword = useCallback(() => console.log('fire input password'));
 
-  const handleSignIn = useCallback((event) => {
+  const handleSignIn = useCallback(event => {
     event.preventDefault();
     console.log('fire submit form');
   });
@@ -31,12 +31,12 @@ export const LoginPage = () => {
             type={'email'}
             placeholder={'E-mail'}
             name={'email'}
-            value={''}
+            value={'1234234'}
             onChange={handleChangeEmail}
             error={false}
             errorText={'Ошибка'}
           />
-          <PasswordInput value={''} name={'password'} onChange={handleChangePassword} />
+          <PasswordInput value={'12345'} name={'password'} onChange={handleChangePassword} />
           <Button htmlType={'submit'} onClick={handleSignIn}>
             Войти
           </Button>

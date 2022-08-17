@@ -1,10 +1,15 @@
-import { Input } from '@ya.praktikum/react-developer-burger-ui-components';
+import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useMemo } from 'react';
 import { Switch, Route, useRouteMatch, useLocation, NavLink } from 'react-router-dom';
 import { Form } from '../../components/form/form';
 import styles from './profile.module.css';
+import { useInputLogic } from '../../utils/hooks';
 
 export const ProfilePage = () => {
+  const nameInputLogic = useInputLogic({ initType: 'text', disabledState: true });
+  const emailInputLogic = useInputLogic({ initType: 'email', disabledState: true });
+  const passwordInputLogic = useInputLogic({ initType: 'password', disabledState: true });
+
   const location = useLocation();
   const { path, url } = useRouteMatch();
 
@@ -21,12 +26,21 @@ export const ProfilePage = () => {
     );
   }, [location]);
 
+  const handleSubmit = evt => {
+    evt.preventDefault();
+    console.log('submit form');
+  };
+
+  const handleReset = () => {
+    console.log('reset form');
+  };
+
   const contentStyle =
     location.pathname === '/profile'
       ? `${styles.contentProfile} mt-30`
       : `${styles.contentOrders} mt-10`;
 
-  console.log(contentStyle);
+  const profileChanged = true;
 
   return (
     <main className={styles.main}>
@@ -67,32 +81,42 @@ export const ProfilePage = () => {
           <Route path={'/profile'} exact={true}>
             <Form formName={'profile'}>
               <Input
-                type={'text'}
-                disabled={true}
+                {...nameInputLogic}
                 name={'name'}
                 placeholder={'Имя'}
                 value={'Марк'}
-                icon={'EditIcon'}
-                onIconClick={() => console.log('click')}
+                errorText={'Error message'}
               />
               <Input
-                type={'email'}
-                disabled={true}
+                {...emailInputLogic}
                 name={'email'}
                 placeholder={'Логин'}
                 value={'mail@stellar.burgers'}
-                icon={'EditIcon'}
-                onIconClick={() => console.log('click')}
+                errorText={'Error message'}
               />
               <Input
-                type={'password'}
-                disabled={true}
+                {...passwordInputLogic}
                 name={'password'}
                 placeholder={'Пароль'}
-                value={'123456'}
-                icon={'EditIcon'}
-                onIconClick={() => console.log('click')}
+                value={''}
+                errorText={'Error message'}
               />
+              <div className={styles.formActions}>
+                <Button
+                  type={'secondary'}
+                  htmlType={'reset'}
+                  disabled={!profileChanged}
+                  onClick={handleReset}>
+                  Отмена
+                </Button>
+                <Button
+                  type={'primary'}
+                  htmlType={'submit'}
+                  disabled={!profileChanged}
+                  onClick={handleSubmit}>
+                  Сохранить
+                </Button>
+              </div>
             </Form>
           </Route>
           <Route path={`${path}/orders`}>

@@ -12,3 +12,8 @@
 .form [class~='input__error'] {
   margin-bottom: 0;
 }
+
+.form [type='reset'] {
+  padding-left: 8px;
+  padding-right: 8px;
+}
