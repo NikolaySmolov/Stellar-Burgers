@@ -1,26 +1,29 @@
 import { Button, Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useCallback } from 'react';
 import { AdditionalAction } from '../../components/additional-action/additional-action';
 import { Form } from '../../components/form/form';
+import { useHistory } from 'react-router-dom';
+//eslint-disable-next-line
 import styles from './login.module.css';
 
 export const LoginPage = () => {
-  const handleChangeEmail = useCallback(() => console.log('fire input email'));
+  const history = useHistory();
 
-  const handleChangePassword = useCallback(() => console.log('fire input password'));
+  const handleChangeEmail = () => console.log('fire input email');
 
-  const handleSignIn = useCallback(event => {
+  const handleChangePassword = () => console.log('fire input password');
+
+  const handleSignIn = event => {
     event.preventDefault();
     console.log('fire submit form');
-  });
+  };
 
-  const handleSignUp = useCallback(() => {
-    console.log('fire sing up');
-  });
+  const handleSignUp = () => {
+    history.push({ pathname: '/register' });
+  };
 
-  const handleRestorePassword = useCallback(() => {
-    console.log('fire restore password');
-  });
+  const handleRestorePassword = () => {
+    history.push({ pathname: '/forgot-password' });
+  };
 
   return (
     <main className={'authentication'}>
@@ -31,15 +34,13 @@ export const LoginPage = () => {
             type={'email'}
             placeholder={'E-mail'}
             name={'email'}
-            value={'1234234'}
+            value={'1@'}
             onChange={handleChangeEmail}
             error={false}
             errorText={'Ошибка'}
           />
           <PasswordInput value={'12345'} name={'password'} onChange={handleChangePassword} />
-          <Button htmlType={'submit'} onClick={handleSignIn}>
-            Войти
-          </Button>
+          <Button onClick={handleSignIn}>Войти</Button>
         </Form>
         <div className={'authentication__additional-actions mt-20'}>
           <AdditionalAction

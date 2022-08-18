@@ -1,11 +1,13 @@
 import { AppHeader } from './components/app-header/app-header';
 import { ConstructorPage } from './pages/constructor/constructor';
-import { LoginPage } from './pages/authorisation/login';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import { RegisterPage } from './pages/authorisation/register';
-import { ForgotPasswordPage } from './pages/authorisation/forgot-password';
-import { ResetPasswordPage } from './pages/authorisation/reset-password';
-import { ProfilePage } from './pages/profile/profile';
+import {
+  LoginPage,
+  RegisterPage,
+  ForgotPasswordPage,
+  ResetPasswordPage,
+  ProfilePage,
+} from './pages';
 
 export default function App() {
   return (

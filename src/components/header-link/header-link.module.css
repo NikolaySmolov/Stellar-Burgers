@@ -1,0 +1,21 @@
+.nav__link {
+  display: flex;
+  text-decoration: none;
+  color: var(--text-inactive-color);
+}
+
+.nav__link_active {
+  color: var(--text-primary-color);
+}
+
+.nav__link:hover {
+  color: var(--text-primary-color);
+}
+
+.nav__link > * {
+  transition: var(--common-transition);
+}
+
+.nav__link:hover > svg {
+  fill: #f2f2f3;
+}

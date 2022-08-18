@@ -1,27 +1,29 @@
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useCallback } from 'react';
 import { AdditionalAction } from '../../components/additional-action/additional-action';
 import { Form } from '../../components/form/form';
 import { useInputLogic } from '../../utils/hooks';
+import { useHistory } from 'react-router-dom';
 
 export const ResetPasswordPage = () => {
+  const history = useHistory();
+
   const passwordInputLogic = useInputLogic({ initType: 'password', initIcon: 'ShowIcon' });
   const inputCodeLogic = useInputLogic({ initType: 'text', initIcon: null });
 
-  const handleChangeCode = useCallback(() => console.log('fire input code'));
+  const handleChangeCode = () => console.log('fire input code');
 
-  const handleChangePassword = useCallback(event => {
+  const handleChangePassword = event => {
     console.log('fire input password');
-  });
+  };
 
-  const handleSignUp = useCallback(event => {
+  const handleSignUp = event => {
     event.preventDefault();
     console.log('fire submit form');
-  });
+  };
 
-  const handleToSignIn = useCallback(() => {
-    console.log('fire to sign in');
-  });
+  const handleToSignIn = () => {
+    history.replace({ pathname: '/login' });
+  };
 
   return (
     <main className={'authentication'}>

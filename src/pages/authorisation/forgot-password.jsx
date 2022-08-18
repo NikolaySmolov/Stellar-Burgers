@@ -1,19 +1,22 @@
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useCallback } from 'react';
 import { AdditionalAction } from '../../components/additional-action/additional-action';
 import { Form } from '../../components/form/form';
+import { useHistory } from 'react-router-dom';
 
 export const ForgotPasswordPage = () => {
-  const handleChangeEmail = useCallback(() => console.log('fire input email'));
+  const history = useHistory();
 
-  const handleRestorePassword = useCallback((event) => {
+  const handleChangeEmail = () => console.log('fire input email');
+
+  const handleRestorePassword = event => {
     event.preventDefault();
-    console.log('fire submit form');
-  });
 
-  const handleToSignIn = useCallback(() => {
-    console.log('fire to sign in');
-  });
+    history.push({ pathname: '/reset-password' });
+  };
+
+  const handleToSignIn = () => {
+    history.push({ pathname: '/login' });
+  };
 
   return (
     <main className={'authentication'}>

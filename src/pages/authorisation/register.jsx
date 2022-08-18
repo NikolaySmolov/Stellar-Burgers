@@ -1,23 +1,25 @@
 import { Button, Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useCallback } from 'react';
 import { AdditionalAction } from '../../components/additional-action/additional-action';
 import { Form } from '../../components/form/form';
+import { useHistory } from 'react-router-dom';
 
 export const RegisterPage = () => {
-  const handleChangeName = useCallback(() => console.log('fire input name'));
+  const history = useHistory();
 
-  const handleChangeEmail = useCallback(() => console.log('fire input email'));
+  const handleChangeName = () => console.log('fire input name');
 
-  const handleChangePassword = useCallback(() => console.log('fire input password'));
+  const handleChangeEmail = () => console.log('fire input email');
 
-  const handleSignUp = useCallback((event) => {
+  const handleChangePassword = () => console.log('fire input password');
+
+  const handleSignUp = event => {
     event.preventDefault();
     console.log('fire submit form');
-  });
+  };
 
-  const handleToSignIn = useCallback(() => {
-    console.log('fire to sign in');
-  });
+  const handleToSignIn = () => {
+    history.push({ pathname: '/login' });
+  };
 
   return (
     <main className={'authentication'}>

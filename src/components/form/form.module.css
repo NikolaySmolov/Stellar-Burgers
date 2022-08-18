@@ -4,6 +4,11 @@
   justify-items: center;
 }
 
+.form [class='input__container'] p {
+  margin-top: 0;
+  margin-bottom: calc(var(--offset-base-size) * -6);
+}
+
 .form [class='input__container'],
 [class~='input'] {
   width: 100%;

@@ -13,7 +13,6 @@
   margin-left: 115px;
 }
 
-
 nav:last-of-type {
   margin-left: auto;
 }
@@ -31,4 +30,26 @@ nav:last-of-type {
 
 .nav__list li:first-of-type {
   margin-left: 0px;
+}
+
+.nav__link {
+  display: flex;
+  text-decoration: none;
+  color: var(--text-inactive-color);
+}
+
+.nav__link_active {
+  color: var(--text-primary-color);
+}
+
+.nav__link:hover {
+  color: var(--text-primary-color);
+}
+
+.nav__link > * {
+  transition: var(--common-transition);
+}
+
+.nav__link:hover > svg {
+  fill: #f2f2f3;
 }
