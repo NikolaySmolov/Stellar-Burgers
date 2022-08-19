@@ -38,3 +38,9 @@ export const FILLING = 'filling';
 export const CALC = 'calc';
 export const ADD = 'add';
 export const SORT = 'sort';
+
+export const AUTH_FORM_SET_VALUE = 'AUTH_FORM_GET_VALUE';
+
+export const AUTH_FORM_SUBMIT = 'AUTH_REGISTER_FORM_SUBMIT';
+export const AUTH_FORM_SUCCESS = 'AUTH_REGISTER_FORM_SUCCESS';
+export const AUTH_FORM_FAILED = 'AUTH_REGISTER_FORM_FAILED';

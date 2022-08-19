@@ -1,7 +1,7 @@
-import { LoginPage } from './authorisation/login';
-import { RegisterPage } from './authorisation/register';
-import { ForgotPasswordPage } from './authorisation/forgot-password';
-import { ResetPasswordPage } from './authorisation/reset-password';
+import { LoginPage } from './authorization/login';
+import { RegisterPage } from './authorization/register';
+import { ForgotPasswordPage } from './authorization/forgot-password';
+import { ResetPasswordPage } from './authorization/reset-password';
 import { ProfilePage } from './profile/profile';
 
 export { LoginPage, RegisterPage, ForgotPasswordPage, ResetPasswordPage, ProfilePage };

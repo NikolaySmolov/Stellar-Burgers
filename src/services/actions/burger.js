@@ -1,4 +1,4 @@
-import { requireIngredients } from '../../utils/api';
+import { requireIngredients } from '../api';
 
 export const GET_INGREDIENTS_REQUEST = 'GET_INGREDIENTS_REQUEST';
 export const GET_INGREDIENTS_SUCCESS = 'GET_INGREDIENTS_SUCCESS';

@@ -1,7 +1,7 @@
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import { AdditionalAction } from '../../components/additional-action/additional-action';
 import { Form } from '../../components/form/form';
-import { useInputLogic } from '../../utils/hooks';
+import { useInputLogic } from '../../services/hooks';
 import { useHistory } from 'react-router-dom';
 
 export const ResetPasswordPage = () => {

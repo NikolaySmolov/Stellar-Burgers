@@ -3,7 +3,7 @@ import { useMemo } from 'react';
 import { Switch, Route, useRouteMatch, useLocation, NavLink } from 'react-router-dom';
 import { Form } from '../../components/form/form';
 import styles from './profile.module.css';
-import { useInputLogic } from '../../utils/hooks';
+import { useInputLogic } from '../../services/hooks';
 
 export const ProfilePage = () => {
   const nameInputLogic = useInputLogic({ initType: 'text', disabledState: true });
