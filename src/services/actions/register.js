@@ -30,7 +30,5 @@ export const signUp = form => dispatch => {
 
       dispatch({ type: REGISTER_FORM_SUCCESS });
     })
-    .catch(() => {
-      dispatch({ type: REGISTER_FORM_FAILED });
-    });
+    .catch(() => dispatch({ type: REGISTER_FORM_FAILED }));
 };

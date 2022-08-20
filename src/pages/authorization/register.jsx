@@ -3,32 +3,46 @@ import { AdditionalAction } from '../../components/additional-action/additional-
 import { Form } from '../../components/form/form';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { setRegisterFormValue } from '../../services/actions/register';
+import {
+  resetRegisterFormValue,
+  setRegisterFormValue,
+  signUp,
+} from '../../services/actions/register';
+import { useEffect } from 'react';
 
 export const RegisterPage = () => {
-  const { form } = useSelector(store => ({
-    form: store.registration.form,
-  }));
+  const form = useSelector(store => store.registration.form);
   const dispatch = useDispatch();
 
   const history = useHistory();
 
   const handleChangeName = evt => {
-    dispatch(setRegisterFormValue(evt.currentTarget.name, evt.currentTarget.value));
+    const field = evt.currentTarget;
+    dispatch(setRegisterFormValue(field.name, field.value));
   };
 
-  const handleChangeEmail = () => console.log('fire input email');
+  const handleChangeEmail = evt => {
+    const field = evt.currentTarget;
+    dispatch(setRegisterFormValue(field.name, field.value));
+  };
 
-  const handleChangePassword = () => console.log('fire input password');
+  const handleChangePassword = evt => {
+    const field = evt.currentTarget;
+    dispatch(setRegisterFormValue(field.name, field.value));
+  };
 
   const handleSignUp = event => {
     event.preventDefault();
-    console.log('fire submit form');
+    dispatch(signUp(form));
   };
 
-  const handleToSignIn = () => {
+  const handleRouteSignIn = () => {
     history.push({ pathname: '/login' });
   };
+
+  useEffect(() => {
+    return () => dispatch(resetRegisterFormValue());
+  }, [dispatch]);
 
   return (
     <main className={'authentication'}>
@@ -48,12 +62,12 @@ export const RegisterPage = () => {
             type={'email'}
             placeholder={'E-mail'}
             name={'email'}
-            value={''}
+            value={form.email}
             onChange={handleChangeEmail}
             error={false}
             errorText={'Ошибка'}
           />
-          <PasswordInput value={''} name={'password'} onChange={handleChangePassword} />
+          <PasswordInput value={form.password} name={'password'} onChange={handleChangePassword} />
           <Button htmlType={'submit'} onClick={handleSignUp}>
             Зарегистрироваться
           </Button>
@@ -62,7 +76,7 @@ export const RegisterPage = () => {
           <AdditionalAction
             text={'Уже зарегистрированы?'}
             buttonText={'Войти'}
-            onClick={handleToSignIn}
+            onClick={handleRouteSignIn}
           />
         </div>
       </section>

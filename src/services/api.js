@@ -32,3 +32,14 @@ export const requireRegistration = async form => {
   });
   return checkResponse(res);
 };
+
+export const requireLogin = async form => {
+  const res = await fetch(`${API}/auth/login`, {
+    method: 'POST',
+    headers: {
+      'Content-type': 'application/json',
+    },
+    body: JSON.stringify(form),
+  });
+  return checkResponse(res);
+};
