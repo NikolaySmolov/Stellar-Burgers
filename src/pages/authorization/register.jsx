@@ -2,11 +2,20 @@ import { Button, Input, PasswordInput } from '@ya.praktikum/react-developer-burg
 import { AdditionalAction } from '../../components/additional-action/additional-action';
 import { Form } from '../../components/form/form';
 import { useHistory } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { setRegisterFormValue } from '../../services/actions/register';
 
 export const RegisterPage = () => {
+  const { form } = useSelector(store => ({
+    form: store.registration.form,
+  }));
+  const dispatch = useDispatch();
+
   const history = useHistory();
 
-  const handleChangeName = () => console.log('fire input name');
+  const handleChangeName = evt => {
+    dispatch(setRegisterFormValue(evt.currentTarget.name, evt.currentTarget.value));
+  };
 
   const handleChangeEmail = () => console.log('fire input email');
 
@@ -30,7 +39,7 @@ export const RegisterPage = () => {
             type={'text'}
             placeholder={'Имя'}
             name={'name'}
-            value={''}
+            value={form.name}
             onChange={handleChangeName}
             error={false}
             errorText={'Ошибка'}

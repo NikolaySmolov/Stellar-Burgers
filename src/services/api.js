@@ -1,19 +1,7 @@
 import { API } from '../utils/constants';
-import { setCookie } from './utils';
 
 async function checkResponse(res) {
-  if (res.ok) {
-    const authToken =
-      res.headers.has('authorization') && res.headers.get('authorization').split('Bearer ')[1];
-
-    if (authToken) {
-      setCookie(authToken);
-    }
-
-    return await res.json();
-  } else {
-    return Promise.reject(`res.ok: ${res.ok}, res.status: ${res.status}`);
-  }
+  return res.ok ? await res.json() : Promise.reject(`res.ok: ${res.ok}, res.status: ${res.status}`);
 }
 
 export const requireIngredients = async () => {
@@ -34,7 +22,7 @@ export const requireOrder = async order => {
   return checkResponse(res);
 };
 
-export const register = async form => {
+export const requireRegistration = async form => {
   const res = await fetch(`${API}/auth/register`, {
     method: 'POST',
     headers: {
