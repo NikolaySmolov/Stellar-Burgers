@@ -2,21 +2,44 @@ import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-component
 import { AdditionalAction } from '../../components/additional-action/additional-action';
 import { Form } from '../../components/form/form';
 import { useHistory } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import {
+  getResetCode,
+  resetForgotPasswordFormValues,
+  setForgotPasswordFormValue,
+} from '../../services/actions/forgot-password';
 
 export const ForgotPasswordPage = () => {
+  const { form, getCodeRequest, getCodeFailed, resetStep } = useSelector(
+    store => store.forgotPassword
+  );
+
+  const dispatch = useDispatch();
+
   const history = useHistory();
 
-  const handleChangeEmail = () => console.log('fire input email');
+  const handleChangeEmail = evt => {
+    const field = evt.currentTarget;
+    dispatch(setForgotPasswordFormValue(field.name, field.value));
+  };
 
   const handleRestorePassword = event => {
     event.preventDefault();
 
-    history.push({ pathname: '/reset-password' });
+    dispatch(getResetCode(form));
   };
 
-  const handleToSignIn = () => {
+  const handleRouteSignIn = () => {
     history.push({ pathname: '/login' });
   };
+
+  useEffect(() => () => dispatch(resetForgotPasswordFormValues()), [dispatch]);
+
+  //сделать нормальный редирект
+  if (resetStep) {
+    history.push({ pathname: '/reset-password' });
+  }
 
   return (
     <main className={'authentication'}>
@@ -29,9 +52,8 @@ export const ForgotPasswordPage = () => {
             type={'email'}
             placeholder={'Укажите e-mail'}
             name={'email'}
-            value={''}
+            value={form.email}
             onChange={handleChangeEmail}
-            error={false}
             errorText={'Ошибка'}
           />
           <Button htmlType={'submit'} onClick={handleRestorePassword}>
@@ -42,7 +64,7 @@ export const ForgotPasswordPage = () => {
           <AdditionalAction
             text={'Вспомнили пароль?'}
             buttonText={'Войти'}
-            onClick={handleToSignIn}
+            onClick={handleRouteSignIn}
           />
         </div>
       </section>

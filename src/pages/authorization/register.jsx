@@ -40,9 +40,7 @@ export const RegisterPage = () => {
     history.push({ pathname: '/login' });
   };
 
-  useEffect(() => {
-    return () => dispatch(resetRegisterFormValue());
-  }, [dispatch]);
+  useEffect(() => () => dispatch(resetRegisterFormValue()), [dispatch]);
 
   return (
     <main className={'authentication'}>
@@ -55,7 +53,6 @@ export const RegisterPage = () => {
             name={'name'}
             value={form.name}
             onChange={handleChangeName}
-            error={false}
             errorText={'Ошибка'}
           />
           <Input
@@ -64,7 +61,6 @@ export const RegisterPage = () => {
             name={'email'}
             value={form.email}
             onChange={handleChangeEmail}
-            error={false}
             errorText={'Ошибка'}
           />
           <PasswordInput value={form.password} name={'password'} onChange={handleChangePassword} />

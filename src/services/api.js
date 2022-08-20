@@ -43,3 +43,27 @@ export const requireLogin = async form => {
   });
   return checkResponse(res);
 };
+
+export const requireResetCode = async form => {
+  const res = await fetch(`${API}/password-reset`, {
+    method: 'POST',
+    headers: {
+      'Content-type': 'application/json',
+    },
+    body: JSON.stringify(form),
+  });
+
+  return checkResponse(res);
+};
+
+export const requireSetPassword = async form => {
+  const res = await fetch(`${API}/password-reset/reset`, {
+    method: 'POST',
+    headers: {
+      'Content-type': 'application/json',
+    },
+    body: JSON.stringify(form),
+  });
+
+  return checkResponse(res);
+};

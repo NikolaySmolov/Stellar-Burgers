@@ -7,6 +7,7 @@ import styles from './login.module.css';
 import { useSelector, useDispatch } from 'react-redux';
 import { resetLoginFormValues, setLoginFormValue, signIn } from '../../services/actions/login';
 import { useEffect } from 'react';
+import { getCookie } from '../../services/utils';
 
 export const LoginPage = () => {
   const form = useSelector(store => store.login.form);
@@ -38,9 +39,7 @@ export const LoginPage = () => {
     history.push({ pathname: '/forgot-password' });
   };
 
-  useEffect(() => {
-    return () => dispatch(resetLoginFormValues());
-  }, [dispatch]);
+  useEffect(() => () => dispatch(resetLoginFormValues()), [dispatch]);
 
   return (
     <main className={'authentication'}>
@@ -53,7 +52,6 @@ export const LoginPage = () => {
             name={'email'}
             value={form.email}
             onChange={handleChangeEmail}
-            error={false}
             errorText={'Ошибка'}
           />
           <PasswordInput value={form.password} name={'password'} onChange={handleChangePassword} />

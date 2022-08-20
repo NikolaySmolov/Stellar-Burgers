@@ -8,7 +8,6 @@ export const useInputLogic = ({ initType, initIcon = 'EditIcon', disabledState =
   const [type, setType] = useState(initType);
 
   const inputRef = useRef(null);
-  inputRef.focus = false;
 
   const validateField = fieldValue => {
     switch (initType) {

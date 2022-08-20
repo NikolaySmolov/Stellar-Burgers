@@ -27,7 +27,6 @@ export const signIn = form => dispatch => {
 
       setCookie('accessToken', accessToken, { 'max-age': 1200 });
       setCookie('token', token);
-      debugger;
       dispatch({ type: LOGIN_FORM_SUCCESS });
     })
     .catch(() => dispatch({ type: LOGIN_FORM_FAILED }));

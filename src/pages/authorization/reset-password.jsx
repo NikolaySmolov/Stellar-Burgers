@@ -3,27 +3,49 @@ import { AdditionalAction } from '../../components/additional-action/additional-
 import { Form } from '../../components/form/form';
 import { useInputLogic } from '../../services/hooks';
 import { useHistory } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  resetForgotPasswordFormValues,
+  setForgotPasswordFormValue,
+  setPassword,
+} from '../../services/actions/forgot-password';
+import { useEffect } from 'react';
 
 export const ResetPasswordPage = () => {
+  const { form, setPasswordRequest, setPasswordFailed, updatePassword } = useSelector(
+    store => store.forgotPassword
+  );
+  const dispatch = useDispatch();
+
   const history = useHistory();
 
   const passwordInputLogic = useInputLogic({ initType: 'password', initIcon: 'ShowIcon' });
-  const inputCodeLogic = useInputLogic({ initType: 'text', initIcon: null });
 
-  const handleChangeCode = () => console.log('fire input code');
-
-  const handleChangePassword = event => {
-    console.log('fire input password');
+  const onChangeCode = evt => {
+    const field = evt.currentTarget;
+    dispatch(setForgotPasswordFormValue(field.name, field.value));
   };
 
-  const handleSignUp = event => {
+  const onChangePassword = evt => {
+    const field = evt.currentTarget;
+    dispatch(setForgotPasswordFormValue(field.name, field.value));
+  };
+
+  const handleSetPassword = event => {
     event.preventDefault();
-    console.log('fire submit form');
+    dispatch(setPassword(form));
   };
 
-  const handleToSignIn = () => {
+  const handleRouteSignIn = () => {
     history.replace({ pathname: '/login' });
   };
+
+  useEffect(() => () => dispatch(resetForgotPasswordFormValues()), [dispatch]);
+
+  //сделать нормальный редирект
+  if (updatePassword) {
+    history.replace({ pathname: '/login' });
+  }
 
   return (
     <main className={'authentication'}>
@@ -36,19 +58,18 @@ export const ResetPasswordPage = () => {
             {...passwordInputLogic}
             name={'password'}
             placeholder={'Введите новый пароль'}
-            value={''}
+            value={form.password}
             errorText={'Error message'}
-            onChange={handleChangePassword}
+            onChange={onChangePassword}
           />
           <Input
-            {...inputCodeLogic}
             placeholder={'Введите код из письма'}
-            name={'name'}
-            value={''}
-            onChange={handleChangeCode}
-            errorText={'Ошибка'}
+            name={'token'}
+            value={form.token}
+            errorText={'Error message'}
+            onChange={onChangeCode}
           />
-          <Button htmlType={'submit'} onClick={handleSignUp}>
+          <Button htmlType={'submit'} onClick={handleSetPassword}>
             Сохранить
           </Button>
         </Form>
@@ -56,7 +77,7 @@ export const ResetPasswordPage = () => {
           <AdditionalAction
             text={'Вспомнили пароль?'}
             buttonText={'Войти'}
-            onClick={handleToSignIn}
+            onClick={handleRouteSignIn}
           />
         </div>
       </section>
