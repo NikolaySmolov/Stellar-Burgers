@@ -4,6 +4,8 @@ import { Switch, Route, useRouteMatch, useLocation, NavLink } from 'react-router
 import { Form } from '../../components/form/form';
 import styles from './profile.module.css';
 import { useInputLogic } from '../../services/hooks';
+import { setlogout } from '../../services/api';
+import { deleteCookie, getCookie } from '../../services/utils';
 
 export const ProfilePage = () => {
   const nameInputLogic = useInputLogic({ initType: 'text', disabledState: true });
@@ -25,6 +27,10 @@ export const ProfilePage = () => {
       </p>
     );
   }, [location]);
+
+  const handleLogout = () => {
+    setlogout(getCookie('token')).then(() => deleteCookie('token'));
+  };
 
   const handleSubmit = evt => {
     evt.preventDefault();
@@ -69,7 +75,8 @@ export const ProfilePage = () => {
               to={{ pathname: '/logout' }}
               className={`${styles.navLink} text text_type_main-medium`}
               activeClassName={styles.navLinkActive}
-              exact>
+              exact
+              onClick={handleLogout}>
               Выход
             </NavLink>
           </li>

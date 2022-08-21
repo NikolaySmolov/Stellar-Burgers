@@ -9,6 +9,7 @@ import {
   resetForgotPasswordFormValues,
   setForgotPasswordFormValue,
 } from '../../services/actions/forgot-password';
+import { getCookie } from '../../services/utils';
 
 export const ForgotPasswordPage = () => {
   const { form, getCodeRequest, getCodeFailed, resetStep } = useSelector(
@@ -33,8 +34,6 @@ export const ForgotPasswordPage = () => {
   const handleRouteSignIn = () => {
     history.push({ pathname: '/login' });
   };
-
-  useEffect(() => () => dispatch(resetForgotPasswordFormValues()), [dispatch]);
 
   //сделать нормальный редирект
   if (resetStep) {
