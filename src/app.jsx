@@ -8,6 +8,7 @@ import {
   ResetPasswordPage,
   ProfilePage,
 } from './pages';
+import { ProtectedRoute } from './components/protected-route';
 
 export default function App() {
   return (
@@ -29,9 +30,9 @@ export default function App() {
         <Route path="/reset-password" exact={true}>
           <ResetPasswordPage />
         </Route>
-        <Route path="/profile">
+        <ProtectedRoute path="/profile">
           <ProfilePage />
-        </Route>
+        </ProtectedRoute>
       </Switch>
     </Router>
   );
