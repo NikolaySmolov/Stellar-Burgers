@@ -7,7 +7,6 @@ import styles from './login.module.css';
 import { useSelector, useDispatch } from 'react-redux';
 import { resetLoginFormValues, setLoginFormValue, signIn } from '../../services/actions/login';
 import { useEffect } from 'react';
-import { getCookie } from '../../services/utils';
 
 export const LoginPage = () => {
   const form = useSelector(store => store.login.form);

@@ -1,8 +1,7 @@
 import { API } from '../utils/constants';
-import { getCookie } from './utils';
 
 async function checkResponse(res) {
-  return res.ok ? await res.json() : Promise.reject(`res.ok: ${res.ok}, res.status: ${res.status}`);
+  return res.ok ? await res.json() : Promise.reject({ status: res.status });
 }
 
 export const requireIngredients = async () => {
@@ -11,12 +10,12 @@ export const requireIngredients = async () => {
   return checkResponse(res);
 };
 
-const setPostParams = bodyPaylod => ({
+const setPostParams = bodyPayload => ({
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',
   },
-  body: JSON.stringify(bodyPaylod),
+  body: JSON.stringify(bodyPayload),
 });
 
 export const requireOrder = async order => {
@@ -53,18 +52,19 @@ export const getRefreshToken = async token => {
 };
 
 export const getProfileInfo = async accessToken => {
-  const res = await fetch(`${API}//auth/user`, {
+  const res = await fetch(`${API}/auth/user`, {
     method: 'GET',
     headers: {
       'Content-type': 'application/json',
       Authorization: `Bearer ${accessToken}`,
     },
   });
+  debugger;
   return checkResponse(res);
 };
 
 export const setProfileInfo = async (accessToken, form) => {
-  const res = await fetch(`${API}//auth/user`, {
+  const res = await fetch(`${API}/auth/user`, {
     method: 'PATCH',
     headers: {
       'Content-type': 'application/json',
