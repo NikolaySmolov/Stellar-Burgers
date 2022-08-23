@@ -19,17 +19,7 @@ export const RegisterPage = () => {
   const history = useHistory();
   const location = useLocation();
 
-  const handleChangeName = evt => {
-    const field = evt.currentTarget;
-    dispatch(setRegisterFormValue(field.name, field.value));
-  };
-
-  const handleChangeEmail = evt => {
-    const field = evt.currentTarget;
-    dispatch(setRegisterFormValue(field.name, field.value));
-  };
-
-  const handleChangePassword = evt => {
+  const handleSetFieldValue = evt => {
     const field = evt.currentTarget;
     dispatch(setRegisterFormValue(field.name, field.value));
   };
@@ -59,7 +49,7 @@ export const RegisterPage = () => {
             placeholder={'Имя'}
             name={'name'}
             value={form.name}
-            onChange={handleChangeName}
+            onChange={handleSetFieldValue}
             errorText={'Ошибка'}
           />
           <Input
@@ -67,10 +57,10 @@ export const RegisterPage = () => {
             placeholder={'E-mail'}
             name={'email'}
             value={form.email}
-            onChange={handleChangeEmail}
+            onChange={handleSetFieldValue}
             errorText={'Ошибка'}
           />
-          <PasswordInput value={form.password} name={'password'} onChange={handleChangePassword} />
+          <PasswordInput value={form.password} name={'password'} onChange={handleSetFieldValue} />
           <Button htmlType={'submit'} onClick={handleSignUp}>
             Зарегистрироваться
           </Button>

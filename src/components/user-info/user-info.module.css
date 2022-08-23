@@ -1,0 +1,6 @@
+.formActions {
+  display: grid;
+  justify-self: end;
+  column-gap: 20px;
+  grid-auto-flow: column;
+}

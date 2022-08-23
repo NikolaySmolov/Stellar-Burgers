@@ -22,7 +22,7 @@ export const ForgotPasswordPage = () => {
   const history = useHistory();
   const location = useLocation();
 
-  const handleChangeEmail = evt => {
+  const handleSetFieldValue = evt => {
     const field = evt.currentTarget;
     dispatch(setForgotPasswordFormValue(field.name, field.value));
   };
@@ -54,7 +54,7 @@ export const ForgotPasswordPage = () => {
             placeholder={'Укажите e-mail'}
             name={'email'}
             value={form.email}
-            onChange={handleChangeEmail}
+            onChange={handleSetFieldValue}
             errorText={'Ошибка'}
           />
           <Button htmlType={'submit'} onClick={handleRestorePassword}>

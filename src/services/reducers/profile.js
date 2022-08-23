@@ -1,12 +1,12 @@
 import {
+  PROFILE_USER_INFO_REQUEST,
+  PROFILE_USER_INFO_SUCCESS,
   PROFILE_USER_INFO_FAILED,
   PROFILE_USER_INFO_FORM_FAILED,
   PROFILE_USER_INFO_FORM_RESET,
   PROFILE_USER_INFO_FORM_SUBMIT,
   PROFILE_USER_INFO_FORM_SUCCESS,
   PROFILE_USER_INFO_FORM_VALUE,
-  PROFILE_USER_INFO_REQUEST,
-  PROFILE_USER_INFO_SUCCESS,
   USER_ACCESS_FAILED,
   USER_ACCESS_REQUEST,
   USER_ACCESS_SUCCESS,
@@ -16,16 +16,17 @@ const initialState = {
   userInfo: {
     name: '',
     email: '',
-    getUserInfoRequest: false,
-    getUserInfoFailed: false,
   },
   userInfoForm: {
     name: '',
     email: '',
     password: '',
-    setUserInfoRequest: false,
-    setUserInfoFailed: false,
   },
+  userInfoLoaded: false,
+  getUserInfoRequest: false,
+  getUserInfoFailed: false,
+  setUserInfoRequest: false,
+  setUserInfoFailed: false,
   getUserAccessRequest: false,
   getUserAccessFailed: false,
 };
@@ -33,17 +34,33 @@ const initialState = {
 export const profileReducer = (state = initialState, action) => {
   switch (action.type) {
     case PROFILE_USER_INFO_REQUEST:
-      return { ...state, userInfo: { ...state.userInfo, getUserInfoRequest: true } };
+      return {
+        ...state,
+        userInfoLoaded: false,
+        getUserInfoRequest: true,
+        getUserInfoFailed: false,
+      };
     case PROFILE_USER_INFO_SUCCESS:
       return {
         ...state,
-        userInfo: { ...state.userInfo, getUserInfoRequest: false, ...action.payload },
+        userInfo: {
+          ...action.payload,
+        },
         userInfoForm: { ...state.userInfoForm, ...action.payload },
+        userInfoLoaded: true,
+        getUserInfoRequest: false,
+        getUserInfoFailed: false,
       };
     case PROFILE_USER_INFO_FAILED:
       return {
         ...state,
-        userInfo: { ...initialState.userInfo, getUserInfoRequest: false, getUserInfoFailed: true },
+        userInfo: {
+          ...initialState.userInfo,
+        },
+        userInfoForm: { ...initialState.userInfoForm },
+        userInfoLoaded: false,
+        getUserInfoRequest: false,
+        getUserInfoFailed: true,
       };
     case PROFILE_USER_INFO_FORM_VALUE:
       return { ...state, userInfoForm: { ...state.userInfoForm, ...action.payload } };

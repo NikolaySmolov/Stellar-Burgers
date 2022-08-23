@@ -18,12 +18,7 @@ export const LoginPage = () => {
   const location = useLocation();
   const match = useRouteMatch();
 
-  const handleChangeEmail = evt => {
-    const field = evt.currentTarget;
-    dispatch(setLoginFormValue(field.name, field.value));
-  };
-
-  const handleChangePassword = evt => {
+  const handleSetFieldValue = evt => {
     const field = evt.currentTarget;
     dispatch(setLoginFormValue(field.name, field.value));
   };
@@ -58,13 +53,13 @@ export const LoginPage = () => {
             placeholder={'E-mail'}
             name={'email'}
             value={store.form.email}
-            onChange={handleChangeEmail}
+            onChange={handleSetFieldValue}
             errorText={'Ошибка'}
           />
           <PasswordInput
             value={store.form.password}
             name={'password'}
-            onChange={handleChangePassword}
+            onChange={handleSetFieldValue}
           />
           <Button onClick={handleSignIn}>Войти</Button>
         </Form>

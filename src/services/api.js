@@ -59,7 +59,6 @@ export const getProfileInfo = async accessToken => {
       Authorization: `Bearer ${accessToken}`,
     },
   });
-  debugger;
   return checkResponse(res);
 };
 

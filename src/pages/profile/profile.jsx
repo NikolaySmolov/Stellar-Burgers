@@ -1,5 +1,5 @@
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useMemo } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import {
   Switch,
   Route,
@@ -15,11 +15,21 @@ import { useInputLogic } from '../../services/hooks';
 import { setlogout } from '../../services/api';
 import { deleteCookie, getCookie } from '../../services/utils';
 import { ACCESS_TOKEN, TOKEN } from '../../utils/constants';
+import { useDispatch, useSelector } from 'react-redux';
+import { getUserProfileInfo, setProfileUserInfoFormValue } from '../../services/actions/profile';
+import { UserInfo } from '../../components/user-info/user-info';
 
 export const ProfilePage = () => {
-  const nameInputLogic = useInputLogic({ initType: 'text', disabledState: true });
-  const emailInputLogic = useInputLogic({ initType: 'email', disabledState: true });
-  const passwordInputLogic = useInputLogic({ initType: 'password', disabledState: true });
+  const {
+    userInfoForm,
+    userInfoLoaded,
+    getUserInfoRequest,
+    getUserInfoFailed,
+    setUserInfoRequest,
+    setUserInfoFailed,
+  } = useSelector(store => store.profile);
+
+  const dispatch = useDispatch();
 
   const location = useLocation();
   const { path, url } = useRouteMatch();
@@ -37,6 +47,10 @@ export const ProfilePage = () => {
     );
   }, [location]);
 
+  // useEffect(() => {
+  //   dispatch(getUserProfileInfo(getCookie(ACCESS_TOKEN)));
+  // }, [dispatch]);
+
   const handleLogout = () => {
     setlogout(getCookie(TOKEN)).then(() => {
       deleteCookie(TOKEN);
@@ -44,21 +58,10 @@ export const ProfilePage = () => {
     });
   };
 
-  const handleSubmit = evt => {
-    evt.preventDefault();
-    console.log('submit form');
-  };
-
-  const handleReset = () => {
-    console.log('reset form');
-  };
-
   const contentStyle =
     location.pathname === '/profile'
       ? `${styles.contentProfile} mt-30`
       : `${styles.contentOrders} mt-10`;
-
-  const profileChanged = true;
 
   return (
     <main className={styles.main}>
@@ -95,46 +98,8 @@ export const ProfilePage = () => {
       </section>
       <section className={contentStyle}>
         <Switch>
-          <Route path={'/profile'} exact={true}>
-            <Form formName={'profile'}>
-              <Input
-                {...nameInputLogic}
-                name={'name'}
-                placeholder={'Имя'}
-                value={'Марк'}
-                errorText={'Error message'}
-              />
-              <Input
-                {...emailInputLogic}
-                name={'email'}
-                placeholder={'Логин'}
-                value={'mail@stellar.burgers'}
-                errorText={'Error message'}
-              />
-              <Input
-                {...passwordInputLogic}
-                name={'password'}
-                placeholder={'Пароль'}
-                value={''}
-                errorText={'Error message'}
-              />
-              <div className={styles.formActions}>
-                <Button
-                  type={'secondary'}
-                  htmlType={'reset'}
-                  disabled={!profileChanged}
-                  onClick={handleReset}>
-                  Отмена
-                </Button>
-                <Button
-                  type={'primary'}
-                  htmlType={'submit'}
-                  disabled={!profileChanged}
-                  onClick={handleSubmit}>
-                  Сохранить
-                </Button>
-              </div>
-            </Form>
+          <Route path={'/profile'} exact>
+            <UserInfo />
           </Route>
           <Route path={`${path}/orders`}>
             <div></div>

@@ -23,12 +23,7 @@ export const ResetPasswordPage = () => {
 
   const passwordInputLogic = useInputLogic({ initType: 'password', initIcon: 'ShowIcon' });
 
-  const onChangeCode = evt => {
-    const field = evt.currentTarget;
-    dispatch(setForgotPasswordFormValue(field.name, field.value));
-  };
-
-  const onChangePassword = evt => {
+  const handleSetFieldValue = evt => {
     const field = evt.currentTarget;
     dispatch(setForgotPasswordFormValue(field.name, field.value));
   };
@@ -65,14 +60,14 @@ export const ResetPasswordPage = () => {
             placeholder={'Введите новый пароль'}
             value={form.password}
             errorText={'Error message'}
-            onChange={onChangePassword}
+            onChange={handleSetFieldValue}
           />
           <Input
             placeholder={'Введите код из письма'}
             name={'token'}
             value={form.token}
             errorText={'Error message'}
-            onChange={onChangeCode}
+            onChange={handleSetFieldValue}
           />
           <Button htmlType={'submit'} onClick={handleSetPassword}>
             Сохранить

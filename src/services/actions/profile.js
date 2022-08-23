@@ -16,7 +16,26 @@ import {
 import { getProfileInfo, getRefreshToken, setProfileInfo } from '../api';
 import { setCookie } from '../utils';
 
-export const getProfileUserInfo = accessToken => dispatch => {
+export const getUserAccess = token => dispatch => {
+  dispatch({ type: USER_ACCESS_REQUEST });
+
+  getRefreshToken(token)
+    .then(data => {
+      const accessToken = data.accessToken.split('Bearer ')[1];
+      const token = data.refreshToken;
+
+      setCookie(ACCESS_TOKEN, accessToken, { 'max-age': 1200 });
+      setCookie(TOKEN, token);
+
+      dispatch({ type: USER_ACCESS_SUCCESS });
+    })
+    .catch(err => {
+      console.log(err);
+      dispatch({ type: USER_ACCESS_FAILED });
+    });
+};
+
+export const getUserProfileInfo = accessToken => dispatch => {
   dispatch({ type: PROFILE_USER_INFO_REQUEST });
 
   getProfileInfo(accessToken)
@@ -30,22 +49,6 @@ export const getProfileUserInfo = accessToken => dispatch => {
     });
 };
 
-export const getUserAccess = token => dispatch => {
-  dispatch({ type: USER_ACCESS_REQUEST });
-
-  getRefreshToken(token)
-    .then(({ accessToken, refreshToken }) => {
-      setCookie(ACCESS_TOKEN, accessToken, { 'max-age': 1200 });
-      setCookie(TOKEN, refreshToken);
-
-      dispatch({ type: USER_ACCESS_SUCCESS });
-    })
-    .catch(err => {
-      console.log(err);
-      dispatch({ type: USER_ACCESS_FAILED });
-    });
-};
-
 export const setProfileUserInfoFormValue = (field, value) => ({
   type: PROFILE_USER_INFO_FORM_VALUE,
   payload: { [field]: value },
@@ -55,7 +58,7 @@ export const setProfileUserInfoFormReset = () => ({
   type: PROFILE_USER_INFO_FORM_RESET,
 });
 
-export const setProfileUserInfo = (accessToken, form) => dispatch => {
+export const setUserProfileInfo = (accessToken, form) => dispatch => {
   dispatch({ type: PROFILE_USER_INFO_FORM_SUBMIT });
 
   setProfileInfo(accessToken, form)
