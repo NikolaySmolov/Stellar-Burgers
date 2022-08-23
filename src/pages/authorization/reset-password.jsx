@@ -10,9 +10,11 @@ import {
   setPassword,
 } from '../../services/actions/forgot-password';
 import { useEffect } from 'react';
+import { TOKEN } from '../../utils/constants';
+import { getCookie } from '../../services/utils';
 
 export const ResetPasswordPage = () => {
-  const { form, setPasswordRequest, setPasswordFailed, resetStep, setPasswordSuccess } =
+  const { form, setPasswordRequest, setPasswordFailed, setPasswordSuccess, getCodeSuccess } =
     useSelector(store => store.forgotPassword);
   const dispatch = useDispatch();
 
@@ -42,8 +44,10 @@ export const ResetPasswordPage = () => {
 
   useEffect(() => () => dispatch(resetForgotPasswordFormValues()), [dispatch]);
 
-  if (!resetStep) {
+  if (getCookie(TOKEN)) {
     return <Redirect to={{ pathname: '/' }} />;
+  } else if (!getCodeSuccess) {
+    return <Redirect to={{ pathname: '/forgot-password' }} />;
   } else if (setPasswordSuccess) {
     return <Redirect to={{ pathname: '/login' }} />;
   }

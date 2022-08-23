@@ -10,10 +10,10 @@ import {
   setForgotPasswordFormValue,
 } from '../../services/actions/forgot-password';
 import { getCookie } from '../../services/utils';
-import { TOKEN } from '../../utils/constants';
+import { FORGOT_PASSWORD_GET_CODE_SUCCESS, TOKEN } from '../../utils/constants';
 
 export const ForgotPasswordPage = () => {
-  const { form, getCodeRequest, getCodeFailed, resetStep } = useSelector(
+  const { form, getCodeRequest, getCodeFailed, getCodeSuccess } = useSelector(
     store => store.forgotPassword
   );
 
@@ -29,7 +29,6 @@ export const ForgotPasswordPage = () => {
 
   const handleRestorePassword = event => {
     event.preventDefault();
-
     dispatch(getResetCode(form));
   };
 
@@ -38,9 +37,9 @@ export const ForgotPasswordPage = () => {
   };
 
   if (getCookie(TOKEN)) {
-    return <Redirect to={location.state?.from || '/'} />;
-  } else if (resetStep) {
-    return <Redirect push to={{ pathname: '/reset-password', state: location.state }} />;
+    return <Redirect to={{ pathname: '/' }} />;
+  } else if (getCodeSuccess) {
+    return <Redirect push to={{ pathname: '/reset-password' }} />;
   }
 
   return (

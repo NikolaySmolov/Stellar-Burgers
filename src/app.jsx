@@ -15,19 +15,19 @@ export default function App() {
     <Router>
       <AppHeader />
       <Switch>
-        <Route path="/" exact={true}>
+        <Route path="/" exact>
           <ConstructorPage />
         </Route>
-        <Route path="/login" exact={true}>
+        <Route path="/login" exact>
           <LoginPage />
         </Route>
-        <Route path="/register" exact={true}>
+        <Route path="/register" exact>
           <RegisterPage />
         </Route>
-        <Route path="/forgot-password" exact={true}>
+        <Route path="/forgot-password" exact>
           <ForgotPasswordPage />
         </Route>
-        <Route path="/reset-password" exact={true}>
+        <Route path="/reset-password" exact>
           <ResetPasswordPage />
         </Route>
         <ProtectedRoute path="/profile">

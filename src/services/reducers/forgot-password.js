@@ -17,7 +17,7 @@ const initialState = {
   },
   getCodeRequest: false,
   getCodeFailed: false,
-  resetStep: false,
+  getCodeSuccess: false,
   setPasswordRequest: false,
   setPasswordFailed: false,
   setPasswordSuccess: false,
@@ -32,7 +32,7 @@ export const forgotPasswordReducer = (state = initialState, action) => {
     case FORGOT_PASSWORD_GET_CODE_SUBMIT:
       return { ...state, getCodeRequest: true };
     case FORGOT_PASSWORD_GET_CODE_SUCCESS:
-      return { ...state, getCodeRequest: false, resetStep: true };
+      return { ...state, getCodeRequest: false, getCodeSuccess: true };
     case FORGOT_PASSWORD_GET_CODE_FAILED:
       return { ...state, getCodeRequest: false, getCodeFailed: true };
     case FORGOT_PASSWORD_SET_PASSWORD_SUBMIT:
