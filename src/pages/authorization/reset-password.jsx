@@ -2,7 +2,7 @@ import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-component
 import { AdditionalAction } from '../../components/additional-action/additional-action';
 import { Form } from '../../components/form/form';
 import { useInputLogic } from '../../services/hooks';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation, Redirect } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   resetForgotPasswordFormValues,
@@ -12,12 +12,12 @@ import {
 import { useEffect } from 'react';
 
 export const ResetPasswordPage = () => {
-  const { form, setPasswordRequest, setPasswordFailed, updatePassword } = useSelector(
-    store => store.forgotPassword
-  );
+  const { form, setPasswordRequest, setPasswordFailed, resetStep, setPasswordSuccess } =
+    useSelector(store => store.forgotPassword);
   const dispatch = useDispatch();
 
   const history = useHistory();
+  const location = useLocation();
 
   const passwordInputLogic = useInputLogic({ initType: 'password', initIcon: 'ShowIcon' });
 
@@ -42,9 +42,10 @@ export const ResetPasswordPage = () => {
 
   useEffect(() => () => dispatch(resetForgotPasswordFormValues()), [dispatch]);
 
-  //сделать нормальный редирект
-  if (updatePassword) {
-    history.replace({ pathname: '/login' });
+  if (!resetStep) {
+    return <Redirect to={{ pathname: '/' }} />;
+  } else if (setPasswordSuccess) {
+    return <Redirect to={{ pathname: '/login' }} />;
   }
 
   return (

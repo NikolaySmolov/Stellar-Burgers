@@ -1,41 +1,42 @@
-import { useEffect, useState } from 'react';
 import { Route, Redirect } from 'react-router-dom';
-import { getRefreshToken } from '../services/api';
-import { getCookie, setCookie } from '../services/utils';
-import { ACCESS_TOKEN, TOKEN } from '../utils/constants';
+import { useSelector, useDispatch } from 'react-redux';
+import { useEffect } from 'react';
+import { getCookie } from '../services/utils';
+import { ACCESS_TOKEN, TOKEN, USER_ACCESS_FAILED, USER_ACCESS_SUCCESS } from '../utils/constants';
+import { getUserAccess } from '../services/actions/profile';
 
 export const ProtectedRoute = ({ children, ...props }) => {
-  const [authStateLoaded, setAuthState] = useState(false);
-  const [authFailed, setAuthFailed] = useState(false);
+  const { getUserAccessRequest, getUserAccessFailed } = useSelector(store => store.profile);
+  const dispatch = useDispatch();
+
+  const accessExpired = getCookie(ACCESS_TOKEN) ? false : true;
 
   useEffect(() => {
-    const hasAccess = Boolean(getCookie(ACCESS_TOKEN));
-    const token = getCookie(TOKEN);
-
-    if (!hasAccess && token) {
-      getRefreshToken(token)
-        .then(({ accessToken, refreshToken }) => {
-          setCookie(ACCESS_TOKEN, accessToken, { 'max-age': 1200 });
-          setCookie(TOKEN, refreshToken);
-        })
-        .catch(() => {
-          setAuthFailed(() => true);
-        });
-    } else if (!token) {
-      setAuthFailed(() => true);
+    if (getCookie(ACCESS_TOKEN)) {
+      dispatch({ type: USER_ACCESS_SUCCESS });
+    } else if (getCookie(TOKEN)) {
+      dispatch(getUserAccess(getCookie(TOKEN)));
+    } else {
+      dispatch({ type: USER_ACCESS_FAILED });
     }
+  }, [dispatch]);
 
-    setAuthState(true);
-  }, [authStateLoaded, authFailed]);
-
-  if (!authStateLoaded) {
+  if (getUserAccessRequest) {
+    return <h1>LOADER</h1>;
+  } else if (accessExpired && !getUserAccessFailed) {
     return null;
   }
-  debugger;
+
   return (
     <Route
       {...props}
-      render={renderProps => (authFailed ? <Redirect to={{ pathname: '/login' }} /> : children)}
+      render={({ location }) =>
+        getUserAccessFailed ? (
+          <Redirect to={{ pathname: '/login', state: { from: location } }} />
+        ) : (
+          children
+        )
+      }
     />
   );
 };

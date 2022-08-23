@@ -20,7 +20,7 @@ const initialState = {
   resetStep: false,
   setPasswordRequest: false,
   setPasswordFailed: false,
-  updatePassword: false,
+  setPasswordSuccess: false,
 };
 
 export const forgotPasswordReducer = (state = initialState, action) => {
@@ -38,7 +38,7 @@ export const forgotPasswordReducer = (state = initialState, action) => {
     case FORGOT_PASSWORD_SET_PASSWORD_SUBMIT:
       return { ...state, setPasswordRequest: true };
     case FORGOT_PASSWORD_SET_PASSWORD_SUCCESS:
-      return { ...state, setPasswordRequest: false, updatePassword: true };
+      return { ...state, setPasswordRequest: false, setPasswordSuccess: true };
     case FORGOT_PASSWORD_SET_PASSWORD_FAILED:
       return { ...state, setPasswordRequest: false, setPasswordFailed: true };
     default:

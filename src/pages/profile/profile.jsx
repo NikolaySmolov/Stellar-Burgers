@@ -29,7 +29,7 @@ export const ProfilePage = () => {
   }, [location]);
 
   const handleLogout = () => {
-    setlogout(getCookie('token')).then(() => deleteCookie('token'));
+    setlogout(getCookie('token')).then(() => deleteCookie('token')); //переделать
   };
 
   const handleSubmit = evt => {

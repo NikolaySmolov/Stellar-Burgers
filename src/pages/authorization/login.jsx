@@ -1,18 +1,22 @@
 import { Button, Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import { AdditionalAction } from '../../components/additional-action/additional-action';
 import { Form } from '../../components/form/form';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation, useRouteMatch, Redirect } from 'react-router-dom';
 //eslint-disable-next-line
 import styles from './login.module.css';
 import { useSelector, useDispatch } from 'react-redux';
 import { resetLoginFormValues, setLoginFormValue, signIn } from '../../services/actions/login';
 import { useEffect } from 'react';
+import { getCookie } from '../../services/utils';
+import { TOKEN } from '../../utils/constants';
 
 export const LoginPage = () => {
-  const form = useSelector(store => store.login.form);
+  const store = useSelector(store => store.login);
   const dispatch = useDispatch();
 
   const history = useHistory();
+  const location = useLocation();
+  const match = useRouteMatch();
 
   const handleChangeEmail = evt => {
     const field = evt.currentTarget;
@@ -27,18 +31,22 @@ export const LoginPage = () => {
   const handleSignIn = evt => {
     evt.preventDefault();
 
-    dispatch(signIn(form));
+    dispatch(signIn(store.form));
   };
 
   const handleRouteSignUp = () => {
-    history.push({ pathname: '/register' });
+    history.push({ pathname: '/register', state: location.state });
   };
 
   const handleRouteRestorePassword = () => {
-    history.push({ pathname: '/forgot-password' });
+    history.push({ pathname: '/forgot-password', state: location.state });
   };
 
   useEffect(() => () => dispatch(resetLoginFormValues()), [dispatch]);
+
+  if (getCookie(TOKEN)) {
+    return <Redirect to={location.state?.from || '/'} />;
+  }
 
   return (
     <main className={'authentication'}>
@@ -49,11 +57,15 @@ export const LoginPage = () => {
             type={'email'}
             placeholder={'E-mail'}
             name={'email'}
-            value={form.email}
+            value={store.form.email}
             onChange={handleChangeEmail}
             errorText={'Ошибка'}
           />
-          <PasswordInput value={form.password} name={'password'} onChange={handleChangePassword} />
+          <PasswordInput
+            value={store.form.password}
+            name={'password'}
+            onChange={handleChangePassword}
+          />
           <Button onClick={handleSignIn}>Войти</Button>
         </Form>
         <div className={'authentication__additional-actions mt-20'}>

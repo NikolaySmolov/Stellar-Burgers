@@ -2,9 +2,6 @@ import PropTypes from 'prop-types';
 
 export const API = 'https://norma.nomoreparties.space/api';
 
-export const ACCESS_TOKEN = 'accessToken';
-export const TOKEN = 'token';
-
 export const ingredientPropTypes = PropTypes.shape({
   _id: PropTypes.string,
   name: PropTypes.string,

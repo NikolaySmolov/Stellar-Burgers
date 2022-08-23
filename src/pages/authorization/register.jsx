@@ -1,7 +1,7 @@
 import { Button, Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import { AdditionalAction } from '../../components/additional-action/additional-action';
 import { Form } from '../../components/form/form';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation, Redirect } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   resetRegisterFormValue,
@@ -9,12 +9,15 @@ import {
   signUp,
 } from '../../services/actions/register';
 import { useEffect } from 'react';
+import { getCookie } from '../../services/utils';
+import { TOKEN } from '../../utils/constants';
 
 export const RegisterPage = () => {
   const form = useSelector(store => store.registration.form);
   const dispatch = useDispatch();
 
   const history = useHistory();
+  const location = useLocation();
 
   const handleChangeName = evt => {
     const field = evt.currentTarget;
@@ -37,10 +40,14 @@ export const RegisterPage = () => {
   };
 
   const handleRouteSignIn = () => {
-    history.push({ pathname: '/login' });
+    history.push({ pathname: '/login', state: location.state });
   };
 
   useEffect(() => () => dispatch(resetRegisterFormValue()), [dispatch]);
+
+  if (getCookie(TOKEN)) {
+    return <Redirect to={location.state?.from || '/'} />;
+  }
 
   return (
     <main className={'authentication'}>
