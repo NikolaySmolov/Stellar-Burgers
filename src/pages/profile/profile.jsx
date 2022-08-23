@@ -1,11 +1,20 @@
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useMemo } from 'react';
-import { Switch, Route, useRouteMatch, useLocation, NavLink } from 'react-router-dom';
+import {
+  Switch,
+  Route,
+  useRouteMatch,
+  useLocation,
+  useHistory,
+  NavLink,
+  Link,
+} from 'react-router-dom';
 import { Form } from '../../components/form/form';
 import styles from './profile.module.css';
 import { useInputLogic } from '../../services/hooks';
 import { setlogout } from '../../services/api';
 import { deleteCookie, getCookie } from '../../services/utils';
+import { ACCESS_TOKEN, TOKEN } from '../../utils/constants';
 
 export const ProfilePage = () => {
   const nameInputLogic = useInputLogic({ initType: 'text', disabledState: true });
@@ -29,7 +38,10 @@ export const ProfilePage = () => {
   }, [location]);
 
   const handleLogout = () => {
-    setlogout(getCookie('token')).then(() => deleteCookie('token')); //переделать
+    setlogout(getCookie(TOKEN)).then(() => {
+      deleteCookie(TOKEN);
+      deleteCookie(ACCESS_TOKEN);
+    });
   };
 
   const handleSubmit = evt => {
@@ -71,14 +83,12 @@ export const ProfilePage = () => {
             </NavLink>
           </li>
           <li className={styles.navLinkWrapper}>
-            <NavLink
-              to={{ pathname: '/logout' }}
+            <Link
+              to={{ pathname: '/' }}
               className={`${styles.navLink} text text_type_main-medium`}
-              activeClassName={styles.navLinkActive}
-              exact
               onClick={handleLogout}>
               Выход
-            </NavLink>
+            </Link>
           </li>
         </ul>
         {sidebarCaption}
