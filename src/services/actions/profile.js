@@ -12,9 +12,11 @@ import {
   TOKEN,
   USER_ACCESS_SUCCESS,
   PROFILE_USER_INFO_FORM_FAILED,
+  USER_LOGOUT_REQUEST,
+  USER_LOGOUT_SUCCESS,
 } from '../../utils/constants';
-import { getProfileInfo, getRefreshToken, setProfileInfo } from '../api';
-import { setCookie } from '../utils';
+import { getProfileInfo, getRefreshToken, setLogout, setProfileInfo } from '../api';
+import { deleteCookie, setCookie } from '../utils';
 
 export const getUserAccess = token => dispatch => {
   dispatch({ type: USER_ACCESS_REQUEST });
@@ -64,7 +66,22 @@ export const setUserProfileInfo = (accessToken, form) => dispatch => {
   setProfileInfo(accessToken, form)
     .then(({ user }) => dispatch({ type: PROFILE_USER_INFO_FORM_SUCCESS, payload: user }))
     .catch(err => {
+      if (err.status === 403) {
+        dispatch({ type: USER_ACCESS_FAILED });
+      }
       dispatch({ type: PROFILE_USER_INFO_FORM_FAILED });
       console.log(err);
     });
+};
+
+export const setUserLogout = token => dispatch => {
+  dispatch({ type: USER_LOGOUT_REQUEST });
+
+  setLogout(token)
+    .then(() => {
+      dispatch({ type: USER_LOGOUT_SUCCESS });
+      deleteCookie(TOKEN);
+      deleteCookie(ACCESS_TOKEN);
+    })
+    .catch(err => console.log(err));
 };

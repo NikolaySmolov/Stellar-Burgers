@@ -74,7 +74,7 @@ export const setProfileInfo = async (accessToken, form) => {
   return checkResponse(res);
 };
 
-export const setlogout = async token => {
+export const setLogout = async token => {
   const res = await fetch(`${API}/auth/logout`, setPostParams({ token }));
   return checkResponse(res);
 };

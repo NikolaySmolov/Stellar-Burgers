@@ -12,7 +12,7 @@ export const useInputLogic = ({ initType, initIcon = 'EditIcon', disabledState =
   const validateField = fieldValue => {
     switch (initType) {
       case 'password':
-        if (fieldValue.length < 6) {
+        if (fieldValue.length < 6 && !disabled) {
           setError(true);
         }
         break;
@@ -30,6 +30,7 @@ export const useInputLogic = ({ initType, initIcon = 'EditIcon', disabledState =
 
     if (initType === 'password' && disabled) {
       setIcon('ShowIcon');
+      inputRef.current.value = '';
     } else if (initType === 'password' && !disabled && !visible) {
       setIcon('HideIcon');
       setVisible(true);
@@ -53,8 +54,16 @@ export const useInputLogic = ({ initType, initIcon = 'EditIcon', disabledState =
       setIcon('ShowIcon');
       setVisible(false);
     }
-    validateField(evt.target.value);
+    setTimeout(() => {
+      validateField(evt.target.value);
+    }, 100);
   };
 
-  return { icon, ref: inputRef, onIconClick, onBlur, onFocus, error, type, disabled };
+  const fieldReset = () => {
+    setError(false);
+    setDisabled(true);
+    setIcon(initIcon);
+  };
+
+  return { icon, ref: inputRef, onIconClick, onBlur, onFocus, error, type, disabled, fieldReset };
 };

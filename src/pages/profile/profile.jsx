@@ -1,5 +1,4 @@
-import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useCallback, useEffect, useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import {
   Switch,
   Route,
@@ -9,14 +8,16 @@ import {
   NavLink,
   Link,
 } from 'react-router-dom';
-import { Form } from '../../components/form/form';
 import styles from './profile.module.css';
-import { useInputLogic } from '../../services/hooks';
-import { setlogout } from '../../services/api';
 import { deleteCookie, getCookie } from '../../services/utils';
 import { ACCESS_TOKEN, TOKEN } from '../../utils/constants';
 import { useDispatch, useSelector } from 'react-redux';
-import { getUserProfileInfo, setProfileUserInfoFormValue } from '../../services/actions/profile';
+import {
+  getUserAccess,
+  getUserProfileInfo,
+  setProfileUserInfoFormValue,
+  setUserLogout,
+} from '../../services/actions/profile';
 import { UserInfo } from '../../components/user-info/user-info';
 
 export const ProfilePage = () => {
@@ -27,6 +28,8 @@ export const ProfilePage = () => {
     getUserInfoFailed,
     setUserInfoRequest,
     setUserInfoFailed,
+    setUserLogoutRequest,
+    setUserLogoutFailed,
   } = useSelector(store => store.profile);
 
   const dispatch = useDispatch();
@@ -47,21 +50,27 @@ export const ProfilePage = () => {
     );
   }, [location]);
 
-  // useEffect(() => {
-  //   dispatch(getUserProfileInfo(getCookie(ACCESS_TOKEN)));
-  // }, [dispatch]);
+  useEffect(() => {
+    return () => {
+      if (getCookie(TOKEN)) {
+        // пока асинхронный выход, успевает получить новый токен
+        dispatch(getUserAccess(getCookie(TOKEN)));
+      }
+    };
+  }, [dispatch]);
 
   const handleLogout = () => {
-    setlogout(getCookie(TOKEN)).then(() => {
-      deleteCookie(TOKEN);
-      deleteCookie(ACCESS_TOKEN);
-    });
+    dispatch(setUserLogout(getCookie(TOKEN)));
   };
 
   const contentStyle =
     location.pathname === '/profile'
       ? `${styles.contentProfile} mt-30`
       : `${styles.contentOrders} mt-10`;
+
+  if (setUserLogoutRequest) {
+    return null;
+  }
 
   return (
     <main className={styles.main}>
