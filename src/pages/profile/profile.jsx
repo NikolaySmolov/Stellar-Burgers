@@ -65,7 +65,7 @@ export const ProfilePage = () => {
           </li>
           <li className={styles.navLinkWrapper}>
             <Link
-              to={{ pathname: '/' }}
+              to={{ pathname: '/login', state: { from: location } }}
               className={`${styles.navLink} text text_type_main-medium`}
               onClick={handleLogout}>
               Выход
