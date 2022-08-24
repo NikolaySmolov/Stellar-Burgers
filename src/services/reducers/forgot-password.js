@@ -28,7 +28,7 @@ export const forgotPasswordReducer = (state = initialState, action) => {
     case FORGOT_PASSWORD_FORM_VALUE:
       return { ...state, form: { ...state.form, ...action.payload } };
     case FORGOT_PASSWORD_FORM_RESET_VALUES:
-      return { ...initialState };
+      return { ...initialState, getCodeSuccess: state.getCodeSuccess };
     case FORGOT_PASSWORD_GET_CODE_SUBMIT:
       return { ...state, getCodeRequest: true };
     case FORGOT_PASSWORD_GET_CODE_SUCCESS:

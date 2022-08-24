@@ -13,7 +13,7 @@ import { getCookie } from '../../services/utils';
 import { TOKEN } from '../../utils/constants';
 
 export const RegisterPage = () => {
-  const form = useSelector(store => store.registration.form);
+  const { form, registerRequest, registerFailed } = useSelector(store => store.registration);
   const dispatch = useDispatch();
 
   const history = useHistory();

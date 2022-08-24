@@ -10,17 +10,16 @@ import {
   setForgotPasswordFormValue,
 } from '../../services/actions/forgot-password';
 import { getCookie } from '../../services/utils';
-import { FORGOT_PASSWORD_GET_CODE_SUCCESS, TOKEN } from '../../utils/constants';
+import { TOKEN } from '../../utils/constants';
 
 export const ForgotPasswordPage = () => {
-  const { form, getCodeRequest, getCodeFailed, getCodeSuccess } = useSelector(
+  const { form, getCodeRequest, getCodeSuccess, getCodeFailed } = useSelector(
     store => store.forgotPassword
   );
 
   const dispatch = useDispatch();
 
   const history = useHistory();
-  const location = useLocation();
 
   const handleSetFieldValue = evt => {
     const field = evt.currentTarget;
@@ -35,6 +34,8 @@ export const ForgotPasswordPage = () => {
   const handleRouteSignIn = () => {
     history.push({ pathname: '/login' });
   };
+
+  useEffect(() => () => dispatch(resetForgotPasswordFormValues()), [dispatch]);
 
   if (getCookie(TOKEN)) {
     return <Redirect to={{ pathname: '/' }} />;

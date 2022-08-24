@@ -1,7 +1,7 @@
 import { Button, Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import { AdditionalAction } from '../../components/additional-action/additional-action';
 import { Form } from '../../components/form/form';
-import { useHistory, useLocation, useRouteMatch, Redirect } from 'react-router-dom';
+import { useHistory, useLocation, Redirect } from 'react-router-dom';
 //eslint-disable-next-line
 import styles from './login.module.css';
 import { useSelector, useDispatch } from 'react-redux';
@@ -11,12 +11,11 @@ import { getCookie } from '../../services/utils';
 import { TOKEN } from '../../utils/constants';
 
 export const LoginPage = () => {
-  const store = useSelector(store => store.login);
+  const { form, loginRequest, loginFailed } = useSelector(store => store.login);
   const dispatch = useDispatch();
 
   const history = useHistory();
   const location = useLocation();
-  const match = useRouteMatch();
 
   const handleSetFieldValue = evt => {
     const field = evt.currentTarget;
@@ -26,7 +25,7 @@ export const LoginPage = () => {
   const handleSignIn = evt => {
     evt.preventDefault();
 
-    dispatch(signIn(store.form));
+    dispatch(signIn(form));
   };
 
   const handleRouteSignUp = () => {
@@ -52,15 +51,11 @@ export const LoginPage = () => {
             type={'email'}
             placeholder={'E-mail'}
             name={'email'}
-            value={store.form.email}
+            value={form.email}
             onChange={handleSetFieldValue}
             errorText={'Ошибка'}
           />
-          <PasswordInput
-            value={store.form.password}
-            name={'password'}
-            onChange={handleSetFieldValue}
-          />
+          <PasswordInput value={form.password} name={'password'} onChange={handleSetFieldValue} />
           <Button onClick={handleSignIn}>Войти</Button>
         </Form>
         <div className={'authentication__additional-actions mt-20'}>
