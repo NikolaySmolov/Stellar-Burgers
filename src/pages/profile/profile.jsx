@@ -1,36 +1,14 @@
-import { useEffect, useMemo } from 'react';
-import {
-  Switch,
-  Route,
-  useRouteMatch,
-  useLocation,
-  useHistory,
-  NavLink,
-  Link,
-} from 'react-router-dom';
+import { useMemo } from 'react';
+import { Switch, Route, useRouteMatch, useLocation, NavLink, Link } from 'react-router-dom';
 import styles from './profile.module.css';
-import { deleteCookie, getCookie } from '../../services/utils';
-import { ACCESS_TOKEN, TOKEN } from '../../utils/constants';
+import { getCookie } from '../../services/utils';
+import { TOKEN } from '../../utils/constants';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  getUserAccess,
-  getUserProfileInfo,
-  setProfileUserInfoFormValue,
-  setUserLogout,
-} from '../../services/actions/profile';
+import { setUserLogout } from '../../services/actions/profile';
 import { UserInfo } from '../../components/user-info/user-info';
 
 export const ProfilePage = () => {
-  const {
-    userInfoForm,
-    userInfoLoaded,
-    getUserInfoRequest,
-    getUserInfoFailed,
-    setUserInfoRequest,
-    setUserInfoFailed,
-    setUserLogoutRequest,
-    setUserLogoutFailed,
-  } = useSelector(store => store.profile);
+  const { setUserLogoutRequest, setUserLogoutFailed } = useSelector(store => store.profile);
 
   const dispatch = useDispatch();
 
@@ -49,15 +27,6 @@ export const ProfilePage = () => {
       </p>
     );
   }, [location]);
-
-  useEffect(() => {
-    return () => {
-      if (getCookie(TOKEN)) {
-        // пока асинхронный выход, успевает получить новый токен
-        dispatch(getUserAccess(getCookie(TOKEN)));
-      }
-    };
-  }, [dispatch]);
 
   const handleLogout = () => {
     dispatch(setUserLogout(getCookie(TOKEN)));

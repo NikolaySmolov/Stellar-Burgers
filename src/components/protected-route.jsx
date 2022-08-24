@@ -19,7 +19,7 @@ export const ProtectedRoute = ({ children, ...props }) => {
     } else {
       dispatch({ type: USER_ACCESS_FAILED });
     }
-  }, [dispatch]);
+  }, [dispatch, accessExpired]);
 
   if (getUserAccessRequest) {
     return <h1>LOADER</h1>;
