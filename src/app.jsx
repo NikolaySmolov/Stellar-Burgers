@@ -1,6 +1,5 @@
 import { AppHeader } from './components/app-header/app-header';
 import { ConstructorPage } from './pages/constructor/constructor';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import {
   LoginPage,
   RegisterPage,
@@ -8,14 +7,18 @@ import {
   ResetPasswordPage,
   ProfilePage,
 } from './pages';
+import { Route, Switch, useLocation } from 'react-router-dom';
 import { ProtectedRoute } from './components/protected-route';
 import { IngredientPage } from './pages/ingredient/ingredient';
 
 export default function App() {
+  const location = useLocation();
+  const background = location.state?.background;
+
   return (
-    <Router>
+    <>
       <AppHeader />
-      <Switch>
+      <Switch location={background || location}>
         <Route path="/" exact>
           <ConstructorPage />
         </Route>
@@ -38,6 +41,6 @@ export default function App() {
           <ProfilePage />
         </ProtectedRoute>
       </Switch>
-    </Router>
+    </>
   );
 }

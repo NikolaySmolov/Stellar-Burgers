@@ -6,9 +6,11 @@ import { ADD, ingredientPropTypes } from '../../utils/constants';
 import { useDispatch } from 'react-redux';
 import { OPEN_INGREDIENT_DETAILS } from '../../services/actions/burger';
 import { useDrag } from 'react-dnd';
+import { useHistory } from 'react-router-dom';
 
 export const Ingredient = React.memo(props => {
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const [{ isDrag }, dragRef] = useDrag({
     type: ADD,
@@ -20,6 +22,10 @@ export const Ingredient = React.memo(props => {
 
   const handleShowDetails = () => {
     dispatch({ type: OPEN_INGREDIENT_DETAILS, ingredient: props });
+    history.push({
+      pathname: `/ingredients/${props._id}`,
+      state: { background: history.location },
+    });
   };
 
   return (

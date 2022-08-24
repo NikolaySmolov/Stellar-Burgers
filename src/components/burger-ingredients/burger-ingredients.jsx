@@ -6,6 +6,7 @@ import Modal from '../modal/modal';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import { useSelector, useDispatch } from 'react-redux';
 import { CLOSE_INGREDIENT_DETAILS } from '../../services/actions/burger';
+import { Route, useHistory } from 'react-router-dom';
 
 export default function BurgerIngredients() {
   const [currentTab, setCurrentTab] = React.useState('buns');
@@ -14,14 +15,19 @@ export default function BurgerIngredients() {
 
   const dispatch = useDispatch();
 
+  const history = useHistory();
+
   const handleCloseModal = () => {
     dispatch({ type: CLOSE_INGREDIENT_DETAILS });
+    history.goBack();
   };
 
   const modal = showModal ? (
-    <Modal onClose={handleCloseModal}>
-      <IngredientDetails {...ingredientDetails} />
-    </Modal>
+    <Route to="/ingredients/:id">
+      <Modal onClose={handleCloseModal}>
+        <IngredientDetails {...ingredientDetails} />
+      </Modal>
+    </Route>
   ) : null;
 
   const bunHeading = React.useRef(null);
