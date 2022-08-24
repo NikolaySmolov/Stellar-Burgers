@@ -9,6 +9,7 @@ import {
   ProfilePage,
 } from './pages';
 import { ProtectedRoute } from './components/protected-route';
+import { IngredientPage } from './pages/ingredient/ingredient';
 
 export default function App() {
   return (
@@ -17,6 +18,9 @@ export default function App() {
       <Switch>
         <Route path="/" exact>
           <ConstructorPage />
+        </Route>
+        <Route path="/ingredients/:id">
+          <IngredientPage />
         </Route>
         <Route path="/login" exact>
           <LoginPage />

@@ -1,0 +1,14 @@
+.content {
+  margin: 0 auto;
+}
+
+.detailsWrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 80px;
+}
+
+.detailsWrapper h2 {
+  padding-right: 0;
+  margin-right: 0;
+}

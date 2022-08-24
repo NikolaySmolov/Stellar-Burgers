@@ -9,16 +9,24 @@ import ModalError from '../../components/modal-error/modal-error';
 import { getIngredients } from '../../services/actions/burger';
 
 export const ConstructorPage = () => {
-  const { ingredientsRequest, ingredientsFailed } = useSelector(store => store.burger);
+  const { ingredientsLoaded, ingredientsRequest, ingredientsFailed } = useSelector(
+    store => store.burger
+  );
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getIngredients());
-  }, [dispatch]);
+    if (!ingredientsLoaded) {
+      dispatch(getIngredients());
+    }
+  }, [dispatch, ingredientsLoaded]);
 
-  return ingredientsRequest ? null : ingredientsFailed ? (
-    <ModalError />
-  ) : (
+  if (!ingredientsLoaded || ingredientsRequest) {
+    return null;
+  } else if (ingredientsFailed) {
+    return <ModalError />;
+  }
+
+  return (
     <main className={styles.content}>
       <DndProvider backend={HTML5Backend}>
         <BurgerIngredients />
