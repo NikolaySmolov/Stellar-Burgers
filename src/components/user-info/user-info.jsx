@@ -111,14 +111,16 @@ export const UserInfo = () => {
         onChange={handleSetFieldValue}
         errorText={'Error message'}
       />
-      <div className={styles.formActions}>
-        <Button type={'secondary'} htmlType={'reset'} disabled={!someEnabled} onClick={handleReset}>
-          Отмена
-        </Button>
-        <Button type={'primary'} htmlType={'submit'} disabled={!canSubmit} onClick={handleSubmit}>
-          Сохранить
-        </Button>
-      </div>
+      {someEnabled ? (
+        <div className={styles.formActions}>
+          <Button type={'secondary'} htmlType={'reset'} disabled={false} onClick={handleReset}>
+            Отмена
+          </Button>
+          <Button type={'primary'} htmlType={'submit'} disabled={!canSubmit} onClick={handleSubmit}>
+            Сохранить
+          </Button>
+        </div>
+      ) : null}
     </Form>
   );
 };

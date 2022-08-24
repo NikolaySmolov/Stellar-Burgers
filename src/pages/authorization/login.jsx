@@ -56,7 +56,9 @@ export const LoginPage = () => {
             errorText={'Ошибка'}
           />
           <PasswordInput value={form.password} name={'password'} onChange={handleSetFieldValue} />
-          <Button onClick={handleSignIn}>Войти</Button>
+          <Button htmlType={'submit'} onClick={handleSignIn}>
+            Войти
+          </Button>
         </Form>
         <div className={'authentication__additional-actions mt-20'}>
           <AdditionalAction
