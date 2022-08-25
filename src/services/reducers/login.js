@@ -18,7 +18,8 @@ const initialState = {
 export const loginReducer = (state = initialState, action) => {
   switch (action.type) {
     case LOGIN_FORM_SET_VALUE:
-      return { ...state, form: { ...state.form, ...action.payload } };
+      const loginFailed = state.loginFailed && false;
+      return { ...state, loginFailed, form: { ...state.form, ...action.payload } };
     case LOGIN_FORM_RESET_VALUES:
       return { ...initialState };
     case LOGIN_FORM_SUBMIT:

@@ -39,6 +39,12 @@ export const ProfilePage = () => {
 
   if (setUserLogoutRequest) {
     return null;
+  } else if (setUserLogoutFailed) {
+    return (
+      <h1 className={'text text_type_main-default text_color_inactive pt-20'}>
+        Что-то пошло не так... Попробуйте обновить страницу
+      </h1>
+    );
   }
 
   return (

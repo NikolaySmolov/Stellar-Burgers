@@ -19,6 +19,10 @@ export const resetRegisterFormValue = () => ({
   type: REGISTER_FORM_RESET_VALUES,
 });
 
+export const setRegisterFormFailed = () => ({
+  type: REGISTER_FORM_FAILED,
+});
+
 export const signUp = form => dispatch => {
   dispatch({ type: REGISTER_FORM_SUBMIT });
 
@@ -32,5 +36,11 @@ export const signUp = form => dispatch => {
 
       dispatch({ type: REGISTER_FORM_SUCCESS });
     })
-    .catch(() => dispatch({ type: REGISTER_FORM_FAILED }));
+    .catch(err => {
+      if (err.status === 403) {
+        dispatch({ type: REGISTER_FORM_FAILED, payload: 'Пользователь уже зарегистрирован' });
+      } else {
+        dispatch({ type: REGISTER_FORM_FAILED, payload: null });
+      }
+    });
 };

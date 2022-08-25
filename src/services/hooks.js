@@ -12,13 +12,17 @@ export const useInputLogic = ({ initType, initIcon = 'EditIcon', disabledState =
   const validateField = fieldValue => {
     switch (initType) {
       case 'password':
-        if (fieldValue.length < 6 && !disabled) {
+        if (fieldValue.length > 0 && fieldValue.length < 6 && !disabled) {
           setError(true);
         }
         break;
-      case 'text':
-        break;
       case 'email':
+        if (
+          !fieldValue.match(/^[A-Z0-9._%+-]+@[A-Z0-9-]+.+.[A-Z]{2,4}$/i) &&
+          fieldValue.length > 0
+        ) {
+          setError(true);
+        }
         break;
       default:
         return;
