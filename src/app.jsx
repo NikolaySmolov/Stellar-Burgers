@@ -10,6 +10,7 @@ import {
 import { Route, Switch, useLocation } from 'react-router-dom';
 import { ProtectedRoute } from './components/protected-route';
 import { IngredientPage } from './pages/ingredient/ingredient';
+import { NotFoundPage } from './pages/not-found';
 
 export default function App() {
   const location = useLocation();
@@ -40,6 +41,9 @@ export default function App() {
         <ProtectedRoute path="/profile">
           <ProfilePage />
         </ProtectedRoute>
+        <Route>
+          <NotFoundPage />
+        </Route>
       </Switch>
     </>
   );
