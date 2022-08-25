@@ -4,6 +4,8 @@ import { useEffect } from 'react';
 import { getCookie } from '../services/utils';
 import { ACCESS_TOKEN, TOKEN, USER_ACCESS_FAILED, USER_ACCESS_SUCCESS } from '../utils/constants';
 import { getUserAccess } from '../services/actions/profile';
+import PropTypes from 'prop-types';
+import { Loader } from './loader/loader';
 
 export const ProtectedRoute = ({ children, ...props }) => {
   const { getUserAccessRequest, getUserAccessFailed } = useSelector(store => store.profile);
@@ -22,7 +24,11 @@ export const ProtectedRoute = ({ children, ...props }) => {
   }, [dispatch, accessExpired]);
 
   if (getUserAccessRequest) {
-    return <h1>LOADER</h1>;
+    return (
+      <div>
+        <Loader />
+      </div>
+    );
   } else if (accessExpired && !getUserAccessFailed) {
     return null;
   }
@@ -39,4 +45,8 @@ export const ProtectedRoute = ({ children, ...props }) => {
       }
     />
   );
+};
+
+ProtectedRoute.propTypes = {
+  children: PropTypes.object.isRequired,
 };

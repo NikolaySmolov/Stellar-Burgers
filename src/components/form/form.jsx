@@ -1,4 +1,5 @@
 import styles from './form.module.css';
+import PropTypes from 'prop-types';
 
 export const Form = ({ formName, children }) => {
   return (
@@ -6,4 +7,9 @@ export const Form = ({ formName, children }) => {
       {children}
     </form>
   );
+};
+
+Form.propTypes = {
+  formName: PropTypes.string.isRequired,
+  children: PropTypes.arrayOf(PropTypes.object),
 };

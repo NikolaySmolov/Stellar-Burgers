@@ -14,8 +14,11 @@ export const HeaderLink = ({ to, renderIcon, children, routeMatch, ...props }) =
   );
 };
 
-// * дополнить пропсом to
 HeaderLink.propTypes = {
+  to: PropTypes.shape({
+    pathname: PropTypes.string.isRequired,
+  }),
   renderIcon: PropTypes.func,
+  children: PropTypes.string.isRequired,
   routeMatch: PropTypes.bool,
 };
