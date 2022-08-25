@@ -18,8 +18,15 @@ const setPostParams = bodyPayload => ({
   body: JSON.stringify(bodyPayload),
 });
 
-export const requireOrder = async order => {
-  const res = await fetch(`${API}/orders`, setPostParams({ ingredients: order }));
+export const requireOrder = async (accessToken, order) => {
+  const res = await fetch(`${API}/orders`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: JSON.stringify({ ingredients: order }),
+  });
 
   return checkResponse(res);
 };

@@ -2,9 +2,10 @@ import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-component
 import { AdditionalAction } from '../../components/additional-action/additional-action';
 import { Form } from '../../components/form/form';
 import { useInputLogic } from '../../services/hooks';
-import { useHistory, useLocation, Redirect } from 'react-router-dom';
+import { useHistory, Redirect } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import {
+  resetForgotPasswordCode,
   resetForgotPasswordFormValues,
   setForgotPasswordFormValue,
   setPassword,
@@ -19,7 +20,6 @@ export const ResetPasswordPage = () => {
   const dispatch = useDispatch();
 
   const history = useHistory();
-  const location = useLocation();
 
   const passwordInputLogic = useInputLogic({ initType: 'password', initIcon: 'ShowIcon' });
 
@@ -37,7 +37,13 @@ export const ResetPasswordPage = () => {
     history.replace({ pathname: '/login' });
   };
 
-  useEffect(() => () => dispatch(resetForgotPasswordFormValues()), [dispatch]);
+  useEffect(
+    () => () => {
+      dispatch(resetForgotPasswordCode());
+      dispatch(resetForgotPasswordFormValues());
+    },
+    [dispatch]
+  );
 
   if (getCookie(TOKEN)) {
     return <Redirect to={{ pathname: '/' }} />;

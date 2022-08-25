@@ -7,6 +7,7 @@ import {
   FORGOT_PASSWORD_SET_PASSWORD_SUBMIT,
   FORGOT_PASSWORD_SET_PASSWORD_SUCCESS,
   FORGOT_PASSWORD_SET_PASSWORD_FAILED,
+  FORGOT_PASSWORD_GET_CODE_RESET,
 } from '../../utils/constants';
 
 const initialState = {
@@ -33,6 +34,8 @@ export const forgotPasswordReducer = (state = initialState, action) => {
       return { ...state, getCodeRequest: true };
     case FORGOT_PASSWORD_GET_CODE_SUCCESS:
       return { ...state, getCodeRequest: false, getCodeSuccess: true };
+    case FORGOT_PASSWORD_GET_CODE_RESET:
+      return { ...state, getCodeSuccess: false };
     case FORGOT_PASSWORD_GET_CODE_FAILED:
       return { ...state, getCodeRequest: false, getCodeFailed: true };
     case FORGOT_PASSWORD_SET_PASSWORD_SUBMIT:
