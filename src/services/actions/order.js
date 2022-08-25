@@ -23,7 +23,7 @@ export const setOrderAccessFailed = () => ({
   type: ORDER_ACCESS_FAILED,
 });
 
-export const sendOrder = array => dispatch => {
+export const sendOrder = array => async dispatch => {
   if (!getCookie(TOKEN)) {
     dispatch(setOrderAccessFailed());
   } else {
@@ -31,45 +31,43 @@ export const sendOrder = array => dispatch => {
 
     let setOrderRes, getAccessRes;
 
-    (async () => {
+    setOrderRes = await requireOrder(getCookie(ACCESS_TOKEN), array)
+      .then(res => {
+        dispatch({ type: ORDER_SUCCESS, orderDetails: res });
+      })
+      .catch(err => {
+        console.log(err);
+        return err;
+      });
+
+    if (setOrderRes?.status === 403 && getCookie(TOKEN)) {
+      getAccessRes = await getRefreshToken(getCookie(TOKEN))
+        .then(data => {
+          const accessToken = data.accessToken.split('Bearer ')[1];
+          const token = data.refreshToken;
+
+          setCookie(ACCESS_TOKEN, accessToken, { 'max-age': 1200 });
+          setCookie(TOKEN, token);
+          return { success: true };
+        })
+        .catch(err => {
+          console.log(err);
+          return err;
+        });
+    }
+
+    if (getAccessRes?.success) {
       setOrderRes = await requireOrder(getCookie(ACCESS_TOKEN), array)
         .then(res => {
           dispatch({ type: ORDER_SUCCESS, orderDetails: res });
         })
         .catch(err => {
           console.log(err);
+          dispatch({ type: ORDER_FAILED });
           return err;
         });
-
-      if (setOrderRes?.status === 403 && getCookie(TOKEN)) {
-        getAccessRes = await getRefreshToken(getCookie(TOKEN))
-          .then(data => {
-            const accessToken = data.accessToken.split('Bearer ')[1];
-            const token = data.refreshToken;
-
-            setCookie(ACCESS_TOKEN, accessToken, { 'max-age': 1200 });
-            setCookie(TOKEN, token);
-            return { success: true };
-          })
-          .catch(err => {
-            console.log(err);
-            return err;
-          });
-      }
-
-      if (getAccessRes?.success) {
-        setOrderRes = await requireOrder(getCookie(ACCESS_TOKEN), array)
-          .then(res => {
-            dispatch({ type: ORDER_SUCCESS, orderDetails: res });
-          })
-          .catch(err => {
-            console.log(err);
-            dispatch({ type: ORDER_FAILED });
-            return err;
-          });
-      } else if (getAccessRes?.status === 401) {
-        dispatch(setOrderAccessFailed());
-      }
-    })();
+    } else if (getAccessRes?.status === 401) {
+      dispatch(setOrderAccessFailed());
+    }
   }
 };

@@ -1,4 +1,5 @@
 import { Button } from '@ya.praktikum/react-developer-burger-ui-components';
+import PropTypes from 'prop-types';
 
 import styles from './additional-action.module.css';
 
@@ -11,4 +12,10 @@ export const AdditionalAction = ({ text, buttonText, onClick }) => {
       </Button>
     </div>
   );
+};
+
+AdditionalAction.propTypes = {
+  text: PropTypes.string.isRequired,
+  buttonText: PropTypes.string.isRequired,
+  onClick: PropTypes.func.isRequired,
 };
