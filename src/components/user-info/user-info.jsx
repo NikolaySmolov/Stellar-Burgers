@@ -12,6 +12,7 @@ import {
   setUserProfileInfo,
 } from '../../services/actions/profile';
 import { getCookie } from '../../services/utils';
+import { Loader } from '../loader/loader';
 
 export const UserInfo = () => {
   const {
@@ -20,7 +21,6 @@ export const UserInfo = () => {
     userInfoLoaded,
     getUserInfoRequest,
     getUserInfoFailed,
-    setUserInfoRequest,
     setUserInfoFailed,
   } = useSelector(store => store.profile);
 
@@ -77,12 +77,16 @@ export const UserInfo = () => {
     // eslint-disable-next-line
   }, [dispatch, userInfoLoaded]);
 
-  if (!userInfoLoaded) {
-    return null;
-  } else if (getUserInfoRequest || setUserInfoRequest) {
+  if (!userInfoLoaded && getUserInfoRequest) {
+    return <Loader />;
+  } else if (!userInfoLoaded) {
     return null;
   } else if (getUserInfoFailed || setUserInfoFailed) {
-    return <h1>something wrong</h1>;
+    return (
+      <h1 className={'text text_type_main-default text_color_inactive pt-20'}>
+        Что-то пошло не так... Попробуйте обновить страницу
+      </h1>
+    );
   }
 
   return (

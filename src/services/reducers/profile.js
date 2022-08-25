@@ -94,7 +94,7 @@ export const profileReducer = (state = initialState, action) => {
         userInfo: { ...state.userInfo, ...action.payload },
         userInfoForm: { ...state.userInfoForm, password: initialState.userInfoForm.password },
         setUserInfoRequest: false,
-        userInfoLoaded: false,
+        userInfoLoaded: true,
       };
     case PROFILE_USER_INFO_FORM_FAILED:
       return {

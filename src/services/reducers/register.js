@@ -14,12 +14,19 @@ const initialState = {
   },
   registerRequest: false,
   registerFailed: false,
+  failedMessage: null,
 };
 
 export const registrationReducer = (state = initialState, action) => {
   switch (action.type) {
     case REGISTER_FORM_SET_VALUE:
-      return { ...state, form: { ...state.form, ...action.payload } };
+      const registerFailed = state.loginFailed && false;
+      return {
+        ...state,
+        registerFailed,
+        failedMessage: null,
+        form: { ...state.form, ...action.payload },
+      };
     case REGISTER_FORM_RESET_VALUES:
       return { ...initialState };
     case REGISTER_FORM_SUBMIT:
@@ -27,7 +34,12 @@ export const registrationReducer = (state = initialState, action) => {
     case REGISTER_FORM_SUCCESS:
       return { ...state, registerRequest: false };
     case REGISTER_FORM_FAILED:
-      return { ...state, registerRequest: false, registerFailed: true };
+      return {
+        ...state,
+        registerRequest: false,
+        registerFailed: true,
+        failedMessage: action.payload,
+      };
     default:
       return state;
   }

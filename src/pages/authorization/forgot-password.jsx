@@ -1,7 +1,7 @@
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import { AdditionalAction } from '../../components/additional-action/additional-action';
 import { Form } from '../../components/form/form';
-import { useHistory, useLocation, Redirect } from 'react-router-dom';
+import { useHistory, Redirect } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import {
@@ -11,11 +11,10 @@ import {
 } from '../../services/actions/forgot-password';
 import { getCookie } from '../../services/utils';
 import { TOKEN } from '../../utils/constants';
+import { Loader } from '../../components/loader/loader';
 
 export const ForgotPasswordPage = () => {
-  const { form, getCodeRequest, getCodeSuccess, getCodeFailed } = useSelector(
-    store => store.forgotPassword
-  );
+  const { form, getCodeRequest, getCodeSuccess } = useSelector(store => store.forgotPassword);
 
   const dispatch = useDispatch();
 
@@ -58,9 +57,12 @@ export const ForgotPasswordPage = () => {
             onChange={handleSetFieldValue}
             errorText={'Ошибка'}
           />
-          <Button htmlType={'submit'} onClick={handleRestorePassword}>
-            Восстановить
-          </Button>
+          <div style={{ position: 'relative' }}>
+            <Button htmlType={'submit'} onClick={handleRestorePassword}>
+              Восстановить
+            </Button>
+            {getCodeRequest ? <Loader /> : null}
+          </div>
         </Form>
         <div className={'authentication__additional-actions mt-20'}>
           <AdditionalAction

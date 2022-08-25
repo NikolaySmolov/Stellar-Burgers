@@ -9,6 +9,9 @@ import { resetLoginFormValues, setLoginFormValue, signIn } from '../../services/
 import { useEffect } from 'react';
 import { getCookie } from '../../services/utils';
 import { TOKEN } from '../../utils/constants';
+import { FormCaption } from '../../components/form-caption/form-caption';
+import { useInputLogic } from '../../services/hooks';
+import { Loader } from '../../components/loader/loader';
 
 export const LoginPage = () => {
   const { form, loginRequest, loginFailed } = useSelector(store => store.login);
@@ -16,6 +19,8 @@ export const LoginPage = () => {
 
   const history = useHistory();
   const location = useLocation();
+
+  const emailInputLogic = useInputLogic({ initType: 'email', initIcon: null });
 
   const handleSetFieldValue = evt => {
     const field = evt.currentTarget;
@@ -48,18 +53,23 @@ export const LoginPage = () => {
         <h1 className={'authentication__title text text_type_main-medium mb-6'}>Вход</h1>
         <Form formName={'login'}>
           <Input
+            {...emailInputLogic}
             type={'email'}
             placeholder={'E-mail'}
             name={'email'}
             value={form.email}
             onChange={handleSetFieldValue}
-            errorText={'Ошибка'}
+            errorText={'Некорректный e-mail'}
           />
           <PasswordInput value={form.password} name={'password'} onChange={handleSetFieldValue} />
-          <Button htmlType={'submit'} onClick={handleSignIn}>
-            Войти
-          </Button>
+          <div style={{ position: 'relative' }}>
+            <Button htmlType={'submit'} onClick={handleSignIn}>
+              Войти
+            </Button>
+            {loginRequest ? <Loader /> : null}
+          </div>
         </Form>
+        {loginFailed ? <FormCaption>Неверные имя пользователя или пароль</FormCaption> : null}
         <div className={'authentication__additional-actions mt-20'}>
           <AdditionalAction
             text={'Вы\xA0\u2014 новый пользователь?'}

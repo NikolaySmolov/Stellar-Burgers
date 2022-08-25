@@ -13,6 +13,8 @@ import {
 import { useEffect } from 'react';
 import { TOKEN } from '../../utils/constants';
 import { getCookie } from '../../services/utils';
+import { FormCaption } from '../../components/form-caption/form-caption';
+import { Loader } from '../../components/loader/loader';
 
 export const ResetPasswordPage = () => {
   const { form, setPasswordRequest, setPasswordFailed, setPasswordSuccess, getCodeSuccess } =
@@ -65,20 +67,24 @@ export const ResetPasswordPage = () => {
             name={'password'}
             placeholder={'Введите новый пароль'}
             value={form.password}
-            errorText={'Error message'}
+            errorText={'Некорректный пароль'}
             onChange={handleSetFieldValue}
           />
           <Input
             placeholder={'Введите код из письма'}
             name={'token'}
             value={form.token}
-            errorText={'Error message'}
+            errorText={'Некорректный код'}
             onChange={handleSetFieldValue}
           />
-          <Button htmlType={'submit'} onClick={handleSetPassword}>
-            Сохранить
-          </Button>
+          <div style={{ position: 'relative' }}>
+            <Button htmlType={'submit'} onClick={handleSetPassword}>
+              Сохранить
+            </Button>
+            {setPasswordRequest ? <Loader /> : null}
+          </div>
         </Form>
+        {setPasswordFailed ? <FormCaption>Неверный код</FormCaption> : null}
         <div className={'authentication__additional-actions mt-20'}>
           <AdditionalAction
             text={'Вспомнили пароль?'}
