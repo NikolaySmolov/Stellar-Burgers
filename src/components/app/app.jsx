@@ -1,16 +1,16 @@
-import { AppHeader } from './components/app-header/app-header';
-import { ConstructorPage } from './pages/constructor/constructor';
+import { AppHeader } from '../app-header/app-header';
+import { ConstructorPage } from '../../pages/constructor/constructor';
 import {
   LoginPage,
   RegisterPage,
   ForgotPasswordPage,
   ResetPasswordPage,
   ProfilePage,
-} from './pages';
+} from '../../pages';
 import { Route, Switch, useLocation } from 'react-router-dom';
-import { ProtectedRoute } from './components/protected-route';
-import { IngredientPage } from './pages/ingredient/ingredient';
-import { NotFoundPage } from './pages/not-found';
+import { ProtectedRoute } from '../protected-route';
+import { IngredientPage } from '../../pages/ingredient/ingredient';
+import { NotFoundPage } from '../../pages/not-found';
 
 export default function App() {
   const location = useLocation();
