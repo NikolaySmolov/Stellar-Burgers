@@ -15,7 +15,6 @@ const initialState = {
   ingredients: [],
   ingredientsRequest: false,
   ingredientsFailed: false,
-  ingredientsLoaded: false,
   constructor: { bun: [], filling: [] },
   ingredientDetails: null,
 };
@@ -23,19 +22,17 @@ const initialState = {
 export const burgerReducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_INGREDIENTS_REQUEST:
-      return { ...state, ingredientsRequest: true, ingredientsLoaded: false };
+      return { ...state, ingredientsRequest: true };
     case GET_INGREDIENTS_SUCCESS:
       return {
         ...state,
         ingredientsRequest: false,
-        ingredientsLoaded: true,
         ingredients: action.data.map(appendQuantity),
       };
     case GET_INGREDIENTS_FAILED:
       return {
         ...state,
         ingredientsRequest: false,
-        ingredientsLoaded: false,
         ingredientsFailed: true,
       };
     case INCREASE_INGREDIENT:

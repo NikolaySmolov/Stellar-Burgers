@@ -1,17 +1,17 @@
-import React from 'react';
+import { useMemo, useRef, useState } from 'react';
 import styles from './burger-ingredients.module.css';
 import { TabBar } from '../tab-bar/tab-bar';
 import { IngredientsSection } from '../ingredients-section/ingredients-section';
 import { useSelector } from 'react-redux';
 
 export default function BurgerIngredients() {
-  const [currentTab, setCurrentTab] = React.useState('buns');
+  const [currentTab, setCurrentTab] = useState('buns');
 
   const { ingredients } = useSelector(store => store.burger);
 
-  const bunHeading = React.useRef(null);
-  const saucesHeading = React.useRef(null);
-  const mainHeading = React.useRef(null);
+  const bunHeading = useRef(null);
+  const saucesHeading = useRef(null);
+  const mainHeading = useRef(null);
 
   const tabsFollowing = () => {
     const saucesHeadingBox = saucesHeading.current.getBoundingClientRect();
@@ -26,7 +26,7 @@ export default function BurgerIngredients() {
     }
   };
 
-  const content = React.useMemo(() => {
+  const content = useMemo(() => {
     const buns = [];
     const sauces = [];
     const main = [];

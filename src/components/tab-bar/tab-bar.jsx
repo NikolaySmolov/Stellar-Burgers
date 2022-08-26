@@ -1,4 +1,3 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import { refPropTypes } from '../../utils/constants';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';

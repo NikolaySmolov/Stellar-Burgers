@@ -1,4 +1,3 @@
-import React from 'react';
 import style from './loader.module.css';
 import { LoaderSvg } from './loader.svg';
 
