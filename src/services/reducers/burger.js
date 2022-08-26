@@ -18,7 +18,6 @@ const initialState = {
   ingredientsLoaded: false,
   constructor: { bun: [], filling: [] },
   ingredientDetails: null,
-  showModal: false,
 };
 
 export const burgerReducer = (state = initialState, action) => {
@@ -79,9 +78,9 @@ export const burgerReducer = (state = initialState, action) => {
         constructor: { ...state.constructor, filling: decreasedConstructor },
       };
     case OPEN_INGREDIENT_DETAILS:
-      return { ...state, ingredientDetails: action.ingredient, showModal: true };
+      return { ...state, ingredientDetails: action.ingredient };
     case CLOSE_INGREDIENT_DETAILS:
-      return { ...state, ingredientDetails: null, showModal: false };
+      return { ...state, ingredientDetails: null };
     case SORT_INGREDIENT:
       const sortableItem = state.constructor.filling.find(
         (_, index) => index === action.payload.dragItemPos

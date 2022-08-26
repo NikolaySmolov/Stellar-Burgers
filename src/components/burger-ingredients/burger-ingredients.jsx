@@ -2,33 +2,12 @@ import React from 'react';
 import styles from './burger-ingredients.module.css';
 import { TabBar } from '../tab-bar/tab-bar';
 import { IngredientsSection } from '../ingredients-section/ingredients-section';
-import Modal from '../modal/modal';
-import IngredientDetails from '../ingredient-details/ingredient-details';
-import { useSelector, useDispatch } from 'react-redux';
-import { CLOSE_INGREDIENT_DETAILS } from '../../services/actions/burger';
-import { Route, useHistory } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 export default function BurgerIngredients() {
   const [currentTab, setCurrentTab] = React.useState('buns');
 
-  const { ingredients, ingredientDetails, showModal } = useSelector(store => store.burger);
-
-  const dispatch = useDispatch();
-
-  const history = useHistory();
-
-  const handleCloseModal = () => {
-    dispatch({ type: CLOSE_INGREDIENT_DETAILS });
-    history.goBack();
-  };
-
-  const modal = showModal ? (
-    <Route to="/ingredients/:id">
-      <Modal onClose={handleCloseModal}>
-        <IngredientDetails {...ingredientDetails} />
-      </Modal>
-    </Route>
-  ) : null;
+  const { ingredients } = useSelector(store => store.burger);
 
   const bunHeading = React.useRef(null);
   const saucesHeading = React.useRef(null);
@@ -101,7 +80,6 @@ export default function BurgerIngredients() {
           {content}
         </ul>
       </section>
-      {modal}
     </>
   );
 }
