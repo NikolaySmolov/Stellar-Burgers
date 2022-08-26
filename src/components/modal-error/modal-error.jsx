@@ -1,4 +1,3 @@
-import React from 'react';
 import ReactDOM from 'react-dom';
 import styles from './modal-error.module.css';
 import errorImage from '../../images/error.jpg';

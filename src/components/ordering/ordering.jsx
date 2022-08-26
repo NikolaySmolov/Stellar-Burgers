@@ -1,4 +1,4 @@
-import React from 'react';
+import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styles from './ordering.module.css';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
@@ -7,13 +7,16 @@ import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
 import ModalError from '../modal-error/modal-error';
 import { useSelector, useDispatch } from 'react-redux';
-import { sendOrder } from '../../services/actions/order';
+import { sendOrder, setOrderAccessSuccess } from '../../services/actions/order';
 import { CLOSE_ORDER_DETAILS } from '../../services/actions/order';
 import { CLEAR_CONSTRUCTOR } from '../../services/actions/burger';
 import { Loader } from '../loader/loader';
+import { Redirect } from 'react-router-dom';
 
 export default function Ordering({ totalPrice, orderList, isDisabled }) {
-  const { showModal, orderStatus, orderRequest, orderFailed } = useSelector(store => store.order);
+  const { access, showModal, orderStatus, orderRequest, orderFailed } = useSelector(
+    store => store.order
+  );
 
   const dispatch = useDispatch();
 
@@ -35,6 +38,14 @@ export default function Ordering({ totalPrice, orderList, isDisabled }) {
       <ModalError />
     )
   ) : null;
+
+  useEffect(() => {
+    dispatch(setOrderAccessSuccess());
+  }, [dispatch]);
+
+  if (!access) {
+    return <Redirect to={{ pathname: '/login' }} />;
+  }
 
   return (
     <div className={`${styles.ordering} mt-10`}>

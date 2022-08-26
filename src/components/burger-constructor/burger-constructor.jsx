@@ -1,4 +1,4 @@
-import React from 'react';
+import { useEffect, useMemo } from 'react';
 import styles from './burger-constructor.module.css';
 import { ConstructorRow } from '../constructor-row/constructor-row';
 import Ordering from '../ordering/ordering';
@@ -14,7 +14,7 @@ export default function BurgerConstructor() {
     totalPrice: store.order.totalPrice,
   }));
 
-  const flatConstructor = React.useMemo(
+  const flatConstructor = useMemo(
     () => [...constructor.bun, ...constructor.filling],
     [constructor]
   );
@@ -28,7 +28,7 @@ export default function BurgerConstructor() {
     },
   });
 
-  React.useEffect(() => {
+  useEffect(() => {
     const total = flatConstructor.reduce((prev, curr) => {
       curr.type === BUN ? (prev += curr.price * 2) : (prev += curr.price);
       return prev;
@@ -37,7 +37,7 @@ export default function BurgerConstructor() {
     dispatch({ type: SET_TOTALPRICE, total });
   }, [flatConstructor, dispatch]);
 
-  const orderList = React.useMemo(() => {
+  const orderList = useMemo(() => {
     return flatConstructor.map(item => item._id);
   }, [flatConstructor]);
 

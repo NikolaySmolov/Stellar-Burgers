@@ -13,11 +13,10 @@ import {
 
 const initialState = {
   ingredients: [],
-  ingredientsRequest: true,
+  ingredientsRequest: false,
   ingredientsFailed: false,
   constructor: { bun: [], filling: [] },
   ingredientDetails: null,
-  showModal: false,
 };
 
 export const burgerReducer = (state = initialState, action) => {
@@ -25,9 +24,17 @@ export const burgerReducer = (state = initialState, action) => {
     case GET_INGREDIENTS_REQUEST:
       return { ...state, ingredientsRequest: true };
     case GET_INGREDIENTS_SUCCESS:
-      return { ...state, ingredientsRequest: false, ingredients: action.data.map(appendQuantity) };
+      return {
+        ...state,
+        ingredientsRequest: false,
+        ingredients: action.data.map(appendQuantity),
+      };
     case GET_INGREDIENTS_FAILED:
-      return { ...state, ingredientsRequest: false, ingredientsFailed: true };
+      return {
+        ...state,
+        ingredientsRequest: false,
+        ingredientsFailed: true,
+      };
     case INCREASE_INGREDIENT:
       const increasedIngredients = [...state.ingredients];
       const increasedConstructor = { ...state.constructor };
@@ -68,9 +75,9 @@ export const burgerReducer = (state = initialState, action) => {
         constructor: { ...state.constructor, filling: decreasedConstructor },
       };
     case OPEN_INGREDIENT_DETAILS:
-      return { ...state, ingredientDetails: action.ingredient, showModal: true };
+      return { ...state, ingredientDetails: action.ingredient };
     case CLOSE_INGREDIENT_DETAILS:
-      return { ...state, ingredientDetails: null, showModal: false };
+      return { ...state, ingredientDetails: null };
     case SORT_INGREDIENT:
       const sortableItem = state.constructor.filling.find(
         (_, index) => index === action.payload.dragItemPos

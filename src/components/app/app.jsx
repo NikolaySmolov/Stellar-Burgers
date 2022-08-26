@@ -1,33 +1,86 @@
-import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { DndProvider } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
-import styles from './app.module.css';
 import { AppHeader } from '../app-header/app-header';
+import { ConstructorPage } from '../../pages/constructor/constructor';
+import {
+  LoginPage,
+  RegisterPage,
+  ForgotPasswordPage,
+  ResetPasswordPage,
+  ProfilePage,
+  IngredientPage,
+  NotFoundPage,
+} from '../../pages';
+import { Route, Switch, useLocation, useHistory } from 'react-router-dom';
+import { ProtectedRoute } from '../protected-route';
+import { useDispatch, useSelector } from 'react-redux';
+import Modal from '../modal/modal';
+import { CLOSE_INGREDIENT_DETAILS, getIngredients } from '../../services/actions/burger';
+import IngredientDetails from '../ingredient-details/ingredient-details';
 import ModalError from '../modal-error/modal-error';
-import BurgerIngredients from '../burger-ingredients/burger-ingredients';
-import BurgerConstructor from '../burger-constructor/burger-constructor';
-import { getIngredients } from '../../services/actions/burger';
+import { useEffect } from 'react';
+import { Loader } from '../loader/loader';
 
 export default function App() {
-  const { ingredientsRequest, ingredientsFailed } = useSelector(store => store.burger);
+  const { ingredientsRequest, ingredientsFailed, ingredientDetails } = useSelector(
+    store => store.burger
+  );
   const dispatch = useDispatch();
 
-  React.useEffect(() => {
+  const location = useLocation();
+  const history = useHistory();
+  const background = ingredientDetails && location.state?.background;
+
+  const handleCloseModal = () => {
+    dispatch({ type: CLOSE_INGREDIENT_DETAILS });
+
+    history.replace({ pathname: '/' });
+  };
+
+  useEffect(() => {
     dispatch(getIngredients());
   }, [dispatch]);
 
-  return ingredientsRequest ? null : ingredientsFailed ? (
-    <ModalError />
-  ) : (
+  if (ingredientsRequest) {
+    return <Loader />;
+  } else if (ingredientsFailed) {
+    return <ModalError />;
+  }
+
+  return (
     <>
       <AppHeader />
-      <main className={styles.content}>
-        <DndProvider backend={HTML5Backend}>
-          <BurgerIngredients />
-          <BurgerConstructor />
-        </DndProvider>
-      </main>
+      <Switch location={background || location}>
+        <Route path="/" exact>
+          <ConstructorPage />
+        </Route>
+        <Route path="/ingredients/:id">
+          <IngredientPage />
+        </Route>
+        <Route path="/login" exact>
+          <LoginPage />
+        </Route>
+        <Route path="/register" exact>
+          <RegisterPage />
+        </Route>
+        <Route path="/forgot-password" exact>
+          <ForgotPasswordPage />
+        </Route>
+        <Route path="/reset-password" exact>
+          <ResetPasswordPage />
+        </Route>
+        <ProtectedRoute path="/profile">
+          <ProfilePage />
+        </ProtectedRoute>
+        <Route>
+          <NotFoundPage />
+        </Route>
+      </Switch>
+      {background ? (
+        <Route path="/ingredients/:id">
+          <Modal onClose={handleCloseModal}>
+            <IngredientDetails {...ingredientDetails} />
+          </Modal>
+        </Route>
+      ) : null}
     </>
   );
 }
