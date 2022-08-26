@@ -90,7 +90,7 @@ export const UserInfo = () => {
   }
 
   return (
-    <Form formName={'profile'}>
+    <Form formName={'profile'} onSubmit={handleSubmit} onReset={handleReset}>
       <Input
         {...nameInputLogic}
         name={'name'}
@@ -117,10 +117,10 @@ export const UserInfo = () => {
       />
       {someEnabled ? (
         <div className={styles.formActions}>
-          <Button type={'secondary'} htmlType={'reset'} disabled={false} onClick={handleReset}>
+          <Button type={'secondary'} htmlType={'reset'}>
             Отмена
           </Button>
-          <Button type={'primary'} htmlType={'submit'} disabled={!canSubmit} onClick={handleSubmit}>
+          <Button type={'primary'} htmlType={'submit'} disabled={!canSubmit}>
             Сохранить
           </Button>
         </div>

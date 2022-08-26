@@ -48,7 +48,7 @@ export const ForgotPasswordPage = () => {
         <h1 className={'authentication__title text text_type_main-medium mb-6'}>
           Восстановление пароля
         </h1>
-        <Form formName={'forgotPassword'}>
+        <Form formName={'forgotPassword'} onSubmit={handleRestorePassword}>
           <Input
             type={'email'}
             placeholder={'Укажите e-mail'}
@@ -58,9 +58,7 @@ export const ForgotPasswordPage = () => {
             errorText={'Ошибка'}
           />
           <div style={{ position: 'relative' }}>
-            <Button htmlType={'submit'} onClick={handleRestorePassword}>
-              Восстановить
-            </Button>
+            <Button htmlType={'submit'}>Восстановить</Button>
             {getCodeRequest ? <Loader /> : null}
           </div>
         </Form>

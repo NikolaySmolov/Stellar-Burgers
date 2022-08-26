@@ -61,7 +61,7 @@ export const ResetPasswordPage = () => {
         <h1 className={'authentication__title text text_type_main-medium mb-6'}>
           Восстановление пароля
         </h1>
-        <Form formName={'reset-password'}>
+        <Form formName={'reset-password'} onSubmit={handleSetPassword}>
           <Input
             {...passwordInputLogic}
             name={'password'}
@@ -78,9 +78,7 @@ export const ResetPasswordPage = () => {
             onChange={handleSetFieldValue}
           />
           <div style={{ position: 'relative' }}>
-            <Button htmlType={'submit'} onClick={handleSetPassword}>
-              Сохранить
-            </Button>
+            <Button htmlType={'submit'}>Сохранить</Button>
             {setPasswordRequest ? <Loader /> : null}
           </div>
         </Form>
