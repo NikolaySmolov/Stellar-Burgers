@@ -51,7 +51,7 @@ export const LoginPage = () => {
     <main className={'authentication'}>
       <section className={'authentication__content'}>
         <h1 className={'authentication__title text text_type_main-medium mb-6'}>Вход</h1>
-        <Form formName={'login'}>
+        <Form formName={'login'} onSubmit={handleSignIn}>
           <Input
             {...emailInputLogic}
             type={'email'}
@@ -63,9 +63,7 @@ export const LoginPage = () => {
           />
           <PasswordInput value={form.password} name={'password'} onChange={handleSetFieldValue} />
           <div style={{ position: 'relative' }}>
-            <Button htmlType={'submit'} onClick={handleSignIn}>
-              Войти
-            </Button>
+            <Button htmlType={'submit'}>Войти</Button>
             {loginRequest ? <Loader /> : null}
           </div>
         </Form>

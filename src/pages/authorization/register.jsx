@@ -55,7 +55,7 @@ export const RegisterPage = () => {
     <main className={'authentication'}>
       <section className={'authentication__content'}>
         <h1 className={'authentication__title text text_type_main-medium mb-6'}>Регистрация</h1>
-        <Form formName={'registration'}>
+        <Form formName={'registration'} onSubmit={handleSignUp}>
           <Input
             type={'text'}
             placeholder={'Имя'}
@@ -74,9 +74,7 @@ export const RegisterPage = () => {
           />
           <PasswordInput value={form.password} name={'password'} onChange={handleSetFieldValue} />
           <div style={{ position: 'relative' }}>
-            <Button htmlType={'submit'} onClick={handleSignUp} disabled={false}>
-              Зарегистрироваться
-            </Button>
+            <Button htmlType={'submit'}>Зарегистрироваться</Button>
             {registerRequest ? <Loader /> : null}
           </div>
         </Form>
