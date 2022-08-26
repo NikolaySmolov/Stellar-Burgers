@@ -5,7 +5,7 @@ import { Logo } from '@ya.praktikum/react-developer-burger-ui-components';
 import { BurgerIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { ListIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useRouteMatch, useLocation } from 'react-router-dom';
+import { useRouteMatch, useLocation, Link } from 'react-router-dom';
 
 export const AppHeader = React.memo(() => {
   const location = useLocation();
@@ -41,7 +41,9 @@ export const AppHeader = React.memo(() => {
             </li>
           </ul>
         </nav>
-        <Logo />
+        <Link to={{ pathname: '/' }}>
+          <Logo />
+        </Link>
         <nav>
           <ul className={styles.nav__list}>
             <li className={`${styles.nav__item} pl-5 pr-5 pt-4 pb-4`}>
