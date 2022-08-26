@@ -7,14 +7,28 @@ import {
   ResetPasswordPage,
   ProfilePage,
 } from '../../pages';
-import { Route, Switch, useLocation } from 'react-router-dom';
+import { Route, Switch, useLocation, useHistory } from 'react-router-dom';
 import { ProtectedRoute } from '../protected-route';
 import { IngredientPage } from '../../pages/ingredient/ingredient';
 import { NotFoundPage } from '../../pages/not-found';
+import { useDispatch, useSelector } from 'react-redux';
+import Modal from '../modal/modal';
+import { CLOSE_INGREDIENT_DETAILS } from '../../services/actions/burger';
+import IngredientDetails from '../ingredient-details/ingredient-details';
 
 export default function App() {
+  const { ingredientDetails } = useSelector(store => store.burger);
+  const dispatch = useDispatch();
+
   const location = useLocation();
-  const background = location.state?.background;
+  const history = useHistory();
+  const background = ingredientDetails && location.state?.background;
+
+  const handleCloseModal = () => {
+    dispatch({ type: CLOSE_INGREDIENT_DETAILS });
+
+    history.replace({ pathname: '/' });
+  };
 
   return (
     <>
@@ -45,6 +59,13 @@ export default function App() {
           <NotFoundPage />
         </Route>
       </Switch>
+      {background ? (
+        <Route path="/ingredients/:id">
+          <Modal onClose={handleCloseModal}>
+            <IngredientDetails {...ingredientDetails} />
+          </Modal>
+        </Route>
+      ) : null}
     </>
   );
 }

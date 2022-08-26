@@ -22,7 +22,7 @@ export const Ingredient = React.memo(props => {
 
   const handleShowDetails = () => {
     dispatch({ type: OPEN_INGREDIENT_DETAILS, ingredient: props });
-    history.push({
+    history.replace({
       pathname: `/ingredients/${props._id}`,
       state: { background: history.location },
     });
