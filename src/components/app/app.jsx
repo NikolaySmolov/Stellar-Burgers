@@ -18,6 +18,7 @@ import IngredientDetails from '../ingredient-details/ingredient-details';
 import ModalError from '../modal-error/modal-error';
 import { useEffect } from 'react';
 import { Loader } from '../loader/loader';
+import { FeedPage } from '../../pages/feed/feed';
 
 export default function App() {
   const { ingredientsRequest, ingredientsFailed } = useSelector(store => store.burger);
@@ -50,6 +51,9 @@ export default function App() {
         </Route>
         <Route path="/ingredients/:id">
           <IngredientPage />
+        </Route>
+        <Route path="/feed">
+          <FeedPage />
         </Route>
         <Route path="/login" exact>
           <LoginPage />
