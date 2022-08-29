@@ -17,16 +17,6 @@ export const ingredientPropTypes = PropTypes.shape({
   count: PropTypes.number,
 });
 
-export const ingredientDetails = PropTypes.shape({
-  name: PropTypes.string,
-  image_large: PropTypes.string,
-  price: PropTypes.number,
-  calories: PropTypes.number,
-  proteins: PropTypes.number,
-  fat: PropTypes.number,
-  carbohydrates: PropTypes.number,
-});
-
 export const refPropTypes = PropTypes.shape({
   current: PropTypes.object,
 });

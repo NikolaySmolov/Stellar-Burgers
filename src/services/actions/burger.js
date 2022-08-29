@@ -10,9 +10,6 @@ export const SORT_INGREDIENT = 'SORT_INGREDIENT';
 
 export const CLEAR_CONSTRUCTOR = 'CLEAR_CONSTRUCTOR';
 
-export const OPEN_INGREDIENT_DETAILS = 'OPEN_INGREDIENT_DETAILS';
-export const CLOSE_INGREDIENT_DETAILS = 'CLOSE_INGREDIENT_DETAILS';
-
 export const getIngredients = () => {
   return dispatch => {
     dispatch({ type: GET_INGREDIENTS_REQUEST });
