@@ -28,6 +28,7 @@ export const FILLING = 'filling';
 export const CALC = 'calc';
 export const ADD = 'add';
 export const SORT = 'sort';
+export const DONE = 'done';
 
 export const ACCESS_TOKEN = 'accessToken';
 export const TOKEN = 'token';
