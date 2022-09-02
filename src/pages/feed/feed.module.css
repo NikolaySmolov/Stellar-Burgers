@@ -29,6 +29,25 @@
   border-radius: 0;
 }
 
+.statsWrapper {
+  max-height: calc(100vh - 188px);
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+}
+
+.statsWrapper::-webkit-scrollbar-track {
+  margin-bottom: 60px;
+}
+
+.statsWrapper::-webkit-scrollbar {
+  width: 8px;
+}
+
+.statsWrapper::-webkit-scrollbar-thumb {
+  border: none;
+  border-radius: 0;
+}
+
 .ordersBoards {
   display: flex;
 }
@@ -42,7 +61,7 @@
   flex-direction: column;
   flex-wrap: wrap;
   list-style: none;
-  height: 313px;
+  max-height: 313px;
   margin: 0;
   padding: calc(var(--offset-base-size) * 6) 0 calc(var(--offset-base-size) * 15);
 }

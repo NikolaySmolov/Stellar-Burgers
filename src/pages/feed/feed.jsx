@@ -25,7 +25,7 @@ const mockDone = [
 const mockInProgress = [24239, 24565, 23456, 25854, 23659];
 
 export const FeedPage = () => {
-  const ingredients = useSelector(store => store.burger.ingredients);
+  const ingredients = useSelector((store) => store.burger.ingredients);
 
   if (ingredients.length === 0) {
     return;
@@ -65,15 +65,16 @@ export const FeedPage = () => {
           </li>
         </ul>
       </section>
-      <section className={`${style.stats} mt-25`}>
+      <section className={`${style.statsWrapper} custom-scroll mt-25`}>
         <div className={style.ordersBoards}>
           <section className={`${style.statsColumn} mr-9`}>
             <h2 className={`${style.statsTitle} text text_type_main-medium`}>Готовы:</h2>
             <ul className={style.statsList}>
-              {mockDone.map(order => (
+              {mockDone.map((order) => (
                 <li className={style.statsListItem} key={order}>
                   <p
-                    className={`${style.statsListText} text text_type_digits-default text_color_success`}>
+                    className={`${style.statsListText} text text_type_digits-default text_color_success`}
+                  >
                     {order}
                   </p>
                 </li>
@@ -83,7 +84,7 @@ export const FeedPage = () => {
           <section className={style.statsColumn}>
             <h2 className={`${style.statsTitle} text text_type_main-medium`}>В&nbsp;работе:</h2>
             <ul className={style.statsList}>
-              {mockInProgress.map(order => (
+              {mockInProgress.map((order) => (
                 <li className={style.statsListItem} key={order}>
                   <p className={`${style.statsListText} text text_type_digits-default`}>{order}</p>
                 </li>

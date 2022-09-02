@@ -10,7 +10,7 @@ export const useInputLogic = ({ initType, initIcon = 'EditIcon', disabledState =
 
   const inputRef = useRef(null);
 
-  const validateField = fieldValue => {
+  const validateField = (fieldValue) => {
     switch (initType) {
       case 'password':
         if (fieldValue.length > 0 && fieldValue.length < 6 && !disabled) {
@@ -53,7 +53,7 @@ export const useInputLogic = ({ initType, initIcon = 'EditIcon', disabledState =
     setError(false);
   };
 
-  const onBlur = evt => {
+  const onBlur = (evt) => {
     if (initType === 'password') {
       setType('password');
       setIcon('ShowIcon');
@@ -79,11 +79,11 @@ export const useOrderData = (ingredientsArray, ingredientsMenu, dateString, stat
   const [totalPrice, setTotalPrice] = useState(null);
   const [statusText, setStatusText] = useState(null);
 
-  const date = dateString => {
-    const today = new Date().getDate();
+  const date = (dateString) => {
+    const today = new Date();
     const createdAt = new Date(Date.parse(dateString));
 
-    const difference = today - createdAt.getDate();
+    const difference = Math.floor((today - createdAt) / (1000 * 60 * 60 * 24));
 
     if (difference === 0) {
       return 'Сегодня';
@@ -94,7 +94,7 @@ export const useOrderData = (ingredientsArray, ingredientsMenu, dateString, stat
     }
   };
 
-  const time = dateString => {
+  const time = (dateString) => {
     const createdAt = new Date(Date.parse(dateString));
     const hours = createdAt.getHours();
     const minutes = createdAt.getMinutes();
@@ -109,7 +109,7 @@ export const useOrderData = (ingredientsArray, ingredientsMenu, dateString, stat
 
   const preparedIngredientsData = useMemo(() => {
     const result = ingredientsArray.reduce((acc, item) => {
-      const itemIndex = acc.findIndex(ingredient => ingredient.id === item);
+      const itemIndex = acc.findIndex((ingredient) => ingredient.id === item);
 
       if (~itemIndex) {
         acc[itemIndex].qty++;
@@ -130,16 +130,16 @@ export const useOrderData = (ingredientsArray, ingredientsMenu, dateString, stat
     return result;
   }, [ingredientsArray, ingredientsMenu]);
 
-  const preparedTotalPrice = useMemo(
-    () =>
-      preparedIngredientsData.reduce((acc, ing) => {
-        acc += ing.price * ing.qty;
-        return acc;
-      }, 0),
-    [preparedIngredientsData]
-  );
+  const preparedTotalPrice = useMemo(() => {
+    const sum = preparedIngredientsData.reduce((acc, ing) => {
+      acc += ing.price * ing.qty;
+      return acc;
+    }, 0);
+    return sum.toLocaleString('ru-RU');
+  }, [preparedIngredientsData]);
 
   const preparedStatusText = useMemo(() => {
+    //need adds all variables
     switch (status) {
       case DONE:
         return 'Выполнен';

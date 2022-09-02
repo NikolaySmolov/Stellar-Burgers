@@ -38,7 +38,7 @@ export const CardOrder = ({
   status = orderData.status,
   createdAt = orderData.createdAt,
 }) => {
-  const ingredientsMenu = useSelector(store => store.burger.ingredients);
+  const ingredientsMenu = useSelector((store) => store.burger.ingredients);
 
   const [ingredientsList, orderDate, totalPrice, statusText] = useOrderData(
     ingredients,
@@ -83,7 +83,8 @@ export const CardOrder = ({
         <p
           className={`${style.status} text text_type_main-default mt-2 ${
             status === DONE ? 'text_color_success' : null
-          }`}>
+          }`}
+        >
           {statusText}
         </p>
       ) : null}
