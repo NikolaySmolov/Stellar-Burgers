@@ -5,6 +5,7 @@ import { IngredientThumbnail } from '../ingredient-thumbnail/ingredient-thumbnai
 import { useMemo } from 'react';
 import { DONE } from '../../utils/constants';
 import { useOrderData } from '../../services/hooks';
+import { Link, useRouteMatch } from 'react-router-dom';
 
 //Mock order
 const orderData = {
@@ -15,7 +16,6 @@ const orderData = {
     '60d3b41abdacab0026a733cf',
     '60d3b41abdacab0026a733cd',
     '60d3b41abdacab0026a733cf',
-    '60d3b41abdacab0026a733c6',
     '60d3b41abdacab0026a733d4',
     '60d3b41abdacab0026a733d4',
     '60d3b41abdacab0026a733d1',
@@ -39,6 +39,8 @@ export const CardOrder = ({
   createdAt = orderData.createdAt,
 }) => {
   const ingredientsMenu = useSelector((store) => store.burger.ingredients);
+
+  const { url } = useRouteMatch();
 
   const [ingredientsList, orderDate, totalPrice, statusText] = useOrderData(
     ingredients,
@@ -71,30 +73,36 @@ export const CardOrder = ({
   }
 
   return (
-    <article className={style.wrapper}>
-      <div className={`${style.heading} mb-6`}>
-        <p className={`${style.orderNumber} text text_type_digits-default`}>#{number}</p>
-        <p className={`${style.created} text text_type_main-default text_color_inactive`}>
-          {orderDate}
-        </p>
-      </div>
-      <p className={`${style.name} text text_type_main-medium`}>{name}</p>
-      {withStatus ? (
-        <p
-          className={`${style.status} text text_type_main-default mt-2 ${
-            status === DONE ? 'text_color_success' : null
-          }`}
-        >
-          {statusText}
-        </p>
-      ) : null}
-      <div className={`${style.footer} mt-6`}>
-        {thumbnailList}
-        <div className={style.totalWrapper}>
-          <p className={`${style.totalText} text text_type_digits-default mr-2`}>{totalPrice}</p>
-          <CurrencyIcon type={'primary'} />
+    <Link
+      to={(location) => ({
+        pathname: `${url}/${orderData._id}`,
+        // state: { background: location },
+      })}
+      className={style.link}
+    >
+      <article className={style.wrapper}>
+        <div className={`${style.heading} mb-6`}>
+          <p className={'text text_type_digits-default'}>#{number}</p>
+          <p className={'text text_type_main-default text_color_inactive'}>{orderDate}</p>
         </div>
-      </div>
-    </article>
+        <p className={'text text_type_main-medium'}>{name}</p>
+        {withStatus ? (
+          <p
+            className={`text text_type_main-default mt-2 ${
+              status === DONE ? 'text_color_success' : null
+            }`}
+          >
+            {statusText}
+          </p>
+        ) : null}
+        <div className={`${style.footer} mt-6`}>
+          {thumbnailList}
+          <div className={style.totalWrapper}>
+            <p className={'text text_type_digits-default mr-2'}>{totalPrice}</p>
+            <CurrencyIcon type={'primary'} />
+          </div>
+        </div>
+      </article>
+    </Link>
   );
 };

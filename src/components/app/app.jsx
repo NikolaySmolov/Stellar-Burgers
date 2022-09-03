@@ -8,6 +8,7 @@ import {
   ProfilePage,
   IngredientPage,
   NotFoundPage,
+  OrderDetailsPage,
 } from '../../pages';
 import { Route, Switch, useLocation, useHistory } from 'react-router-dom';
 import { ProtectedRoute } from '../protected-route';
@@ -19,9 +20,10 @@ import ModalError from '../modal-error/modal-error';
 import { useEffect } from 'react';
 import { Loader } from '../loader/loader';
 import { FeedPage } from '../../pages/feed/feed';
+import { CardOrderDetails } from '../card-order-details/card-order-details';
 
 export default function App() {
-  const { ingredientsRequest, ingredientsFailed } = useSelector(store => store.burger);
+  const { ingredientsRequest, ingredientsFailed } = useSelector((store) => store.burger);
   const dispatch = useDispatch();
 
   const location = useLocation();
@@ -52,8 +54,11 @@ export default function App() {
         <Route path="/ingredients/:id">
           <IngredientPage />
         </Route>
-        <Route path="/feed">
+        <Route path="/feed" exact>
           <FeedPage />
+        </Route>
+        <Route path="/feed/:id">
+          <OrderDetailsPage />
         </Route>
         <Route path="/login" exact>
           <LoginPage />
@@ -75,11 +80,18 @@ export default function App() {
         </Route>
       </Switch>
       {background ? (
-        <Route path="/ingredients/:id">
-          <Modal onClose={handleCloseModal}>
-            <IngredientDetails />
-          </Modal>
-        </Route>
+        <>
+          <Route path="/ingredients/:id">
+            <Modal onClose={handleCloseModal}>
+              <IngredientDetails />
+            </Modal>
+          </Route>
+          <Route path="/feed/:id">
+            <Modal onClose={handleCloseModal}>
+              <CardOrderDetails />
+            </Modal>
+          </Route>
+        </>
       ) : null}
     </>
   );
