@@ -5,6 +5,7 @@ import { registrationReducer } from './register';
 import { loginReducer } from './login';
 import { forgotPasswordReducer } from './forgot-password';
 import { profileReducer } from './profile';
+import { wsReducer } from './web-socket';
 
 export const rootReducer = combineReducers({
   burger: burgerReducer,
@@ -13,4 +14,5 @@ export const rootReducer = combineReducers({
   login: loginReducer,
   forgotPassword: forgotPasswordReducer,
   profile: profileReducer,
+  orders: wsReducer,
 });
