@@ -15,7 +15,7 @@ import { Redirect } from 'react-router-dom';
 
 export default function Ordering({ totalPrice, orderList, isDisabled }) {
   const { access, showModal, orderStatus, orderRequest, orderFailed } = useSelector(
-    store => store.order
+    (store) => store.order
   );
 
   const dispatch = useDispatch();
@@ -50,7 +50,7 @@ export default function Ordering({ totalPrice, orderList, isDisabled }) {
   return (
     <div className={`${styles.ordering} mt-10`}>
       <div className={`${styles.total} mr-10`}>
-        <p className="text text_type_digits-medium mr-2">{totalPrice}</p>
+        <p className="text text_type_digits-medium mr-2">{totalPrice.toLocaleString('ru-RU')}</p>
         <CurrencyIcon type="primary" />
       </div>
       <div className={styles.button}>

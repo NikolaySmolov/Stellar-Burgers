@@ -5,8 +5,6 @@ import {
   GET_INGREDIENTS_FAILED,
   INCREASE_INGREDIENT,
   DECREASE_INGREDIENT,
-  OPEN_INGREDIENT_DETAILS,
-  CLOSE_INGREDIENT_DETAILS,
   SORT_INGREDIENT,
   CLEAR_CONSTRUCTOR,
 } from '../actions/burger';
@@ -74,10 +72,6 @@ export const burgerReducer = (state = initialState, action) => {
         ingredients: decreasedIngredients,
         constructor: { ...state.constructor, filling: decreasedConstructor },
       };
-    case OPEN_INGREDIENT_DETAILS:
-      return { ...state, ingredientDetails: action.ingredient };
-    case CLOSE_INGREDIENT_DETAILS:
-      return { ...state, ingredientDetails: null };
     case SORT_INGREDIENT:
       const sortableItem = state.constructor.filling.find(
         (_, index) => index === action.payload.dragItemPos

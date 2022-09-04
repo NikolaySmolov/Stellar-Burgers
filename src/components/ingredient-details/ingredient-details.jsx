@@ -1,14 +1,19 @@
 import styles from './ingredient-details.module.css';
-import { ingredientDetails } from '../../utils/constants';
+import { useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
-export default function IngredientDetails({
-  name,
-  image_large,
-  calories,
-  proteins,
-  fat,
-  carbohydrates,
-}) {
+export default function IngredientDetails() {
+  const ingredients = useSelector(store => store.burger.ingredients);
+  const { id } = useParams();
+
+  if (ingredients.length === 0) {
+    return null;
+  }
+
+  const { name, image_large, calories, proteins, fat, carbohydrates } = ingredients.find(
+    ({ _id }) => _id === id
+  );
+
   return (
     <div className={`${styles.wrapper} pt-10 pr-10 pb-15 pl-10`}>
       <h2 className={`${styles.title} text text_type_main-large`}>Детали ингредиента</h2>
@@ -59,5 +64,3 @@ export default function IngredientDetails({
     </div>
   );
 }
-
-IngredientDetails.propTypes = ingredientDetails.isRequired;

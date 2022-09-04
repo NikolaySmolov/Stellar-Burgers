@@ -1,0 +1,12 @@
+.content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  height: calc(100vh - 88px);
+}
+
+.detailsWrapper {
+  transform: translateY(-44px);
+  min-width: 640px;
+}

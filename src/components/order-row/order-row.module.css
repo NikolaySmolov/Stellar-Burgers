@@ -1,0 +1,17 @@
+.rowWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.name {
+  flex-grow: 1;
+  max-width: 364px;
+}
+
+.priceWrapper {
+  display: flex;
+  justify-content: flex-end;
+  flex-grow: 1;
+  margin-left: calc(var(--offset-base-size) * 4);
+}

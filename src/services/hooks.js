@@ -1,4 +1,5 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, useMemo, useEffect } from 'react';
+import { BUN, DONE } from '../utils/constants';
 
 export const useInputLogic = ({ initType, initIcon = 'EditIcon', disabledState = false }) => {
   const [disabled, setDisabled] = useState(disabledState);
@@ -9,7 +10,7 @@ export const useInputLogic = ({ initType, initIcon = 'EditIcon', disabledState =
 
   const inputRef = useRef(null);
 
-  const validateField = fieldValue => {
+  const validateField = (fieldValue) => {
     switch (initType) {
       case 'password':
         if (fieldValue.length > 0 && fieldValue.length < 6 && !disabled) {
@@ -52,7 +53,7 @@ export const useInputLogic = ({ initType, initIcon = 'EditIcon', disabledState =
     setError(false);
   };
 
-  const onBlur = evt => {
+  const onBlur = (evt) => {
     if (initType === 'password') {
       setType('password');
       setIcon('ShowIcon');
@@ -70,4 +71,89 @@ export const useInputLogic = ({ initType, initIcon = 'EditIcon', disabledState =
   };
 
   return { icon, ref: inputRef, onIconClick, onBlur, onFocus, error, type, disabled, fieldReset };
+};
+
+export const useOrderData = (ingredientsArray, ingredientsMenu, dateString, status) => {
+  const [ingredientList, setIngredientsList] = useState(null);
+  const [orderDate, setOrderDate] = useState(null);
+  const [totalPrice, setTotalPrice] = useState(null);
+  const [statusText, setStatusText] = useState(null);
+
+  const date = (dateString) => {
+    const today = new Date();
+    const createdAt = new Date(Date.parse(dateString));
+
+    const difference = Math.floor((today - createdAt) / (1000 * 60 * 60 * 24));
+
+    if (difference === 0) {
+      return 'Сегодня';
+    } else if (difference === 1) {
+      return 'Вчера';
+    } else {
+      return `${difference} дня назад`;
+    }
+  };
+
+  const time = (dateString) => {
+    const createdAt = new Date(Date.parse(dateString));
+    const hours = createdAt.getHours();
+    const minutes = createdAt.getMinutes();
+
+    return `${hours}:${minutes} `;
+  };
+
+  const preparedDate = useMemo(() => {
+    const result = `${date(dateString)}, ${time(dateString)} i-GMT+3`;
+    return result;
+  }, [dateString]);
+
+  const preparedIngredientsData = useMemo(() => {
+    const result = ingredientsArray.reduce((acc, item) => {
+      const itemIndex = acc.findIndex((ingredient) => ingredient.id === item);
+
+      if (~itemIndex) {
+        acc[itemIndex].qty++;
+      } else {
+        const { name, image, price, type } = ingredientsMenu.find(({ _id }) => _id === item);
+
+        const ingredientData = { id: item, name, price, image, qty: 1 };
+
+        if (type === BUN) {
+          ingredientData.qty = 2;
+        }
+
+        acc.push(ingredientData);
+      }
+      return acc;
+    }, []);
+
+    return result;
+  }, [ingredientsArray, ingredientsMenu]);
+
+  const preparedTotalPrice = useMemo(() => {
+    const sum = preparedIngredientsData.reduce((acc, ing) => {
+      acc += ing.price * ing.qty;
+      return acc;
+    }, 0);
+    return sum.toLocaleString('ru-RU');
+  }, [preparedIngredientsData]);
+
+  const preparedStatusText = useMemo(() => {
+    //need adds all variables
+    switch (status) {
+      case DONE:
+        return 'Выполнен';
+      default:
+        return status;
+    }
+  }, [status]);
+
+  useEffect(() => {
+    setIngredientsList(preparedIngredientsData);
+    setOrderDate(preparedDate);
+    setTotalPrice(preparedTotalPrice);
+    setStatusText(preparedStatusText);
+  }, [preparedIngredientsData, preparedDate, preparedTotalPrice, preparedStatusText]);
+
+  return [ingredientList, orderDate, totalPrice, statusText];
 };
