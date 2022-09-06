@@ -1,5 +1,7 @@
-import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { CardOrder } from '../../components/card-order/card-order';
+import { WS_CONNECTION_CLOSE, WS_CONNECTION_START } from '../../services/actions/web-socket';
 import style from './feed.module.css';
 
 const feedCard = {
@@ -26,6 +28,16 @@ const mockInProgress = [24239, 24565, 23456, 25854, 23659];
 
 export const FeedPage = () => {
   const ingredients = useSelector((store) => store.burger.ingredients);
+  const dispatch = useDispatch();
+  const { orders, connected } = useSelector((store) => store.orders);
+
+  useEffect(() => {
+    dispatch({ type: WS_CONNECTION_START });
+
+    return () => {
+      dispatch({ type: WS_CONNECTION_CLOSE });
+    };
+  }, [dispatch]);
 
   if (ingredients.length === 0) {
     return;

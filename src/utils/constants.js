@@ -1,6 +1,27 @@
 import PropTypes from 'prop-types';
+import {
+  WS_CONNECTION_CLOSE,
+  WS_CONNECTION_CLOSED,
+  WS_CONNECTION_ERROR,
+  WS_CONNECTION_START,
+  WS_CONNECTION_SUCCESS,
+  WS_GET_MESSAGE,
+  WS_PROFILE_CONNECTION_START,
+} from '../services/actions/web-socket';
 
 export const API = 'https://norma.nomoreparties.space/api';
+
+export const WS = 'wss://norma.nomoreparties.space/orders';
+
+export const WS_ACTIONS = {
+  wsInit: WS_CONNECTION_START,
+  wsProfileInit: WS_PROFILE_CONNECTION_START,
+  wsClose: WS_CONNECTION_CLOSE,
+  onOpen: WS_CONNECTION_SUCCESS,
+  onMessage: WS_GET_MESSAGE,
+  onClose: WS_CONNECTION_CLOSED,
+  onError: WS_CONNECTION_ERROR,
+};
 
 export const ingredientPropTypes = PropTypes.shape({
   _id: PropTypes.string,
