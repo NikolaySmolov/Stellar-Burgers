@@ -1,5 +1,5 @@
 import { useRef, useState, useMemo, useEffect } from 'react';
-import { BUN, DONE } from '../utils/constants';
+import { BUN, CREATED, DONE, PENDING } from '../utils/constants';
 
 export const useInputLogic = ({ initType, initIcon = 'EditIcon', disabledState = false }) => {
   const [disabled, setDisabled] = useState(disabledState);
@@ -139,8 +139,11 @@ export const useOrderData = (ingredientsArray, ingredientsMenu, dateString, stat
   }, [preparedIngredientsData]);
 
   const preparedStatusText = useMemo(() => {
-    //need adds all variables
     switch (status) {
+      case CREATED:
+        return 'Создан';
+      case PENDING:
+        return 'Готовится';
       case DONE:
         return 'Выполнен';
       default:

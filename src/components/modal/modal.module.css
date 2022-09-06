@@ -3,7 +3,7 @@
   left: 50%;
   top: 50%;
   width: 720px;
-  min-height: 538px;
+  min-height: 492px;
   transform: translate(-50%, -50%);
   border-radius: 40px;
   background-color: var(--background);
