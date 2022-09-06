@@ -49,6 +49,8 @@ export const FILLING = 'filling';
 export const CALC = 'calc';
 export const ADD = 'add';
 export const SORT = 'sort';
+export const CREATED = 'created';
+export const PENDING = 'pending';
 export const DONE = 'done';
 
 export const ACCESS_TOKEN = 'accessToken';

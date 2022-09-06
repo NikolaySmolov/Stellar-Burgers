@@ -7,36 +7,14 @@ import { DONE } from '../../utils/constants';
 import { useOrderData } from '../../services/hooks';
 import { Link, useRouteMatch } from 'react-router-dom';
 
-//Mock order
-const orderData = {
-  createdAt: '2022-08-29T07:55:43.747Z',
-  ingredients: [
-    '60d3b41abdacab0026a733c6',
-    '60d3b41abdacab0026a733cd',
-    '60d3b41abdacab0026a733cf',
-    '60d3b41abdacab0026a733cd',
-    '60d3b41abdacab0026a733cf',
-    '60d3b41abdacab0026a733d4',
-    '60d3b41abdacab0026a733d4',
-    '60d3b41abdacab0026a733d1',
-    '60d3b41abdacab0026a733d3',
-    '60d3b41abdacab0026a733cc',
-    '60d3b41abdacab0026a733d0',
-  ],
-  name: 'Space антарианский краторный бургер',
-  number: 24239,
-  status: 'done',
-  updatedAt: '2022-08-29T07:55:44.181Z',
-  _id: '630c70ff42d34a001c28491d',
-};
-
 export const CardOrder = ({
   withStatus = true,
-  number = orderData.number,
-  name = orderData.name,
-  ingredients = orderData.ingredients,
-  status = orderData.status,
-  createdAt = orderData.createdAt,
+  number,
+  name,
+  ingredients,
+  status,
+  createdAt,
+  id,
 }) => {
   const ingredientsMenu = useSelector((store) => store.burger.ingredients);
 
@@ -51,8 +29,9 @@ export const CardOrder = ({
 
   const thumbnailList = useMemo(() => {
     if (ingredientsList) {
-      const renderList = [...ingredientsList].slice(0, 6).reverse();
-      const more = ingredientsList.length - 6;
+      const uniqList = new Set(ingredientsList);
+      const renderList = Array.from(uniqList).slice(0, 6).reverse();
+      const more = uniqList.size > 6 ? uniqList.size - 6 : null;
 
       return (
         <ul className={`${style.thumbnailList} mr-10`}>
@@ -75,8 +54,8 @@ export const CardOrder = ({
   return (
     <Link
       to={(location) => ({
-        pathname: `${url}/${orderData._id}`,
-        // state: { background: location },
+        pathname: `${url}/${id}`,
+        state: { background: location },
       })}
       className={style.link}
     >
