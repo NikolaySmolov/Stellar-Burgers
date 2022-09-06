@@ -81,16 +81,14 @@ export default function App() {
       </Switch>
       {background ? (
         <>
-          <Route path="/ingredients/:id">
-            <Modal onClose={handleCloseModal}>
+          <Modal onClose={handleCloseModal}>
+            <Route path="/ingredients/:id">
               <IngredientDetails />
-            </Modal>
-          </Route>
-          <Route path="/feed/:id">
-            <Modal onClose={handleCloseModal}>
+            </Route>
+            <Route path="/feed/:id">
               <CardOrderDetails />
-            </Modal>
-          </Route>
+            </Route>
+          </Modal>
         </>
       ) : null}
     </>

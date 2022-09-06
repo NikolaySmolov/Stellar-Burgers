@@ -1,6 +1,8 @@
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useSelector } from 'react-redux';
+import { useEffect, useMemo } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import { WS_CONNECTION_START } from '../../services/actions/web-socket';
 import { useOrderData } from '../../services/hooks';
 import { DONE } from '../../utils/constants';
 import { OrderRow } from '../order-row/order-row';
@@ -12,16 +14,30 @@ export const CardOrderDetails = () => {
     orders: store.orders.ordersData.orders,
   }));
 
+  const dispatch = useDispatch();
+
   const { id: orderId } = useParams();
 
-  const orderData = orders.find(({ _id }) => _id === orderId);
+  const orderData = useMemo(() => {
+    if (orders) {
+      return orders.find(({ _id }) => _id === orderId);
+    }
+
+    return null;
+  }, [orders, orderId]);
 
   const [ingredientsList, orderDate, totalPrice, statusText] = useOrderData(
-    orderData.ingredients,
+    orderData?.ingredients,
     ingredientsMenu,
-    orderData.createdAt,
-    orderData.status
+    orderData?.createdAt,
+    orderData?.status
   );
+
+  useEffect(() => {
+    if (!orders) {
+      dispatch({ type: WS_CONNECTION_START });
+    }
+  }, [dispatch, orders]);
 
   if (!ingredientsList) {
     return null;
