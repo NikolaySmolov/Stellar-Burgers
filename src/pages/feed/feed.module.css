@@ -29,6 +29,10 @@
   border-radius: 0;
 }
 
+.orderListItem:last-of-type {
+  margin-bottom: calc(var(--offset-base-size) * 4);
+}
+
 .statsWrapper {
   max-height: calc(100vh - 188px);
   overflow-y: auto;
