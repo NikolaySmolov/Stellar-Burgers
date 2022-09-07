@@ -1,12 +1,14 @@
 import { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { CardOrder } from '../../components/card-order/card-order';
+import { Loader } from '../../components/loader/loader';
+import ModalError from '../../components/modal-error/modal-error';
 import { WS_CONNECTION_CLOSE, WS_CONNECTION_START } from '../../services/actions/web-socket';
 import { DONE, PENDING } from '../../utils/constants';
 import style from './feed.module.css';
 
 export const FeedPage = () => {
-  const { ingredients, ordersData, connected, error } = useSelector((store) => ({
+  const { ingredients, ordersData, error } = useSelector((store) => ({
     ingredients: store.burger.ingredients,
     ...store.orders,
   }));
@@ -46,7 +48,9 @@ export const FeedPage = () => {
   }, [ordersData]);
 
   if (ingredients.length === 0 || ordersData.length === 0) {
-    return;
+    return <Loader />;
+  } else if (error) {
+    return <ModalError />;
   }
 
   return (

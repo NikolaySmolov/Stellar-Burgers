@@ -6,9 +6,10 @@ import { TOKEN } from '../../utils/constants';
 import { useDispatch, useSelector } from 'react-redux';
 import { setUserLogout } from '../../services/actions/profile';
 import { UserInfo } from '../../components/user-info/user-info';
+import ModalError from '../../components/modal-error/modal-error';
 
 export const ProfilePage = () => {
-  const { setUserLogoutRequest, setUserLogoutFailed } = useSelector(store => store.profile);
+  const { setUserLogoutRequest, setUserLogoutFailed } = useSelector((store) => store.profile);
 
   const dispatch = useDispatch();
 
@@ -40,11 +41,7 @@ export const ProfilePage = () => {
   if (setUserLogoutRequest) {
     return null;
   } else if (setUserLogoutFailed) {
-    return (
-      <h1 className={'text text_type_main-default text_color_inactive pt-20'}>
-        Что-то пошло не так... Попробуйте обновить страницу
-      </h1>
-    );
+    return <ModalError />;
   }
 
   return (
@@ -56,7 +53,8 @@ export const ProfilePage = () => {
               to={{ pathname: path }}
               className={`${styles.navLink} text text_type_main-medium`}
               activeClassName={styles.navLinkActive}
-              exact>
+              exact
+            >
               Профиль
             </NavLink>
           </li>
@@ -65,7 +63,8 @@ export const ProfilePage = () => {
               to={{ pathname: `${url}/orders` }}
               className={`${styles.navLink} text text_type_main-medium`}
               activeClassName={styles.navLinkActive}
-              exact>
+              exact
+            >
               История заказов
             </NavLink>
           </li>
@@ -73,7 +72,8 @@ export const ProfilePage = () => {
             <Link
               to={{ pathname: '/login', state: { from: location } }}
               className={`${styles.navLink} text text_type_main-medium`}
-              onClick={handleLogout}>
+              onClick={handleLogout}
+            >
               Выход
             </Link>
           </li>

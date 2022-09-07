@@ -1,10 +1,10 @@
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useEffect, useMemo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useMemo } from 'react';
+import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { WS_CONNECTION_START } from '../../services/actions/web-socket';
 import { useOrderData } from '../../services/hooks';
 import { DONE } from '../../utils/constants';
+import { Loader } from '../loader/loader';
 import { OrderRow } from '../order-row/order-row';
 import style from './card-order-details.module.css';
 
@@ -13,8 +13,6 @@ export const CardOrderDetails = () => {
     ingredientsMenu: store.burger.ingredients,
     orders: store.orders.ordersData.orders,
   }));
-
-  const dispatch = useDispatch();
 
   const { id: orderId } = useParams();
 
@@ -33,14 +31,8 @@ export const CardOrderDetails = () => {
     orderData?.status
   );
 
-  useEffect(() => {
-    if (!orders) {
-      dispatch({ type: WS_CONNECTION_START });
-    }
-  }, [dispatch, orders]);
-
   if (!ingredientsList) {
-    return null;
+    return <Loader />;
   }
 
   return (

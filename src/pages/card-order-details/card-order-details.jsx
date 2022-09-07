@@ -8,11 +8,11 @@ import { WS_CONNECTION_CLOSE, WS_CONNECTION_START } from '../../services/actions
 import style from './card-order-details.module.css';
 
 export const OrderDetailsPage = () => {
-  const { ordersData, connected, error } = useSelector((store) => ({
+  const { ordersData, error } = useSelector((store) => ({
     ingredients: store.burger.ingredients,
     ...store.orders,
   }));
-  debugger;
+
   const dispatch = useDispatch();
 
   const { id: orderId } = useParams();
@@ -26,7 +26,6 @@ export const OrderDetailsPage = () => {
   }, [dispatch]);
 
   if (!ordersData.orders && !error) {
-    debugger;
     return <Loader />;
   } else if (error) {
     return <ModalError />;
@@ -35,7 +34,7 @@ export const OrderDetailsPage = () => {
   const hasOrder = ordersData.orders.some(({ _id }) => _id === orderId);
 
   if (!hasOrder) {
-    return <Redirect to={{ pathname: 'notFound' }} />;
+    return <Redirect to={{ pathname: '/order-not-found' }} />;
   }
 
   return (
