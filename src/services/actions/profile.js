@@ -18,11 +18,11 @@ import {
 import { getProfileInfo, getRefreshToken, setLogout, setProfileInfo } from '../api';
 import { deleteCookie, setCookie } from '../utils';
 
-export const getUserAccess = token => dispatch => {
+export const getUserAccess = (token) => (dispatch) => {
   dispatch({ type: USER_ACCESS_REQUEST });
 
   getRefreshToken(token)
-    .then(data => {
+    .then((data) => {
       const accessToken = data.accessToken.split('Bearer ')[1];
       const token = data.refreshToken;
 
@@ -31,18 +31,18 @@ export const getUserAccess = token => dispatch => {
 
       dispatch({ type: USER_ACCESS_SUCCESS });
     })
-    .catch(err => {
+    .catch((err) => {
       console.log(err);
       dispatch({ type: USER_ACCESS_FAILED });
     });
 };
 
-export const getUserProfileInfo = accessToken => dispatch => {
+export const getUserProfileInfo = (accessToken) => (dispatch) => {
   dispatch({ type: PROFILE_USER_INFO_REQUEST });
 
   getProfileInfo(accessToken)
     .then(({ user }) => dispatch({ type: PROFILE_USER_INFO_SUCCESS, payload: user }))
-    .catch(err => {
+    .catch((err) => {
       if (err.status === 403) {
         dispatch({ type: USER_ACCESS_FAILED });
       }
@@ -60,12 +60,12 @@ export const setProfileUserInfoFormReset = () => ({
   type: PROFILE_USER_INFO_FORM_RESET,
 });
 
-export const setUserProfileInfo = (accessToken, form) => dispatch => {
+export const setUserProfileInfo = (accessToken, form) => (dispatch) => {
   dispatch({ type: PROFILE_USER_INFO_FORM_SUBMIT });
 
   setProfileInfo(accessToken, form)
     .then(({ user }) => dispatch({ type: PROFILE_USER_INFO_FORM_SUCCESS, payload: user }))
-    .catch(err => {
+    .catch((err) => {
       if (err.status === 403) {
         dispatch({ type: USER_ACCESS_FAILED });
       }
@@ -74,7 +74,7 @@ export const setUserProfileInfo = (accessToken, form) => dispatch => {
     });
 };
 
-export const setUserLogout = token => dispatch => {
+export const setUserLogout = (token) => (dispatch) => {
   dispatch({ type: USER_LOGOUT_REQUEST });
 
   setLogout(token)
@@ -83,5 +83,5 @@ export const setUserLogout = token => dispatch => {
       deleteCookie(TOKEN);
       deleteCookie(ACCESS_TOKEN);
     })
-    .catch(err => console.log(err));
+    .catch((err) => console.log(err));
 };

@@ -31,7 +31,10 @@ export const CardOrderDetails = () => {
     orderData?.status
   );
 
-  if (!ingredientsList) {
+  if (!ingredientsList && orders) {
+    return null;
+  }
+  if (!orders) {
     return <Loader />;
   }
 

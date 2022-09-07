@@ -38,10 +38,12 @@ export const UserOrders = () => {
     );
   }
 
+  const reversedOrders = [...ordersData.orders].reverse();
+
   return (
     <div className={`${style.ordersWrapper} custom-scroll`}>
       <ul className={`${style.orderList} pl-2 pr-2`}>
-        {ordersData.orders.map(({ _id, number, createdAt, name, status, ingredients }) => {
+        {reversedOrders.map(({ _id, number, createdAt, name, status, ingredients }) => {
           return (
             <li className={style.orderListItem} key={_id}>
               <CardOrder
