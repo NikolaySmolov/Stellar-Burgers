@@ -1,5 +1,5 @@
 import { useRef, useState, useMemo, useEffect } from 'react';
-import { BUN, DONE } from '../utils/constants';
+import { BUN, CREATED, DONE, PENDING } from '../utils/constants';
 
 export const useInputLogic = ({ initType, initIcon = 'EditIcon', disabledState = false }) => {
   const [disabled, setDisabled] = useState(disabledState);
@@ -79,11 +79,11 @@ export const useOrderData = (ingredientsArray, ingredientsMenu, dateString, stat
   const [totalPrice, setTotalPrice] = useState(null);
   const [statusText, setStatusText] = useState(null);
 
-  const date = (dateString) => {
+  const date = () => {
     const today = new Date();
     const createdAt = new Date(Date.parse(dateString));
 
-    const difference = Math.floor((today - createdAt) / (1000 * 60 * 60 * 24));
+    const difference = Math.floor((today - createdAt) / (1000 * 60 * 60 * 24)); // need fix
 
     if (difference === 0) {
       return 'Сегодня';
@@ -94,7 +94,7 @@ export const useOrderData = (ingredientsArray, ingredientsMenu, dateString, stat
     }
   };
 
-  const time = (dateString) => {
+  const time = () => {
     const createdAt = new Date(Date.parse(dateString));
     const hours = createdAt.getHours();
     const minutes = createdAt.getMinutes();
@@ -103,11 +103,20 @@ export const useOrderData = (ingredientsArray, ingredientsMenu, dateString, stat
   };
 
   const preparedDate = useMemo(() => {
+    if (!dateString) {
+      return null;
+    }
+
     const result = `${date(dateString)}, ${time(dateString)} i-GMT+3`;
     return result;
+    // eslint-disable-next-line
   }, [dateString]);
 
   const preparedIngredientsData = useMemo(() => {
+    if (!ingredientsArray) {
+      return null;
+    }
+
     const result = ingredientsArray.reduce((acc, item) => {
       const itemIndex = acc.findIndex((ingredient) => ingredient.id === item);
 
@@ -131,6 +140,10 @@ export const useOrderData = (ingredientsArray, ingredientsMenu, dateString, stat
   }, [ingredientsArray, ingredientsMenu]);
 
   const preparedTotalPrice = useMemo(() => {
+    if (!preparedIngredientsData) {
+      return null;
+    }
+
     const sum = preparedIngredientsData.reduce((acc, ing) => {
       acc += ing.price * ing.qty;
       return acc;
@@ -139,8 +152,15 @@ export const useOrderData = (ingredientsArray, ingredientsMenu, dateString, stat
   }, [preparedIngredientsData]);
 
   const preparedStatusText = useMemo(() => {
-    //need adds all variables
+    if (!status) {
+      return null;
+    }
+
     switch (status) {
+      case CREATED:
+        return 'Создан';
+      case PENDING:
+        return 'Готовится';
       case DONE:
         return 'Выполнен';
       default:

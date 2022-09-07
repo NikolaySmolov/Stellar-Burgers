@@ -1,35 +1,19 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { CardOrder } from '../../components/card-order/card-order';
+import { Loader } from '../../components/loader/loader';
+import ModalError from '../../components/modal-error/modal-error';
 import { WS_CONNECTION_CLOSE, WS_CONNECTION_START } from '../../services/actions/web-socket';
+import { DONE, PENDING } from '../../utils/constants';
 import style from './feed.module.css';
 
-const feedCard = {
-  createdAt: '2022-08-29T07:55:43.747Z',
-  ingredients: [
-    '60d3b41abdacab0026a733c6',
-    '60d3b41abdacab0026a733cd',
-    '60d3b41abdacab0026a733cf',
-    '60d3b41abdacab0026a733cd',
-  ],
-  name: 'Space антарианский краторный бургер',
-  number: 24239,
-  status: 'done',
-  updatedAt: '2022-08-29T07:55:44.181Z',
-  _id: '630c70ff42d34a001c28491d',
-};
-
-const mockDone = [
-  24239, 24565, 23456, 25854, 23659, 24690, 24595, 25456, 22345, 34552, 23456, 31345, 31235, 22152,
-  34533, 43123, 34543, 21345, 22653, 21532,
-];
-
-const mockInProgress = [24239, 24565, 23456, 25854, 23659];
-
 export const FeedPage = () => {
-  const ingredients = useSelector((store) => store.burger.ingredients);
+  const { ingredients, ordersData, error } = useSelector((store) => ({
+    ingredients: store.burger.ingredients,
+    ...store.orders,
+  }));
+
   const dispatch = useDispatch();
-  const { orders, connected } = useSelector((store) => store.orders);
 
   useEffect(() => {
     dispatch({ type: WS_CONNECTION_START });
@@ -39,8 +23,34 @@ export const FeedPage = () => {
     };
   }, [dispatch]);
 
-  if (ingredients.length === 0) {
-    return;
+  const ordersStats = useMemo(() => {
+    if (ordersData.orders) {
+      const preparedStats = ordersData.orders.reduce(
+        (acc, curr) => {
+          if (curr.status === DONE && acc.done.length < 20) {
+            acc.done.push(curr.number);
+          } else if (curr.status === PENDING && acc.inProgress < 20) {
+            acc.inProgress.push(curr.number);
+          }
+
+          return acc;
+        },
+        {
+          done: [],
+          inProgress: [],
+        }
+      );
+
+      return preparedStats;
+    }
+
+    return null;
+  }, [ordersData]);
+
+  if (ingredients.length === 0 || ordersData.length === 0) {
+    return <Loader />;
+  } else if (error) {
+    return <ModalError />;
   }
 
   return (
@@ -48,33 +58,21 @@ export const FeedPage = () => {
       <section className={style.orders}>
         <h1 className={'text text_type_main-large mt-10 mb-5 pl-2'}>Лента заказов</h1>
         <ul className={`${style.orderList} pl-2 pr-2 custom-scroll`}>
-          <li className={style.orderItem}>
-            <CardOrder />
-          </li>
-          <li className={style.orderItem}>
-            <CardOrder />
-          </li>
-          <li className={style.orderItem}>
-            <CardOrder />
-          </li>
-          <li className={style.orderItem}>
-            <CardOrder />
-          </li>
-          <li className={style.orderItem}>
-            <CardOrder />
-          </li>
-          <li className={style.orderItem}>
-            <CardOrder />
-          </li>
-          <li className={style.orderItem}>
-            <CardOrder />
-          </li>
-          <li className={style.orderItem}>
-            <CardOrder />
-          </li>
-          <li className={style.orderItem}>
-            <CardOrder />
-          </li>
+          {ordersData.orders.map(({ _id, number, createdAt, name, status, ingredients }) => {
+            return (
+              <li className={style.orderItem} key={_id}>
+                <CardOrder
+                  withStatus={false}
+                  number={number}
+                  name={name}
+                  ingredients={ingredients}
+                  status={status}
+                  createdAt={createdAt}
+                  id={_id}
+                />
+              </li>
+            );
+          })}
         </ul>
       </section>
       <section className={`${style.statsWrapper} custom-scroll mt-25`}>
@@ -82,12 +80,12 @@ export const FeedPage = () => {
           <section className={`${style.statsColumn} mr-9`}>
             <h2 className={`${style.statsTitle} text text_type_main-medium`}>Готовы:</h2>
             <ul className={style.statsList}>
-              {mockDone.map((order) => (
-                <li className={style.statsListItem} key={order}>
+              {ordersStats.done.map((orderNumber) => (
+                <li className={style.statsListItem} key={orderNumber}>
                   <p
                     className={`${style.statsListText} text text_type_digits-default text_color_success`}
                   >
-                    {order}
+                    {orderNumber}
                   </p>
                 </li>
               ))}
@@ -96,9 +94,11 @@ export const FeedPage = () => {
           <section className={style.statsColumn}>
             <h2 className={`${style.statsTitle} text text_type_main-medium`}>В&nbsp;работе:</h2>
             <ul className={style.statsList}>
-              {mockInProgress.map((order) => (
-                <li className={style.statsListItem} key={order}>
-                  <p className={`${style.statsListText} text text_type_digits-default`}>{order}</p>
+              {ordersStats.inProgress.map((orderNumber) => (
+                <li className={style.statsListItem} key={orderNumber}>
+                  <p className={`${style.statsListText} text text_type_digits-default`}>
+                    {orderNumber}
+                  </p>
                 </li>
               ))}
             </ul>
@@ -108,14 +108,17 @@ export const FeedPage = () => {
           <h2 className={`${style.statsTitle}  text text_type_main-medium`}>
             Выполнено за&nbsp;все время:
           </h2>
-          {/* нужен сепаратор для числа 1 000 */}
-          <p className={`${style.counterText} text text_type_digits-large`}>28 752</p>{' '}
+          <p className={`${style.counterText} text text_type_digits-large`}>
+            {ordersData.total.toLocaleString('ru-RU')}
+          </p>
         </div>
         <div className={style.completedTodayWrapper}>
           <h2 className={`${style.statsTitle}  text text_type_main-medium`}>
             Выполнено за&nbsp;все сегодня:
           </h2>
-          <p className={`${style.counterText} text text_type_digits-large`}>138</p>
+          <p className={`${style.counterText} text text_type_digits-large`}>
+            {ordersData.totalToday.toLocaleString('ru-RU')}
+          </p>
         </div>
       </section>
     </main>
