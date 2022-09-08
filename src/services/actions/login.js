@@ -19,16 +19,16 @@ export const resetLoginFormValues = () => ({
   type: LOGIN_FORM_RESET_VALUES,
 });
 
-export const signIn = form => dispatch => {
+export const signIn = (form) => (dispatch) => {
   dispatch({ type: LOGIN_FORM_SUBMIT });
 
   requireLogin(form)
-    .then(data => {
+    .then((data) => {
       const accessToken = data.accessToken.split('Bearer ')[1];
       const token = data.refreshToken;
 
-      setCookie(ACCESS_TOKEN, accessToken, { 'max-age': 1200 });
-      setCookie(TOKEN, token);
+      setCookie(ACCESS_TOKEN, accessToken, { 'max-age': 1200, path: '/' });
+      setCookie(TOKEN, token, { path: '/' });
       dispatch({ type: LOGIN_FORM_SUCCESS });
     })
     .catch(() => dispatch({ type: LOGIN_FORM_FAILED }));

@@ -1,8 +1,8 @@
 import { Route, Redirect } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
-import { getCookie } from '../services/utils';
-import { ACCESS_TOKEN, TOKEN, USER_ACCESS_FAILED, USER_ACCESS_SUCCESS } from '../utils/constants';
+import { getClientAccessState, getClientTokenState, getCookie } from '../services/utils';
+import { TOKEN, USER_ACCESS_FAILED, USER_ACCESS_SUCCESS } from '../utils/constants';
 import { getUserAccess } from '../services/actions/profile';
 import PropTypes from 'prop-types';
 import { Loader } from './loader/loader';
@@ -11,27 +11,27 @@ export const ProtectedRoute = ({ children, ...props }) => {
   const { getUserAccessRequest, getUserAccessFailed } = useSelector((store) => store.profile);
   const dispatch = useDispatch();
 
-  const accessExpired = getCookie(ACCESS_TOKEN) ? false : true;
+  const hasAccessToken = getClientAccessState();
+  const hasToken = getClientTokenState();
 
   useEffect(() => {
-    if (getCookie(ACCESS_TOKEN)) {
-      dispatch({ type: USER_ACCESS_SUCCESS });
-    } else if (getCookie(TOKEN)) {
-      console.log('dispatch get UserAccess'); //иногда срабатывает два раза подряд при вызове страницы через адрес и дублирует токен
-      dispatch(getUserAccess(getCookie(TOKEN)));
-    } else {
-      dispatch({ type: USER_ACCESS_FAILED });
+    if (!getUserAccessRequest) {
+      if (hasAccessToken) {
+        dispatch({ type: USER_ACCESS_SUCCESS });
+      } else if (hasToken) {
+        dispatch(getUserAccess(getCookie(TOKEN)));
+      } else {
+        dispatch({ type: USER_ACCESS_FAILED });
+      }
     }
-  }, [dispatch, accessExpired]);
+  }, [dispatch, getUserAccessRequest, hasAccessToken, hasToken]);
 
-  if (getUserAccessRequest) {
+  if ((!hasAccessToken && !getUserAccessFailed) || getUserAccessRequest) {
     return (
       <div>
         <Loader />
       </div>
     );
-  } else if (accessExpired && !getUserAccessFailed) {
-    return null;
   }
 
   return (

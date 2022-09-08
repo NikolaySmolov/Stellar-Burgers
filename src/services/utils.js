@@ -1,3 +1,5 @@
+import { ACCESS_TOKEN, TOKEN } from '../utils/constants';
+
 export function setCookie(name, value, props) {
   props = props || {};
   let exp = props.expires;
@@ -19,6 +21,7 @@ export function setCookie(name, value, props) {
     }
   }
   document.cookie = updatedCookie;
+  console.log(`${name} - set cookie`);
 }
 
 export function getCookie(name) {
@@ -30,5 +33,9 @@ export function getCookie(name) {
 }
 
 export function deleteCookie(name) {
-  setCookie(name, '', { 'max-age': -1 });
+  setCookie(name, '', { 'max-age': -1, path: '/' });
 }
+
+export const getClientAccessState = () => (getCookie(ACCESS_TOKEN) ? true : false);
+
+export const getClientTokenState = () => (getCookie(TOKEN) ? true : false);
