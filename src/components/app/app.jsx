@@ -39,6 +39,7 @@ export default function App() {
   };
 
   useEffect(() => {
+    console.log('app - get ingredients');
     dispatch(getIngredients());
   }, [dispatch]);
 
