@@ -33,7 +33,7 @@ export function getCookie(name) {
 }
 
 export function deleteCookie(name) {
-  setCookie(name, '', { 'max-age': -1 });
+  setCookie(name, '', { 'max-age': -1, path: '/' });
 }
 
 export const getClientAccessState = () => (getCookie(ACCESS_TOKEN) ? true : false);

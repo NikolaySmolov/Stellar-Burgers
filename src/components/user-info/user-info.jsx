@@ -71,7 +71,6 @@ export const UserInfo = () => {
 
   useEffect(() => {
     if (!userInfoLoaded) {
-      console.log('user-info - get user profile info');
       dispatch(getUserProfileInfo(getCookie(ACCESS_TOKEN)));
     }
     return () => handleReset();

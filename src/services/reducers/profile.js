@@ -26,7 +26,6 @@ const initialState = {
     password: FAKE_PASSWORD,
   },
   userInfoLoaded: false,
-  userAccess: false, //может не понадобится
   getUserInfoRequest: false,
   getUserInfoFailed: false,
   setUserInfoRequest: false,
@@ -107,21 +106,18 @@ export const profileReducer = (state = initialState, action) => {
     case USER_ACCESS_REQUEST:
       return {
         ...state,
-        userAccess: false,
         getUserAccessRequest: true,
         getUserAccessFailed: false,
       };
     case USER_ACCESS_SUCCESS:
       return {
         ...state,
-        userAccess: true,
         getUserAccessRequest: false,
         getUserAccessFailed: false,
       };
     case USER_ACCESS_FAILED:
       return {
         ...state,
-        userAccess: false,
         getUserAccessRequest: false,
         getUserAccessFailed: true,
       };
