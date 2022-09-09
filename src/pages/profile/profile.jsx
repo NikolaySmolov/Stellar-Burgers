@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setUserLogout } from '../../services/actions/profile';
 import { UserInfo } from '../../components/user-info/user-info';
 import ModalError from '../../components/modal-error/modal-error';
+import { UserOrders } from '../../components/user-orders/user-orders';
 
 export const ProfilePage = () => {
   const { setUserLogoutRequest, setUserLogoutFailed } = useSelector((store) => store.profile);
@@ -85,8 +86,8 @@ export const ProfilePage = () => {
           <Route path={'/profile'} exact>
             <UserInfo />
           </Route>
-          <Route path={`${path}/orders`}>
-            <div></div>
+          <Route path={`${path}/orders`} exact>
+            <UserOrders />
           </Route>
         </Switch>
       </section>

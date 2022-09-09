@@ -22,7 +22,7 @@ export const UserInfo = () => {
     getUserInfoRequest,
     getUserInfoFailed,
     setUserInfoFailed,
-  } = useSelector(store => store.profile);
+  } = useSelector((store) => store.profile);
 
   const dispatch = useDispatch();
 
@@ -41,18 +41,18 @@ export const UserInfo = () => {
   const someEnabled = fieldsProps.some(({ disabled }) => disabled === false);
 
   const resetFields = () => {
-    fieldsProps.forEach(field => field.fieldReset());
+    fieldsProps.forEach((field) => field.fieldReset());
   };
 
   const handleSetFieldValue = useCallback(
-    evt => {
+    (evt) => {
       const field = evt.currentTarget;
       dispatch(setProfileUserInfoFormValue(field.name, field.value));
     },
     [dispatch]
   );
 
-  const handleSubmit = evt => {
+  const handleSubmit = (evt) => {
     evt.preventDefault();
     const formData = { ...userInfoForm };
     if (formData.password === FAKE_PASSWORD) {

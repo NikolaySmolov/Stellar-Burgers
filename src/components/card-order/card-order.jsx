@@ -1,5 +1,6 @@
-import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import style from './card-order.module.css';
+import PropTypes from 'prop-types';
+import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useSelector } from 'react-redux';
 import { IngredientThumbnail } from '../ingredient-thumbnail/ingredient-thumbnail';
 import { useMemo } from 'react';
@@ -84,4 +85,14 @@ export const CardOrder = ({
       </article>
     </Link>
   );
+};
+
+CardOrder.propTypes = {
+  withStatus: PropTypes.bool,
+  number: PropTypes.number.isRequired,
+  name: PropTypes.string.isRequired,
+  ingredients: PropTypes.arrayOf(PropTypes.string).isRequired,
+  status: PropTypes.string.isRequired,
+  createdAt: PropTypes.string.isRequired,
+  id: PropTypes.string.isRequired,
 };

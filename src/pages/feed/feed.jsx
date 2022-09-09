@@ -55,12 +55,12 @@ export const FeedPage = () => {
 
   return (
     <main className={style.content}>
-      <section className={style.orders}>
+      <section>
         <h1 className={'text text_type_main-large mt-10 mb-5 pl-2'}>Лента заказов</h1>
         <ul className={`${style.orderList} pl-2 pr-2 custom-scroll`}>
           {ordersData.orders.map(({ _id, number, createdAt, name, status, ingredients }) => {
             return (
-              <li className={style.orderItem} key={_id}>
+              <li className={style.orderListItem} key={_id}>
                 <CardOrder
                   withStatus={false}
                   number={number}
