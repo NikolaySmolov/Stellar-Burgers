@@ -1,5 +1,6 @@
 import { useRef, useState, useMemo, useEffect } from 'react';
 import { BUN, CREATED, DONE, PENDING } from '../utils/constants';
+import { setTimeFormat } from './utils';
 
 export const useInputLogic = ({ initType, initIcon = 'EditIcon', disabledState = false }) => {
   const [disabled, setDisabled] = useState(disabledState);
@@ -81,23 +82,34 @@ export const useOrderData = (ingredientsArray, ingredientsMenu, dateString, stat
 
   const date = () => {
     const today = new Date();
+    today.setHours(24, 0, 0, 0);
     const createdAt = new Date(Date.parse(dateString));
 
-    const difference = Math.floor((today - createdAt) / (1000 * 60 * 60 * 24)); // need fix
+    const difference = Math.floor((today - createdAt) / (1000 * 60 * 60 * 24));
+
+    const defineNumber = (number) => {
+      const lastDigit = Number(String(number).split('').at(-1));
+      return lastDigit;
+    };
 
     if (difference === 0) {
       return 'Сегодня';
     } else if (difference === 1) {
       return 'Вчера';
-    } else {
+    } else if (defineNumber(difference) && difference !== 1 && difference > 20) {
+      return `${difference} день назад`;
+    } else if (defineNumber(difference) > 1 && defineNumber(difference) < 5 && difference > 20) {
       return `${difference} дня назад`;
+    } else {
+      return `${difference} дней назад`;
     }
   };
 
   const time = () => {
     const createdAt = new Date(Date.parse(dateString));
-    const hours = createdAt.getHours();
-    const minutes = createdAt.getMinutes();
+
+    const hours = setTimeFormat(createdAt.getHours());
+    const minutes = setTimeFormat(createdAt.getMinutes());
 
     return `${hours}:${minutes} `;
   };

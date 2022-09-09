@@ -21,7 +21,6 @@ export function setCookie(name, value, props) {
     }
   }
   document.cookie = updatedCookie;
-  console.log(`${name} - set cookie`);
 }
 
 export function getCookie(name) {
@@ -39,3 +38,11 @@ export function deleteCookie(name) {
 export const getClientAccessState = () => (getCookie(ACCESS_TOKEN) ? true : false);
 
 export const getClientTokenState = () => (getCookie(TOKEN) ? true : false);
+
+export const setTimeFormat = (number) => {
+  if (number >= 0 && number < 10) {
+    return '0' + number;
+  }
+
+  return String(number);
+};

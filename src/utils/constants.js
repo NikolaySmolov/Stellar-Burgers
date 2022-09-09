@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import {
+  WS_RESET_ORDERS,
   WS_CONNECTION_CLOSE,
   WS_CONNECTION_CLOSED,
   WS_CONNECTION_ERROR,
@@ -21,6 +22,7 @@ export const WS_ACTIONS = {
   onMessage: WS_GET_MESSAGE,
   onClose: WS_CONNECTION_CLOSED,
   onError: WS_CONNECTION_ERROR,
+  resetOrders: WS_RESET_ORDERS,
 };
 
 export const ingredientPropTypes = PropTypes.shape({

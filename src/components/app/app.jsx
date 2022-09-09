@@ -76,9 +76,9 @@ export default function App() {
         <Route path="/reset-password" exact>
           <ResetPasswordPage />
         </Route>
-        {/* <ProtectedRoute path="/profile/orders/:id">
+        <ProtectedRoute path="/profile/orders/:id">
           <OrderDetailsPage connectAction={WS_PROFILE_CONNECTION_START} />
-        </ProtectedRoute> */}
+        </ProtectedRoute>
         <ProtectedRoute path="/profile">
           <ProfilePage />
         </ProtectedRoute>

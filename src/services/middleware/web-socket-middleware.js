@@ -7,7 +7,8 @@ export const wsMiddleware = (wsUrl, wsActions) => {
     const { dispatch } = store;
     const { type } = action;
 
-    const { wsInit, wsProfileInit, wsClose, onOpen, onMessage, onClose, onError } = wsActions;
+    const { wsInit, wsProfileInit, wsClose, onOpen, onMessage, onClose, onError, resetOrders } =
+      wsActions;
 
     if (type === wsInit) {
       webSocket = new WebSocket(`${wsUrl}/all`);
@@ -18,6 +19,7 @@ export const wsMiddleware = (wsUrl, wsActions) => {
     }
 
     if (type === wsClose) {
+      dispatch({ type: resetOrders });
       webSocket.close(1000, 'CLOSE_NORMAL');
       webSocket = null;
     }
