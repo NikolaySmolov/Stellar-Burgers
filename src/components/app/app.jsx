@@ -21,10 +21,7 @@ import { useEffect } from 'react';
 import { Loader } from '../loader/loader';
 import { FeedPage } from '../../pages/feed/feed';
 import { CardOrderDetails } from '../card-order-details/card-order-details';
-import {
-  WS_CONNECTION_START,
-  WS_PROFILE_CONNECTION_START,
-} from '../../services/actions/web-socket';
+import { WS_ENDPOINT_ALL, WS_ENDPOINT_PROFILE } from '../../services/utils';
 
 export default function App() {
   const { ingredientsRequest, ingredientsFailed } = useSelector((store) => store.burger);
@@ -62,7 +59,7 @@ export default function App() {
           <FeedPage />
         </Route>
         <Route path="/feed/:id">
-          <OrderDetailsPage connectAction={WS_CONNECTION_START} />
+          <OrderDetailsPage connectionPayload={WS_ENDPOINT_ALL} />
         </Route>
         <Route path="/login" exact>
           <LoginPage />
@@ -77,7 +74,7 @@ export default function App() {
           <ResetPasswordPage />
         </Route>
         <ProtectedRoute path="/profile/orders/:id">
-          <OrderDetailsPage connectAction={WS_PROFILE_CONNECTION_START} />
+          <OrderDetailsPage connectionPayload={WS_ENDPOINT_PROFILE} />
         </ProtectedRoute>
         <ProtectedRoute path="/profile">
           <ProfilePage />

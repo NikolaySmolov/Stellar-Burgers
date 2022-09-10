@@ -3,7 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { CardOrder } from '../../components/card-order/card-order';
 import { Loader } from '../../components/loader/loader';
 import ModalError from '../../components/modal-error/modal-error';
-import { WS_CONNECTION_CLOSE, WS_CONNECTION_START } from '../../services/actions/web-socket';
+import { setSocketConnection, setSocketDisconnect } from '../../services/actions/web-socket';
+import { WS_ENDPOINT_ALL } from '../../services/utils';
 import { DONE, PENDING } from '../../utils/constants';
 import style from './feed.module.css';
 
@@ -16,10 +17,10 @@ export const FeedPage = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch({ type: WS_CONNECTION_START });
+    dispatch(setSocketConnection(WS_ENDPOINT_ALL));
 
     return () => {
-      dispatch({ type: WS_CONNECTION_CLOSE });
+      dispatch(setSocketDisconnect());
     };
   }, [dispatch]);
 

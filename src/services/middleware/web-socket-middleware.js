@@ -1,25 +1,17 @@
-import { ACCESS_TOKEN } from '../../utils/constants';
-import { getCookie } from '../utils';
-
 export const wsMiddleware = (wsUrl, wsActions) => {
   let webSocket = null;
   return (store) => (next) => (action) => {
     const { dispatch } = store;
-    const { type } = action;
+    const { type, payload } = action;
 
-    const { wsInit, wsProfileInit, wsClose, onOpen, onMessage, onClose, onError, resetOrders } =
-      wsActions;
+    const { wsInit, wsClose, wsClearStore, onOpen, onMessage, onClose, onError } = wsActions;
 
     if (type === wsInit) {
-      webSocket = new WebSocket(`${wsUrl}/all`);
-    }
-
-    if (type === wsProfileInit) {
-      webSocket = new WebSocket(`${wsUrl}?token=${getCookie(ACCESS_TOKEN)}`);
+      webSocket = new WebSocket(`${wsUrl}${payload}`);
     }
 
     if (type === wsClose) {
-      dispatch({ type: resetOrders });
+      dispatch({ type: wsClearStore });
       webSocket.close(1000, 'CLOSE_NORMAL');
       webSocket = null;
     }

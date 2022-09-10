@@ -4,10 +4,10 @@ import { useParams, Redirect } from 'react-router-dom';
 import { CardOrderDetails } from '../../components/card-order-details/card-order-details';
 import { Loader } from '../../components/loader/loader';
 import ModalError from '../../components/modal-error/modal-error';
-import { WS_CONNECTION_CLOSE } from '../../services/actions/web-socket';
+import { setSocketConnection, setSocketDisconnect } from '../../services/actions/web-socket';
 import style from './card-order-details.module.css';
 
-export const OrderDetailsPage = ({ connectAction }) => {
+export const OrderDetailsPage = ({ connectionPayload }) => {
   const { ordersData, error } = useSelector((store) => ({
     ingredients: store.burger.ingredients,
     ...store.orders,
@@ -18,12 +18,12 @@ export const OrderDetailsPage = ({ connectAction }) => {
   const { id: orderId } = useParams();
 
   useEffect(() => {
-    dispatch({ type: connectAction });
+    dispatch(setSocketConnection(connectionPayload));
 
     return () => {
-      dispatch({ type: WS_CONNECTION_CLOSE });
+      dispatch(setSocketDisconnect());
     };
-  }, [dispatch, connectAction]);
+  }, [dispatch, connectionPayload]);
 
   if (!ordersData.orders && !error) {
     return <Loader />;
