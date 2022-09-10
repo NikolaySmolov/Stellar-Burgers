@@ -1,9 +1,7 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  WS_PROFILE_CONNECTION_START,
-  WS_CONNECTION_CLOSE,
-} from '../../services/actions/web-socket';
+import { setSocketConnection, setSocketDisconnect } from '../../services/actions/web-socket';
+import { WS_ENDPOINT_PROFILE } from '../../services/utils';
 import { CardOrder } from '../card-order/card-order';
 import { Loader } from '../loader/loader';
 import style from './user-orders.module.css';
@@ -17,10 +15,10 @@ export const UserOrders = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch({ type: WS_PROFILE_CONNECTION_START });
+    dispatch(setSocketConnection(WS_ENDPOINT_PROFILE));
 
     return () => {
-      dispatch({ type: WS_CONNECTION_CLOSE });
+      dispatch(setSocketDisconnect());
     };
   }, [dispatch]);
 
