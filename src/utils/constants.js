@@ -1,6 +1,27 @@
 import PropTypes from 'prop-types';
+import {
+  WS_CONNECTION_START,
+  WS_CONNECTION_SUCCESS,
+  WS_GET_MESSAGE,
+  WS_CLEAR_STORE,
+  WS_CONNECTION_CLOSE,
+  WS_CONNECTION_CLOSED,
+  WS_CONNECTION_ERROR,
+} from '../services/actions/web-socket';
 
 export const API = 'https://norma.nomoreparties.space/api';
+
+export const WS = 'wss://norma.nomoreparties.space/orders';
+
+export const WS_ACTIONS = {
+  wsInit: WS_CONNECTION_START,
+  wsClose: WS_CONNECTION_CLOSE,
+  wsClearStore: WS_CLEAR_STORE,
+  onOpen: WS_CONNECTION_SUCCESS,
+  onMessage: WS_GET_MESSAGE,
+  onClose: WS_CONNECTION_CLOSED,
+  onError: WS_CONNECTION_ERROR,
+};
 
 export const ingredientPropTypes = PropTypes.shape({
   _id: PropTypes.string,
@@ -17,16 +38,6 @@ export const ingredientPropTypes = PropTypes.shape({
   count: PropTypes.number,
 });
 
-export const ingredientDetails = PropTypes.shape({
-  name: PropTypes.string,
-  image_large: PropTypes.string,
-  price: PropTypes.number,
-  calories: PropTypes.number,
-  proteins: PropTypes.number,
-  fat: PropTypes.number,
-  carbohydrates: PropTypes.number,
-});
-
 export const refPropTypes = PropTypes.shape({
   current: PropTypes.object,
 });
@@ -38,6 +49,9 @@ export const FILLING = 'filling';
 export const CALC = 'calc';
 export const ADD = 'add';
 export const SORT = 'sort';
+export const CREATED = 'created';
+export const PENDING = 'pending';
+export const DONE = 'done';
 
 export const ACCESS_TOKEN = 'accessToken';
 export const TOKEN = 'token';

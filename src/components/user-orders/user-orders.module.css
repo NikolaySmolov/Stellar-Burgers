@@ -1,0 +1,34 @@
+.loaderWrapper {
+  position: relative;
+  height: calc(100vh - 128px);
+}
+
+.ordersWrapper {
+  max-height: calc(100vh - 128px);
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+}
+
+.ordersWrapper::-webkit-scrollbar-track {
+  margin-bottom: 64px;
+}
+
+.ordersWrapper::-webkit-scrollbar {
+  width: 8px;
+}
+
+.ordersWrapper::-webkit-scrollbar-thumb {
+  border: none;
+  border-radius: 0;
+}
+
+.orderList {
+  list-style: none;
+  margin: 0;
+  display: grid;
+  row-gap: calc(var(--offset-base-size) * 4);
+}
+
+.orderListItem:last-of-type {
+  margin-bottom: calc(var(--offset-base-size) * 4);
+}

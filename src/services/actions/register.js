@@ -23,20 +23,20 @@ export const setRegisterFormFailed = () => ({
   type: REGISTER_FORM_FAILED,
 });
 
-export const signUp = form => dispatch => {
+export const signUp = (form) => (dispatch) => {
   dispatch({ type: REGISTER_FORM_SUBMIT });
 
   requireRegistration(form)
-    .then(data => {
+    .then((data) => {
       const accessToken = data.accessToken.split('Bearer ')[1];
       const token = data.refreshToken;
 
-      setCookie(ACCESS_TOKEN, accessToken, { 'max-age': 1200 });
-      setCookie(TOKEN, token);
+      setCookie(ACCESS_TOKEN, accessToken, { 'max-age': 1200, path: '/' });
+      setCookie(TOKEN, token, { path: '/' });
 
       dispatch({ type: REGISTER_FORM_SUCCESS });
     })
-    .catch(err => {
+    .catch((err) => {
       if (err.status === 403) {
         dispatch({ type: REGISTER_FORM_FAILED, payload: 'Пользователь уже зарегистрирован' });
       } else {

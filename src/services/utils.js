@@ -1,3 +1,5 @@
+import { ACCESS_TOKEN, TOKEN } from '../utils/constants';
+
 export function setCookie(name, value, props) {
   props = props || {};
   let exp = props.expires;
@@ -30,5 +32,20 @@ export function getCookie(name) {
 }
 
 export function deleteCookie(name) {
-  setCookie(name, '', { 'max-age': -1 });
+  setCookie(name, '', { 'max-age': -1, path: '/' });
 }
+
+export const getClientAccessState = () => (getCookie(ACCESS_TOKEN) ? true : false);
+
+export const getClientTokenState = () => (getCookie(TOKEN) ? true : false);
+
+export const setTimeFormat = (number) => {
+  if (number >= 0 && number < 10) {
+    return '0' + number;
+  }
+
+  return String(number);
+};
+
+export const WS_ENDPOINT_ALL = '/all';
+export const WS_ENDPOINT_PROFILE = `?token=${getCookie(ACCESS_TOKEN)}`;

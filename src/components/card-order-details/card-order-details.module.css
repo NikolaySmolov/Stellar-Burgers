@@ -1,0 +1,44 @@
+.details {
+  display: flex;
+  flex-direction: column;
+  padding: 60px 40px 60px;
+}
+
+.number {
+  text-align: center;
+}
+
+.list {
+  padding-left: 0;
+  margin: 0 0 calc(var(--offset-base-size) * 10);
+  list-style: none;
+  max-height: 312px;
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+}
+
+.list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.list::-webkit-scrollbar-thumb {
+  border: none;
+  border-radius: 0;
+}
+
+.listItem {
+  margin-bottom: calc(var(--offset-base-size) * 4);
+}
+
+.listItem:last-of-type {
+  margin-bottom: 0;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.totalWrapper {
+  display: flex;
+}

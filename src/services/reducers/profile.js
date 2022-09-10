@@ -104,7 +104,11 @@ export const profileReducer = (state = initialState, action) => {
         setUserInfoFailed: true,
       };
     case USER_ACCESS_REQUEST:
-      return { ...state, getUserAccessRequest: true };
+      return {
+        ...state,
+        getUserAccessRequest: true,
+        getUserAccessFailed: false,
+      };
     case USER_ACCESS_SUCCESS:
       return {
         ...state,
