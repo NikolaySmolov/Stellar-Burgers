@@ -1,6 +1,6 @@
 export const wsMiddleware = (wsUrl, wsActions) => {
   let webSocket = null;
-  return (store) => (next) => (action) => {
+  return store => next => action => {
     const { dispatch } = store;
     const { type, payload } = action;
 
@@ -21,7 +21,7 @@ export const wsMiddleware = (wsUrl, wsActions) => {
         dispatch({ type: onOpen });
       };
 
-      webSocket.onerror = (event) => {
+      webSocket.onerror = event => {
         dispatch({ type: onError, payload: event });
       };
 
@@ -29,7 +29,7 @@ export const wsMiddleware = (wsUrl, wsActions) => {
         dispatch({ type: onClose });
       };
 
-      webSocket.onmessage = (event) => {
+      webSocket.onmessage = event => {
         const { success, ...data } = JSON.parse(event.data);
         dispatch({ type: onMessage, payload: data });
       };

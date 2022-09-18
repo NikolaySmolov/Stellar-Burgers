@@ -7,8 +7,8 @@ import { Loader } from '../loader/loader';
 import style from './user-orders.module.css';
 
 export const UserOrders = () => {
-  const { ingredients, ordersData, error } = useSelector((store) => ({
-    ingredients: store.burger.ingredients,
+  const { ingredients, ordersData, error } = useSelector(store => ({
+    ingredients: store.ingredients.ingredients,
     ...store.orders,
   }));
 

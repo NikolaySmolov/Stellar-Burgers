@@ -6,7 +6,6 @@ import { ADD, BUN } from '../../utils/constants';
 import { useSelector, useDispatch } from 'react-redux';
 import { SET_TOTALPRICE } from '../../services/actions/order';
 import { useDrop } from 'react-dnd';
-import { INCREASE_INGREDIENT } from '../../services/actions/burger';
 import { addIngredient } from '../../services/actions/constructor';
 import { getBun, getFilling } from '../../services/selectors/constructor';
 

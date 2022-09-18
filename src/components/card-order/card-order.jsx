@@ -17,7 +17,7 @@ export const CardOrder = ({
   createdAt,
   id,
 }) => {
-  const ingredientsMenu = useSelector((store) => store.burger.ingredients);
+  const ingredientsMenu = useSelector(store => store.ingredients.ingredients);
 
   const { url } = useRouteMatch();
 
@@ -54,12 +54,11 @@ export const CardOrder = ({
 
   return (
     <Link
-      to={(location) => ({
+      to={location => ({
         pathname: `${url}/${id}`,
         state: { background: location },
       })}
-      className={style.link}
-    >
+      className={style.link}>
       <article className={style.wrapper}>
         <div className={`${style.heading} mb-6`}>
           <p className={'text text_type_digits-default'}>#{number}</p>
@@ -70,8 +69,7 @@ export const CardOrder = ({
           <p
             className={`text text_type_main-default mt-2 ${
               status === DONE ? 'text_color_success' : null
-            }`}
-          >
+            }`}>
             {statusText}
           </p>
         ) : null}

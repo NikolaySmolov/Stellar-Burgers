@@ -9,8 +9,8 @@ import { DONE, PENDING } from '../../utils/constants';
 import style from './feed.module.css';
 
 export const FeedPage = () => {
-  const { ingredients, ordersData, error } = useSelector((store) => ({
-    ingredients: store.burger.ingredients,
+  const { ingredients, ordersData, error } = useSelector(store => ({
+    ingredients: store.ingredients.ingredients,
     ...store.orders,
   }));
 
@@ -81,11 +81,10 @@ export const FeedPage = () => {
           <section className={`${style.statsColumn} mr-9`}>
             <h2 className={`${style.statsTitle} text text_type_main-medium`}>Готовы:</h2>
             <ul className={style.statsList}>
-              {ordersStats.done.map((orderNumber) => (
+              {ordersStats.done.map(orderNumber => (
                 <li className={style.statsListItem} key={orderNumber}>
                   <p
-                    className={`${style.statsListText} text text_type_digits-default text_color_success`}
-                  >
+                    className={`${style.statsListText} text text_type_digits-default text_color_success`}>
                     {orderNumber}
                   </p>
                 </li>
@@ -95,7 +94,7 @@ export const FeedPage = () => {
           <section className={style.statsColumn}>
             <h2 className={`${style.statsTitle} text text_type_main-medium`}>В&nbsp;работе:</h2>
             <ul className={style.statsList}>
-              {ordersStats.inProgress.map((orderNumber) => (
+              {ordersStats.inProgress.map(orderNumber => (
                 <li className={style.statsListItem} key={orderNumber}>
                   <p className={`${style.statsListText} text text_type_digits-default`}>
                     {orderNumber}

@@ -5,9 +5,8 @@ import styles from './constructor-row.module.css';
 import { ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
 import { DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useDispatch } from 'react-redux';
-import { DECREASE_INGREDIENT, SORT_INGREDIENT } from '../../services/actions/burger';
 import { useDrag, useDrop } from 'react-dnd';
-import { deleteIngredient } from '../../services/actions/constructor';
+import { deleteIngredient, sortIngredient } from '../../services/actions/constructor';
 
 export const ConstructorRow = React.memo(({ isBun = false, type, data, position }) => {
   const dispatch = useDispatch();
@@ -20,10 +19,7 @@ export const ConstructorRow = React.memo(({ isBun = false, type, data, position 
   const [{ isHover }, dropRef] = useDrop({
     accept: SORT,
     drop(item) {
-      dispatch({
-        type: SORT_INGREDIENT,
-        payload: { dragItemPos: item.position, dropTargetPos: position },
-      });
+      dispatch(sortIngredient(item.position, position));
     },
     collect: monitor => ({
       isHover: monitor.isOver(),
