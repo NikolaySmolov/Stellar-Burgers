@@ -7,6 +7,7 @@ import { DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useDispatch } from 'react-redux';
 import { DECREASE_INGREDIENT, SORT_INGREDIENT } from '../../services/actions/burger';
 import { useDrag, useDrop } from 'react-dnd';
+import { deleteIngredient } from '../../services/actions/constructor';
 
 export const ConstructorRow = React.memo(({ isBun = false, type, data, position }) => {
   const dispatch = useDispatch();
@@ -30,7 +31,7 @@ export const ConstructorRow = React.memo(({ isBun = false, type, data, position 
   });
 
   const handleDelete = () => {
-    dispatch({ type: DECREASE_INGREDIENT, payload: { itemId: data._id, itemPos: position } });
+    dispatch(deleteIngredient(position));
   };
 
   return isBun ? (

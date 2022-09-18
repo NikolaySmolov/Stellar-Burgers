@@ -16,6 +16,9 @@ export const constructorReducer = (state = initialState, action) => {
       const filling = [...state.filling];
       filling.push(action.payload);
       return { ...state, filling };
+    case ACTION_TYPES.DELETE:
+      const filteredFiling = [...state.filling].filter((_, index) => index !== action.payload);
+      return { ...state, filling: filteredFiling };
     case ACTION_TYPES.RESET:
       return { ...initialState };
     default:

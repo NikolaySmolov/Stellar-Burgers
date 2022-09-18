@@ -23,12 +23,9 @@ export const sortIngredient = (dragItemPos, dropTargetPos) => ({
   },
 });
 
-export const deleteIngredient = (itemId, itemPos) => ({
+export const deleteIngredient = itemPos => ({
   type: ACTION_TYPES.DELETE,
-  payload: {
-    itemId,
-    itemPos,
-  },
+  payload: itemPos,
 });
 
 export const resetConstructor = () => ({
