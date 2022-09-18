@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux';
+import { ingredientsReducer } from './ingredients';
 import { burgerReducer } from './burger';
 import { orderReducer } from './order';
 import { registrationReducer } from './register';
@@ -8,6 +9,7 @@ import { profileReducer } from './profile';
 import { wsReducer } from './web-socket';
 
 export const rootReducer = combineReducers({
+  ingredients: ingredientsReducer,
   burger: burgerReducer,
   order: orderReducer,
   registration: registrationReducer,
