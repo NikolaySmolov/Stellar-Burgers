@@ -54,6 +54,8 @@ export const sendOrder = array => async dispatch => {
           console.log(err);
           return err;
         });
+    } else if (setOrderRes?.status === 404) {
+      dispatch({ type: ORDER_FAILED });
     }
 
     if (getAccessRes?.success) {

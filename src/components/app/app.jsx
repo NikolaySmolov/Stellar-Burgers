@@ -23,6 +23,7 @@ import { CardOrderDetails } from '../card-order-details/card-order-details';
 import { WS_ENDPOINT_ALL, WS_ENDPOINT_PROFILE } from '../../services/utils';
 import { getIngredientsFailed, getIngredientsRequest } from '../../services/selectors/ingredients';
 import { getIngredients } from '../../services/actions/ingredients';
+import OrderDetails from '../order-details/order-details';
 
 export default function App() {
   const ingredientsRequest = useSelector(getIngredientsRequest);
@@ -91,6 +92,9 @@ export default function App() {
           <Modal onClose={handleCloseModal}>
             <Route path="/ingredients/:id">
               <IngredientDetails />
+            </Route>
+            <Route path="/order/:number">
+              <OrderDetails />
             </Route>
             <Route path="/feed/:id">
               <CardOrderDetails />

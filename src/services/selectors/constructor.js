@@ -8,6 +8,13 @@ export const getFillings = store =>
 
 //нужен реселект, т.к. дублируется код в селекторах
 
+export const getOrderingPermission = store => {
+  const bun = store.burgerConstructor.bun;
+  const filling = store.burgerConstructor.filling;
+
+  return bun.length > 0 && filling.length > 0 ? true : false;
+};
+
 export const getBurgerIngredientsIdList = store => {
   const ingredientsList = Object.values(store.burgerConstructor).flat();
 

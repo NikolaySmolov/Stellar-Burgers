@@ -5,13 +5,11 @@ import { ADD } from '../../utils/constants';
 import { useSelector, useDispatch } from 'react-redux';
 import { useDrop } from 'react-dnd';
 import { addIngredient } from '../../services/actions/constructor';
-import { getBun, getFillings, getTotalPrice } from '../../services/selectors/constructor';
+import { getBun, getFillings } from '../../services/selectors/constructor';
 
 export default function BurgerConstructor() {
   const filling = useSelector(getFillings);
   const bun = useSelector(getBun);
-  const totalPrice = useSelector(getTotalPrice);
-  const canOrder = bun && filling ? true : false; // это тоже можно убрать в селектор
 
   const dispatch = useDispatch();
 
@@ -35,7 +33,7 @@ export default function BurgerConstructor() {
         ) : null}
         {bun ? <ConstructorRow isBun={true} type="bottom" data={bun[0]} position={0} /> : null}
       </div>
-      <Ordering isDisabled={!canOrder} totalPrice={totalPrice} />
+      <Ordering />
     </section>
   );
 }

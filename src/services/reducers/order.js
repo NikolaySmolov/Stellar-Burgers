@@ -8,12 +8,12 @@ import {
 } from '../actions/order';
 
 const initialState = {
-  orderStatus: null,
+  orderStatus: null, // сделать сброс
   orderRequest: false,
   orderFailed: false,
-  totalPrice: 0,
-  showModal: false,
-  access: true,
+  totalPrice: 0, //больше не нужен
+  showModal: false, //больше не нужен
+  access: true, // переименовать
 };
 
 export const orderReducer = (state = initialState, action) => {
@@ -23,10 +23,10 @@ export const orderReducer = (state = initialState, action) => {
     case ORDER_REQUEST:
       return { ...state, orderRequest: true, orderFailed: false };
     case ORDER_SUCCESS:
-      return { ...state, orderRequest: false, orderStatus: action.orderDetails, showModal: true };
+      return { ...state, orderRequest: false, orderStatus: action.orderDetails, showModal: false };
     case ORDER_FAILED:
       return { ...state, orderRequest: false, orderFailed: true };
-    case CLOSE_ORDER_DETAILS:
+    case CLOSE_ORDER_DETAILS: //нужен reset orderStatus
       return { ...state, showModal: false };
     case ORDER_ACCESS_SUCCESS:
       return { ...state, access: true };
