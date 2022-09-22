@@ -1,9 +1,10 @@
 import styles from './ingredient-details.module.css';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { getIngredients } from '../../services/selectors/ingredients';
 
 export default function IngredientDetails() {
-  const ingredients = useSelector(store => store.burger.ingredients);
+  const ingredients = useSelector(getIngredients);
   const { id } = useParams();
 
   if (ingredients.length === 0) {

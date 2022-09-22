@@ -5,14 +5,19 @@ import { Counter } from '@ya.praktikum/react-developer-burger-ui-components';
 import { ADD, ingredientPropTypes } from '../../utils/constants';
 import { useDrag } from 'react-dnd';
 import { useHistory } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { getCounter } from '../../services/selectors/constructor';
 
-export const Ingredient = React.memo((props) => {
+export const Ingredient = React.memo(props => {
+  const counter = useSelector(getCounter);
   const history = useHistory();
+
+  const qty = counter?.[props._id] || null;
 
   const [{ isDrag }, dragRef] = useDrag({
     type: ADD,
-    item: { id: props._id },
-    collect: (monitor) => ({
+    item: { ingredient: props },
+    collect: monitor => ({
       isDrag: monitor.isDragging(),
     }),
   });
@@ -29,8 +34,7 @@ export const Ingredient = React.memo((props) => {
       className={`${styles.card} ${isDrag ? styles.card_dragged : ''}`}
       onClick={handleShowDetails}
       draggable
-      ref={dragRef}
-    >
+      ref={dragRef}>
       <img className={styles.image} src={props.image} alt={props.name} />
       <div className={`${styles.price} mt-1 mb-1`}>
         <p className={`${styles.price__text} text text_type_digits-default mr-2`}>
@@ -39,9 +43,9 @@ export const Ingredient = React.memo((props) => {
         <CurrencyIcon type="primary" />
       </div>
       <p className={`${styles.name} text text_type_main-default`}> {props.name} </p>
-      {props.qty ? (
+      {qty ? (
         <div className={styles.counter}>
-          <Counter count={props.qty} size="default" />
+          <Counter count={qty} size="default" />
         </div>
       ) : null}
     </article>

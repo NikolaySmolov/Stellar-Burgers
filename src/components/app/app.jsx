@@ -14,7 +14,6 @@ import { Route, Switch, useLocation, useHistory } from 'react-router-dom';
 import { ProtectedRoute } from '../protected-route';
 import { useDispatch, useSelector } from 'react-redux';
 import Modal from '../modal/modal';
-import { getIngredients } from '../../services/actions/burger';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import ModalError from '../modal-error/modal-error';
 import { useEffect } from 'react';
@@ -22,9 +21,13 @@ import { Loader } from '../loader/loader';
 import { FeedPage } from '../../pages/feed/feed';
 import { CardOrderDetails } from '../card-order-details/card-order-details';
 import { WS_ENDPOINT_ALL, WS_ENDPOINT_PROFILE } from '../../services/utils';
+import { getIngredientsFailed, getIngredientsRequest } from '../../services/selectors/ingredients';
+import { getIngredients } from '../../services/actions/ingredients';
 
 export default function App() {
-  const { ingredientsRequest, ingredientsFailed } = useSelector((store) => store.burger);
+  const ingredientsRequest = useSelector(getIngredientsRequest);
+  const ingredientsFailed = useSelector(getIngredientsFailed);
+
   const dispatch = useDispatch();
 
   const location = useLocation();

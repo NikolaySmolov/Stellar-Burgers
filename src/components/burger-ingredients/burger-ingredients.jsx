@@ -3,11 +3,12 @@ import styles from './burger-ingredients.module.css';
 import { TabBar } from '../tab-bar/tab-bar';
 import { IngredientsSection } from '../ingredients-section/ingredients-section';
 import { useSelector } from 'react-redux';
+import { getIngredients } from '../../services/selectors/ingredients';
 
 export default function BurgerIngredients() {
   const [currentTab, setCurrentTab] = useState('buns');
 
-  const { ingredients } = useSelector(store => store.burger);
+  const ingredients = useSelector(getIngredients);
 
   const bunHeading = useRef(null);
   const saucesHeading = useRef(null);

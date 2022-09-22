@@ -10,11 +10,11 @@ import {
 } from '../actions/burger';
 
 const initialState = {
-  ingredients: [],
-  ingredientsRequest: false,
-  ingredientsFailed: false,
+  // ingredients: [],
+  // ingredientsRequest: false,
+  // ingredientsFailed: false,
   constructor: { bun: [], filling: [] },
-  ingredientDetails: null,
+  // ingredientDetails: null,
 };
 
 export const burgerReducer = (state = initialState, action) => {

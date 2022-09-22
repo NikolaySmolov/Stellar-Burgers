@@ -9,24 +9,27 @@ import ModalError from '../modal-error/modal-error';
 import { useSelector, useDispatch } from 'react-redux';
 import { sendOrder, setOrderAccessSuccess } from '../../services/actions/order';
 import { CLOSE_ORDER_DETAILS } from '../../services/actions/order';
-import { CLEAR_CONSTRUCTOR } from '../../services/actions/burger';
 import { Loader } from '../loader/loader';
 import { Redirect } from 'react-router-dom';
+import { getBurgerIngredientsIdList } from '../../services/selectors/constructor';
+import { resetConstructor } from '../../services/actions/constructor';
 
-export default function Ordering({ totalPrice, orderList, isDisabled }) {
+export default function Ordering({ totalPrice, isDisabled }) {
   const { access, showModal, orderStatus, orderRequest, orderFailed } = useSelector(
-    (store) => store.order
+    store => store.order
   );
+
+  const burgerIngredientsList = useSelector(getBurgerIngredientsIdList);
 
   const dispatch = useDispatch();
 
   const handleSendOrder = () => {
-    dispatch(sendOrder(orderList));
+    dispatch(sendOrder(burgerIngredientsList));
   };
 
   const handleCloseModal = () => {
+    dispatch(resetConstructor());
     dispatch({ type: CLOSE_ORDER_DETAILS });
-    dispatch({ type: CLEAR_CONSTRUCTOR });
   };
 
   const modal = showModal ? (

@@ -3,14 +3,15 @@ import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { useOrderData } from '../../services/hooks';
+import { getIngredients } from '../../services/selectors/ingredients';
 import { DONE } from '../../utils/constants';
 import { Loader } from '../loader/loader';
 import { OrderRow } from '../order-row/order-row';
 import style from './card-order-details.module.css';
 
 export const CardOrderDetails = () => {
-  const { ingredientsMenu, orders } = useSelector((store) => ({
-    ingredientsMenu: store.burger.ingredients,
+  const ingredientsMenu = useSelector(getIngredients);
+  const { orders } = useSelector(store => ({
     orders: store.orders.ordersData.orders,
   }));
 
@@ -45,13 +46,12 @@ export const CardOrderDetails = () => {
       <p
         className={`text text_type_main-default mt-3 mb-15 ${
           orderData.status === DONE ? 'text_color_success' : null
-        }`}
-      >
+        }`}>
         {statusText}
       </p>
       <h2 className={'text text_type_main-medium mb-6'}>Состав:</h2>
       <ul className={`${style.list} custom-scroll mb-10 pr-6`}>
-        {ingredientsList.map((ingredientData) => {
+        {ingredientsList.map(ingredientData => {
           return (
             <li className={`${style.listItem}`} key={ingredientData.id}>
               <OrderRow {...ingredientData} />
