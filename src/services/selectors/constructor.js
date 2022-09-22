@@ -1,6 +1,35 @@
-export const getBun = store => store.burgerConstructor.bun;
+import { BUN } from '../../utils/constants';
 
-export const getFilling = store => store.burgerConstructor.filling;
+export const getBun = store =>
+  store.burgerConstructor.bun.length > 0 ? store.burgerConstructor.bun : null;
+
+export const getFillings = store =>
+  store.burgerConstructor.filling.length > 0 ? store.burgerConstructor.filling : null;
+
+//нужен реселект, т.к. дублируется код в селекторах
+
+export const getBurgerIngredientsIdList = store => {
+  const ingredientsList = Object.values(store.burgerConstructor).flat();
+
+  if (ingredientsList.length > 0) {
+    const ingredientsIdList = ingredientsList.map(({ _id }) => _id);
+    return ingredientsIdList;
+  } else {
+    return [];
+  }
+};
+
+export const getTotalPrice = store => {
+  const ingredientsList = Object.values(store.burgerConstructor).flat();
+
+  if (ingredientsList.length > 0) {
+    return ingredientsList.reduce((acc, item) => {
+      return item.type === BUN ? (acc += item.price * 2) : (acc += item.price);
+    }, 0);
+  }
+
+  return 0;
+};
 
 export const getCounter = store => {
   const counter = {};
