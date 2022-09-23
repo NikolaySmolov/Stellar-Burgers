@@ -12,7 +12,7 @@ import { TOKEN } from '../../utils/constants';
 import { FormCaption } from '../../components/form-caption/form-caption';
 import { useInputLogic } from '../../services/hooks';
 import { Loader } from '../../components/loader/loader';
-import { setOrderAccessSuccess } from '../../services/actions/order';
+import { setOrderPermissionSuccess } from '../../services/actions/order';
 
 export const LoginPage = () => {
   const { form, loginRequest, loginFailed } = useSelector(store => store.login);
@@ -43,7 +43,7 @@ export const LoginPage = () => {
   };
 
   useEffect(() => {
-    dispatch(setOrderAccessSuccess());
+    dispatch(setOrderPermissionSuccess());
     return () => dispatch(resetLoginFormValues());
   }, [dispatch]);
 

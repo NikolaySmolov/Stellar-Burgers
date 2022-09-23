@@ -6,10 +6,12 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useDrop } from 'react-dnd';
 import { addIngredient } from '../../services/actions/constructor';
 import { getBun, getFillings } from '../../services/selectors/constructor';
+import { getOrderRequest } from '../../services/selectors/order';
 
 export default function BurgerConstructor() {
   const filling = useSelector(getFillings);
   const bun = useSelector(getBun);
+  const orderRequest = useSelector(getOrderRequest);
 
   const dispatch = useDispatch();
 
@@ -22,7 +24,7 @@ export default function BurgerConstructor() {
 
   return (
     <section className={styles.constructor}>
-      <div className={styles.elements} ref={dropRef}>
+      <div className={styles.elements} ref={orderRequest ? null : dropRef}>
         {bun ? <ConstructorRow isBun={true} type="top" data={bun[0]} position={0} /> : null}
         {filling ? (
           <ul className={`${styles.fills} custom-scroll`}>

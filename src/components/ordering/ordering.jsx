@@ -1,21 +1,20 @@
-import { useEffect } from 'react';
 import styles from './ordering.module.css';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useSelector, useDispatch } from 'react-redux';
-import { sendOrder, setOrderAccessSuccess } from '../../services/actions/order';
+import { sendOrder } from '../../services/actions/order';
 import { Loader } from '../loader/loader';
-import { Redirect } from 'react-router-dom';
 import {
+  getBurgerCompleteState,
   getBurgerIngredientsIdList,
-  getOrderingPermission,
   getTotalPrice,
 } from '../../services/selectors/constructor';
+import { getOrderRequest } from '../../services/selectors/order';
 
 export default function Ordering() {
-  const { access, orderRequest } = useSelector(store => store.order);
+  const orderRequest = useSelector(getOrderRequest);
   const totalPrice = useSelector(getTotalPrice);
-  const orderPermission = useSelector(getOrderingPermission);
+  const orderButtonState = !useSelector(getBurgerCompleteState);
   const burgerIngredientsList = useSelector(getBurgerIngredientsIdList);
 
   const dispatch = useDispatch();
@@ -24,14 +23,6 @@ export default function Ordering() {
     dispatch(sendOrder(burgerIngredientsList));
   };
 
-  useEffect(() => {
-    dispatch(setOrderAccessSuccess());
-  }, [dispatch]);
-
-  if (!access) {
-    return <Redirect to={{ pathname: '/login' }} />;
-  }
-
   return (
     <div className={`${styles.ordering} mt-10`}>
       <div className={`${styles.total} mr-10`}>
@@ -39,7 +30,7 @@ export default function Ordering() {
         <CurrencyIcon type="primary" />
       </div>
       <div className={styles.button}>
-        <Button type="primary" size="large" onClick={handleSendOrder} disabled={!orderPermission}>
+        <Button type="primary" size="large" onClick={handleSendOrder} disabled={orderButtonState}>
           Оформить заказ
         </Button>
         {orderRequest ? <Loader /> : null}

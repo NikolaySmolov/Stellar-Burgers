@@ -58,8 +58,7 @@ export const TOKEN = 'token';
 
 export const FAKE_PASSWORD = '******';
 
-export const ORDER_ACCESS_SUCCESS = 'ORDER_ACCESS_SUCCESS';
-export const ORDER_ACCESS_FAILED = 'ORDER_ACCESS_FAILED';
+export const ORDER_PATH = '/order/';
 
 export const REGISTER_FORM_SET_VALUE = 'REGISTER_FORM_GET_VALUE';
 export const REGISTER_FORM_RESET_VALUES = 'REGISTER_FORM_RESET_VALUES';

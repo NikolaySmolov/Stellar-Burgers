@@ -1,37 +1,26 @@
-import { ORDER_ACCESS_FAILED, ORDER_ACCESS_SUCCESS } from '../../utils/constants';
-import {
-  ORDER_REQUEST,
-  ORDER_SUCCESS,
-  ORDER_FAILED,
-  SET_TOTALPRICE,
-  CLOSE_ORDER_DETAILS,
-} from '../actions/order';
+import { ACTION_TYPES } from '../actions/order';
 
 const initialState = {
-  orderStatus: null, // сделать сброс
+  orderStatus: null,
   orderRequest: false,
   orderFailed: false,
-  totalPrice: 0, //больше не нужен
-  showModal: false, //больше не нужен
-  access: true, // переименовать
+  orderingPermission: true,
 };
 
 export const orderReducer = (state = initialState, action) => {
   switch (action.type) {
-    case SET_TOTALPRICE:
-      return { ...state, totalPrice: action.total };
-    case ORDER_REQUEST:
+    case ACTION_TYPES.REQUEST:
       return { ...state, orderRequest: true, orderFailed: false };
-    case ORDER_SUCCESS:
-      return { ...state, orderRequest: false, orderStatus: action.orderDetails, showModal: false };
-    case ORDER_FAILED:
+    case ACTION_TYPES.SUCCESS:
+      return { ...state, orderRequest: false, orderStatus: action.payload };
+    case ACTION_TYPES.FAILED:
       return { ...state, orderRequest: false, orderFailed: true };
-    case CLOSE_ORDER_DETAILS: //нужен reset orderStatus
-      return { ...state, showModal: false };
-    case ORDER_ACCESS_SUCCESS:
-      return { ...state, access: true };
-    case ORDER_ACCESS_FAILED:
-      return { ...state, access: false, orderRequest: false };
+    case ACTION_TYPES.CLOSE_DETAILS:
+      return { ...state, orderStatus: null };
+    case ACTION_TYPES.PERMISSION_SUCCESS:
+      return { ...state, orderingPermission: true };
+    case ACTION_TYPES.PERMISSION_FAILED:
+      return { ...state, orderingPermission: false, orderRequest: false };
     default:
       return state;
   }

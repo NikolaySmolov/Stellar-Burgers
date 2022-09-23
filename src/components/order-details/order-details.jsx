@@ -1,19 +1,9 @@
 import styles from './order-details.module.css';
 import doneImg from '../../images/done.jpg';
 import { useParams } from 'react-router-dom';
-import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { resetConstructor } from '../../services/actions/constructor';
 
-export default function OrderDetails() {
-  const dispatch = useDispatch();
+export function OrderDetails() {
   const { number: orderNumber } = useParams();
-
-  useEffect(() => {
-    return () => {
-      dispatch(resetConstructor());
-    };
-  });
 
   return (
     <div className={`${styles.wrapper} pt-30 pr-25 pb-30 pl-25`}>

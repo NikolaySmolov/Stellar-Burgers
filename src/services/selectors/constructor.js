@@ -8,7 +8,7 @@ export const getFillings = store =>
 
 //нужен реселект, т.к. дублируется код в селекторах
 
-export const getOrderingPermission = store => {
+export const getBurgerCompleteState = store => {
   const bun = store.burgerConstructor.bun;
   const filling = store.burgerConstructor.filling;
 

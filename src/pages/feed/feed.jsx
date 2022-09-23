@@ -2,7 +2,7 @@ import { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { CardOrder } from '../../components/card-order/card-order';
 import { Loader } from '../../components/loader/loader';
-import ModalError from '../../components/modal-error/modal-error';
+import { ModalError } from '../../components/modal-error/modal-error';
 import { setSocketConnection, setSocketDisconnect } from '../../services/actions/web-socket';
 import { WS_ENDPOINT_ALL } from '../../services/utils';
 import { DONE, PENDING } from '../../utils/constants';

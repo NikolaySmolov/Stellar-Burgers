@@ -13,9 +13,9 @@ import {
 import { Route, Switch, useLocation, useHistory } from 'react-router-dom';
 import { ProtectedRoute } from '../protected-route';
 import { useDispatch, useSelector } from 'react-redux';
-import Modal from '../modal/modal';
-import IngredientDetails from '../ingredient-details/ingredient-details';
-import ModalError from '../modal-error/modal-error';
+import { Modal } from '../modal/modal';
+import { IngredientDetails } from '../ingredient-details/ingredient-details';
+import { ModalError } from '../modal-error/modal-error';
 import { useEffect } from 'react';
 import { Loader } from '../loader/loader';
 import { FeedPage } from '../../pages/feed/feed';
@@ -23,7 +23,10 @@ import { CardOrderDetails } from '../card-order-details/card-order-details';
 import { WS_ENDPOINT_ALL, WS_ENDPOINT_PROFILE } from '../../services/utils';
 import { getIngredientsFailed, getIngredientsRequest } from '../../services/selectors/ingredients';
 import { getIngredients } from '../../services/actions/ingredients';
-import OrderDetails from '../order-details/order-details';
+import { OrderDetails } from '../order-details/order-details';
+import { resetConstructor } from '../../services/actions/constructor';
+import { closeOrderDetails } from '../../services/actions/order';
+import { ORDER_PATH } from '../../utils/constants';
 
 export default function App() {
   const ingredientsRequest = useSelector(getIngredientsRequest);
@@ -36,7 +39,13 @@ export default function App() {
   const background = location.state?.background;
 
   const handleCloseModal = () => {
-    history.goBack();
+    if (location.pathname.includes(ORDER_PATH)) {
+      dispatch(resetConstructor());
+      dispatch(closeOrderDetails());
+      history.push({ pathname: '/' });
+    } else {
+      history.goBack();
+    }
   };
 
   useEffect(() => {

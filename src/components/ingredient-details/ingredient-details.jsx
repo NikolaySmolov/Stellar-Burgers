@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { getIngredients } from '../../services/selectors/ingredients';
 
-export default function IngredientDetails() {
+export function IngredientDetails() {
   const ingredients = useSelector(getIngredients);
   const { id } = useParams();
 
