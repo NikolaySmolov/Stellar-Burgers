@@ -23,8 +23,9 @@ export default function BurgerConstructor() {
   });
 
   return (
-    <section className={styles.constructor}>
-      <div className={styles.elements} ref={orderRequest ? null : dropRef}>
+    <section
+      className={`${styles.constructor} ${orderRequest ? styles.constructor_blocked : null}`}>
+      <div className={styles.elements} ref={dropRef}>
         {bun ? <ConstructorRow isBun={true} type="top" data={bun[0]} position={0} /> : null}
         {filling ? (
           <ul className={`${styles.fills} custom-scroll`}>

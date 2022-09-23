@@ -1,6 +1,16 @@
 .constructor {
   padding-top: 100px;
   padding-bottom: 52px;
+  position: relative;
+}
+
+.constructor_blocked::before {
+  content: '';
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  position: absolute;
 }
 
 .fills {
@@ -11,7 +21,7 @@
 }
 
 .fills::-webkit-scrollbar {
-	width: 8px;
+  width: 8px;
 }
 
 .fills::-webkit-scrollbar-thumb {
