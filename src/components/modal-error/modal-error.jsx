@@ -2,7 +2,7 @@ import ReactDOM from 'react-dom';
 import styles from './modal-error.module.css';
 import errorImage from '../../images/error.jpg';
 
-export default function ModalError() {
+export function ModalError() {
   const modalRoot = document.getElementById('modal-root');
 
   return ReactDOM.createPortal(

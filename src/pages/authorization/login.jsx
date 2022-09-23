@@ -12,6 +12,7 @@ import { TOKEN } from '../../utils/constants';
 import { FormCaption } from '../../components/form-caption/form-caption';
 import { useInputLogic } from '../../services/hooks';
 import { Loader } from '../../components/loader/loader';
+import { setOrderPermissionSuccess } from '../../services/actions/order';
 
 export const LoginPage = () => {
   const { form, loginRequest, loginFailed } = useSelector(store => store.login);
@@ -41,7 +42,10 @@ export const LoginPage = () => {
     history.push({ pathname: '/forgot-password', state: location.state });
   };
 
-  useEffect(() => () => dispatch(resetLoginFormValues()), [dispatch]);
+  useEffect(() => {
+    dispatch(setOrderPermissionSuccess());
+    return () => dispatch(resetLoginFormValues());
+  }, [dispatch]);
 
   if (getCookie(TOKEN)) {
     return <Redirect to={location.state?.from || '/'} />;

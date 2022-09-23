@@ -3,12 +3,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams, Redirect } from 'react-router-dom';
 import { CardOrderDetails } from '../../components/card-order-details/card-order-details';
 import { Loader } from '../../components/loader/loader';
-import ModalError from '../../components/modal-error/modal-error';
+import { ModalError } from '../../components/modal-error/modal-error';
 import { setSocketConnection, setSocketDisconnect } from '../../services/actions/web-socket';
 import style from './card-order-details.module.css';
 
 export const OrderDetailsPage = ({ connectionPayload }) => {
-  const { ordersData, error } = useSelector((store) => ({
+  const { ordersData, error } = useSelector(store => ({
     ingredients: store.burger.ingredients,
     ...store.orders,
   }));
