@@ -15,10 +15,11 @@ import { TOKEN } from '../../utils/constants';
 import { getCookie } from '../../services/utils';
 import { FormCaption } from '../../components/form-caption/form-caption';
 import { Loader } from '../../components/loader/loader';
+import { selectForgotPasswordState } from '../../services/selectors/forgot-password';
 
 export const ResetPasswordPage = () => {
   const { form, setPasswordRequest, setPasswordFailed, setPasswordSuccess, getCodeSuccess } =
-    useSelector(store => store.forgotPassword);
+    useSelector(selectForgotPasswordState);
   const dispatch = useDispatch();
 
   const history = useHistory();

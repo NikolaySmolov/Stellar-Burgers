@@ -15,11 +15,10 @@ import { TOKEN } from '../../utils/constants';
 import { FormCaption } from '../../components/form-caption/form-caption';
 import { useInputLogic } from '../../services/hooks';
 import { Loader } from '../../components/loader/loader';
+import { selectRegisterState } from '../../services/selectors/register';
 
 export const RegisterPage = () => {
-  const { form, registerRequest, registerFailed, failedMessage } = useSelector(
-    store => store.registration
-  );
+  const { form, registerRequest, registerFailed, failedMessage } = useSelector(selectRegisterState);
   const dispatch = useDispatch();
 
   const history = useHistory();

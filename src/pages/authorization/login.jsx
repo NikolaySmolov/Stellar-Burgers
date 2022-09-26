@@ -13,9 +13,10 @@ import { FormCaption } from '../../components/form-caption/form-caption';
 import { useInputLogic } from '../../services/hooks';
 import { Loader } from '../../components/loader/loader';
 import { setOrderPermissionSuccess } from '../../services/actions/order';
+import { selectLoginState } from '../../services/selectors/login';
 
 export const LoginPage = () => {
-  const { form, loginRequest, loginFailed } = useSelector(store => store.login);
+  const { form, loginRequest, loginFailed } = useSelector(selectLoginState);
   const dispatch = useDispatch();
 
   const history = useHistory();

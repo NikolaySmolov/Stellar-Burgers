@@ -12,9 +12,10 @@ import {
 import { getCookie } from '../../services/utils';
 import { TOKEN } from '../../utils/constants';
 import { Loader } from '../../components/loader/loader';
+import { selectForgotPasswordState } from '../../services/selectors/forgot-password';
 
 export const ForgotPasswordPage = () => {
-  const { form, getCodeRequest, getCodeSuccess } = useSelector(store => store.forgotPassword);
+  const { form, getCodeRequest, getCodeSuccess } = useSelector(selectForgotPasswordState);
 
   const dispatch = useDispatch();
 
