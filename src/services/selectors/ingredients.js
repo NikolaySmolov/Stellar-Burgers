@@ -1,5 +1,7 @@
-export const getIngredients = store => store.ingredients.ingredients;
+export const selectIngredients = store => {
+  return store.ingredients.ingredients;
+};
 
-export const getIngredientsRequest = store => store.ingredients.request;
+export const selectIngredientsRequest = store => store.ingredients.request;
 
-export const getIngredientsFailed = store => store.ingredients.failed;
+export const selectIngredientsFailed = store => store.ingredients.failed;

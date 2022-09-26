@@ -3,12 +3,13 @@ import styles from './burger-ingredients.module.css';
 import { TabBar } from '../tab-bar/tab-bar';
 import { IngredientsSection } from '../ingredients-section/ingredients-section';
 import { useSelector } from 'react-redux';
-import { getIngredients } from '../../services/selectors/ingredients';
+import { selectIngredients } from '../../services/selectors/ingredients';
+import { BUN, MAIN, SAUCE } from '../../utils/constants';
 
 export default function BurgerIngredients() {
   const [currentTab, setCurrentTab] = useState('buns');
 
-  const ingredients = useSelector(getIngredients);
+  const ingredients = useSelector(selectIngredients);
 
   const bunHeading = useRef(null);
   const saucesHeading = useRef(null);
@@ -28,39 +29,31 @@ export default function BurgerIngredients() {
   };
 
   const content = useMemo(() => {
-    const buns = [];
-    const sauces = [];
-    const main = [];
-
-    ingredients.forEach(ingredient => {
-      switch (ingredient.type) {
-        case 'bun':
-          buns.push(ingredient);
-          break;
-        case 'sauce':
-          sauces.push(ingredient);
-          break;
-        case 'main':
-          main.push(ingredient);
-          break;
-        default:
-          return;
-      }
-    });
+    const ingredientsByCategory = ingredients.reduce(
+      (acc, ingredient) => {
+        acc[ingredient.type].push(ingredient);
+        return acc;
+      },
+      { [BUN]: [], [SAUCE]: [], [MAIN]: [] }
+    );
 
     return (
       <>
-        <IngredientsSection menuSection="Булки" ingredientList={buns} ref={bunHeading} />
+        <IngredientsSection
+          menuSection="Булки"
+          ingredientList={ingredientsByCategory[BUN]}
+          ref={bunHeading}
+        />
         <IngredientsSection
           headingRef={saucesHeading}
           menuSection="Соусы"
-          ingredientList={sauces}
+          ingredientList={ingredientsByCategory[SAUCE]}
           ref={saucesHeading}
         />
         <IngredientsSection
           headingRef={mainHeading}
           menuSection="Начинки"
-          ingredientList={main}
+          ingredientList={ingredientsByCategory[MAIN]}
           ref={mainHeading}
         />
       </>

@@ -21,16 +21,19 @@ import { Loader } from '../loader/loader';
 import { FeedPage } from '../../pages/feed/feed';
 import { CardOrderDetails } from '../card-order-details/card-order-details';
 import { WS_ENDPOINT_ALL, WS_ENDPOINT_PROFILE } from '../../services/utils';
-import { getIngredientsFailed, getIngredientsRequest } from '../../services/selectors/ingredients';
-import { getIngredients } from '../../services/actions/ingredients';
+import {
+  selectIngredientsFailed,
+  selectIngredientsRequest,
+} from '../../services/selectors/ingredients';
+import { selectIngredients } from '../../services/actions/ingredients';
 import { OrderDetails } from '../order-details/order-details';
 import { resetConstructor } from '../../services/actions/constructor';
 import { closeOrderDetails } from '../../services/actions/order';
 import { ORDER_PATH } from '../../utils/constants';
 
 export default function App() {
-  const ingredientsRequest = useSelector(getIngredientsRequest);
-  const ingredientsFailed = useSelector(getIngredientsFailed);
+  const ingredientsRequest = useSelector(selectIngredientsRequest);
+  const ingredientsFailed = useSelector(selectIngredientsFailed);
 
   const dispatch = useDispatch();
 
@@ -49,7 +52,7 @@ export default function App() {
   };
 
   useEffect(() => {
-    dispatch(getIngredients());
+    dispatch(selectIngredients());
   }, [dispatch]);
 
   if (ingredientsRequest) {

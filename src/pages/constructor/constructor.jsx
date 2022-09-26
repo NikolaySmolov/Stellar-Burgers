@@ -9,15 +9,15 @@ import { useEffect } from 'react';
 import { ModalError } from '../../components/modal-error/modal-error';
 import { setOrderPermissionSuccess } from '../../services/actions/order';
 import {
-  getOrderFailed,
-  getOrderingPermission,
-  getOrderStatus,
+  selectOrderFailed,
+  selectOrderingPermission,
+  selectOrderStatus,
 } from '../../services/selectors/order';
 
 export const ConstructorPage = () => {
-  const orderStatus = useSelector(getOrderStatus);
-  const orderingPermission = useSelector(getOrderingPermission);
-  const orderFailed = useSelector(getOrderFailed);
+  const orderStatus = useSelector(selectOrderStatus);
+  const orderingPermission = useSelector(selectOrderingPermission);
+  const orderFailed = useSelector(selectOrderFailed);
 
   const dispatch = useDispatch();
   const history = useHistory();

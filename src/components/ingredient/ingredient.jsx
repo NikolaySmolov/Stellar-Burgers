@@ -6,10 +6,10 @@ import { ADD, ingredientPropTypes } from '../../utils/constants';
 import { useDrag } from 'react-dnd';
 import { useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { getCounter } from '../../services/selectors/constructor';
+import { selectCounter } from '../../services/selectors/constructor';
 
 export const Ingredient = React.memo(props => {
-  const counter = useSelector(getCounter);
+  const counter = useSelector(selectCounter);
   const history = useHistory();
 
   const qty = counter?.[props._id] || null;

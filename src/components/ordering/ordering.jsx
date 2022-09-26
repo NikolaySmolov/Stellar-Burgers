@@ -5,17 +5,17 @@ import { useSelector, useDispatch } from 'react-redux';
 import { sendOrder } from '../../services/actions/order';
 import { Loader } from '../loader/loader';
 import {
-  getBurgerCompleteState,
-  getBurgerIngredientsIdList,
-  getTotalPrice,
+  selectConstructorIngredientsIdList,
+  selectTotalPrice,
+  selectBurgerCompleteState,
 } from '../../services/selectors/constructor';
-import { getOrderRequest } from '../../services/selectors/order';
+import { selectOrderRequest } from '../../services/selectors/order';
 
 export default function Ordering() {
-  const orderRequest = useSelector(getOrderRequest);
-  const totalPrice = useSelector(getTotalPrice);
-  const orderButtonState = !useSelector(getBurgerCompleteState);
-  const burgerIngredientsList = useSelector(getBurgerIngredientsIdList);
+  const orderRequest = useSelector(selectOrderRequest);
+  const totalPrice = useSelector(selectTotalPrice);
+  const orderButtonState = !useSelector(selectBurgerCompleteState);
+  const burgerIngredientsList = useSelector(selectConstructorIngredientsIdList);
 
   const dispatch = useDispatch();
 

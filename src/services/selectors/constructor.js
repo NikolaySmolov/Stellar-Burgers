@@ -1,34 +1,47 @@
+import { createSelector } from 'reselect';
 import { BUN } from '../../utils/constants';
 
-export const getBun = store =>
+export const selectBun = store =>
   store.burgerConstructor.bun.length > 0 ? store.burgerConstructor.bun : null;
 
-export const getFillings = store =>
+export const selectFillings = store =>
   store.burgerConstructor.filling.length > 0 ? store.burgerConstructor.filling : null;
 
-//нужен реселект, т.к. дублируется код в селекторах
-
-export const getBurgerCompleteState = store => {
-  const bun = store.burgerConstructor.bun;
-  const filling = store.burgerConstructor.filling;
-
-  return bun.length > 0 && filling.length > 0 ? true : false;
-};
-
-export const getBurgerIngredientsIdList = store => {
-  const ingredientsList = Object.values(store.burgerConstructor).flat();
-
-  if (ingredientsList.length > 0) {
-    const ingredientsIdList = ingredientsList.map(({ _id }) => _id);
-    return ingredientsIdList;
-  } else {
-    return [];
+export const selectBurgerCompleteState = createSelector(
+  [selectBun, selectFillings],
+  (bun, fillings) => {
+    return bun && fillings ? true : false;
   }
-};
+);
 
-export const getTotalPrice = store => {
-  const ingredientsList = Object.values(store.burgerConstructor).flat();
+const selectConstructorIngredients = createSelector(
+  [selectBun, selectFillings],
+  (bun, fillings) => {
+    const constructorIngredients = [];
 
+    if (bun) {
+      constructorIngredients.push(...bun);
+    } else if (fillings) {
+      constructorIngredients.push(...fillings);
+    }
+
+    return constructorIngredients;
+  }
+);
+
+export const selectConstructorIngredientsIdList = createSelector(
+  [selectConstructorIngredients],
+  ingredientsList => {
+    if (ingredientsList.length > 0) {
+      const ingredientsIdList = ingredientsList.map(({ _id }) => _id);
+      return ingredientsIdList;
+    } else {
+      return [];
+    }
+  }
+);
+
+export const selectTotalPrice = createSelector([selectConstructorIngredients], ingredientsList => {
   if (ingredientsList.length > 0) {
     return ingredientsList.reduce((acc, item) => {
       return item.type === BUN ? (acc += item.price * 2) : (acc += item.price);
@@ -36,19 +49,17 @@ export const getTotalPrice = store => {
   }
 
   return 0;
-};
+});
 
-export const getCounter = store => {
+export const selectCounter = createSelector([selectBun, selectFillings], (bun, fillings) => {
   const counter = {};
-  const bun = store.burgerConstructor.bun;
-  const filling = store.burgerConstructor.filling;
 
-  if (bun.length > 0) {
+  if (bun) {
     counter[bun[0]._id] = 2;
   }
 
-  if (filling.length > 0) {
-    filling.forEach(item => {
+  if (fillings) {
+    fillings.forEach(item => {
       if (counter[item._id]) {
         counter[item._id]++;
       } else {
@@ -58,4 +69,4 @@ export const getCounter = store => {
   }
 
   return counter;
-};
+});

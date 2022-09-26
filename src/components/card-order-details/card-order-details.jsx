@@ -3,14 +3,14 @@ import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { useOrderData } from '../../services/hooks';
-import { getIngredients } from '../../services/selectors/ingredients';
+import { selectIngredients } from '../../services/selectors/ingredients';
 import { DONE } from '../../utils/constants';
 import { Loader } from '../loader/loader';
 import { OrderRow } from '../order-row/order-row';
 import style from './card-order-details.module.css';
 
 export const CardOrderDetails = () => {
-  const ingredientsMenu = useSelector(getIngredients);
+  const ingredientsMenu = useSelector(selectIngredients);
   const { orders } = useSelector(store => ({
     orders: store.orders.ordersData.orders,
   }));

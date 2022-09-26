@@ -5,13 +5,13 @@ import { ADD } from '../../utils/constants';
 import { useSelector, useDispatch } from 'react-redux';
 import { useDrop } from 'react-dnd';
 import { addIngredient } from '../../services/actions/constructor';
-import { getBun, getFillings } from '../../services/selectors/constructor';
-import { getOrderRequest } from '../../services/selectors/order';
+import { selectBun, selectFillings } from '../../services/selectors/constructor';
+import { selectOrderRequest } from '../../services/selectors/order';
 
 export default function BurgerConstructor() {
-  const filling = useSelector(getFillings);
-  const bun = useSelector(getBun);
-  const orderRequest = useSelector(getOrderRequest);
+  const filling = useSelector(selectFillings);
+  const bun = useSelector(selectBun);
+  const orderRequest = useSelector(selectOrderRequest);
 
   const dispatch = useDispatch();
 

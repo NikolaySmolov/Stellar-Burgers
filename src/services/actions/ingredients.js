@@ -8,7 +8,7 @@ export const ACTION_TYPES = {
   FAILED: `${index}/FAILED`,
 };
 
-export const getIngredients = () => dispatch => {
+export const selectIngredients = () => dispatch => {
   dispatch({ type: ACTION_TYPES.REQUEST });
 
   requireIngredients()
