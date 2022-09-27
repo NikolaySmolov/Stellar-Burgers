@@ -5,5 +5,3 @@ declare module '*.css' {
     const classNames: IClassNames;
     export = classNames;
 }
-
-declare module 'react-router-dom'

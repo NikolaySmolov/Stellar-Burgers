@@ -5,7 +5,8 @@ import { Logo } from '@ya.praktikum/react-developer-burger-ui-components';
 import { BurgerIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { ListIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useRouteMatch, useLocation, Link } from 'react-router-dom';
+import { useLocation, useRouteMatch } from 'react-router';
+import { Link } from 'react-router-dom';
 
 export const AppHeader = React.memo(() => {
   const location = useLocation();
@@ -13,10 +14,10 @@ export const AppHeader = React.memo(() => {
   const profileRouteMatch = useRouteMatch('/profile');
   const ordersRouteMatch = useRouteMatch('/feed');
 
-  const isConstructor =
+  const isConstructor: boolean =
     constructorRouteMatch?.isExact || location.pathname.includes('/ingredients');
-  const isOrders = ordersRouteMatch?.isExact || location.pathname.includes('/feed');
-  const isProfile = profileRouteMatch?.isExact || location.pathname.includes('/profile');
+  const isOrders: boolean = ordersRouteMatch?.isExact || location.pathname.includes('/feed');
+  const isProfile: boolean= profileRouteMatch?.isExact || location.pathname.includes('/profile');
 
   return (
     <header className={`${styles.header} pt-4 pb-4`}>

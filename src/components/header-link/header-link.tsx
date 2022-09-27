@@ -1,8 +1,14 @@
-import PropTypes from 'prop-types';
 import styles from './header-link.module.css';
+import { PropsWithChildren } from 'react';
 import { NavLink } from 'react-router-dom';
 
-export const HeaderLink = ({ to, renderIcon, children, routeMatch, ...props }) => {
+interface HeaderLinkProps extends PropsWithChildren {
+  to: {pathname: string} | string;
+  renderIcon: () => JSX.Element;
+  routeMatch: boolean;
+}
+
+export const HeaderLink = ({ to, renderIcon, children, routeMatch, ...props }: HeaderLinkProps) => {
   return (
     <NavLink
       to={to}
@@ -12,13 +18,4 @@ export const HeaderLink = ({ to, renderIcon, children, routeMatch, ...props }) =
       <p className={`${styles.nav__text} ml-2 text text_type_main-default`}>{children}</p>
     </NavLink>
   );
-};
-
-HeaderLink.propTypes = {
-  to: PropTypes.shape({
-    pathname: PropTypes.string.isRequired,
-  }),
-  renderIcon: PropTypes.func,
-  children: PropTypes.string.isRequired,
-  routeMatch: PropTypes.bool,
 };
