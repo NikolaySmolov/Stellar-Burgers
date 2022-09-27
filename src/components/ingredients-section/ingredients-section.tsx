@@ -1,10 +1,14 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { ingredientPropTypes } from '../../utils/constants';
 import styles from './ingredients-section.module.css';
 import { Ingredient } from '../ingredient/ingredient';
+import { IIngredient } from '../../utils/constants';
 
-export const IngredientsSection = React.forwardRef(({ menuSection, ingredientList }, ref) => {
+interface IIngredientsSection {
+  menuSection: string;
+  ingredientList: ReadonlyArray<IIngredient>;
+}
+
+export const IngredientsSection = React.forwardRef<HTMLHeadingElement, IIngredientsSection>(({ menuSection, ingredientList }, ref) => {
   return (
     <li className={styles.section}>
       <h2 ref={ref} className="text text_type_main-medium mb-6 mt-10">
@@ -19,7 +23,3 @@ export const IngredientsSection = React.forwardRef(({ menuSection, ingredientLis
   );
 });
 
-IngredientsSection.propTypes = {
-  menuSection: PropTypes.string.isRequired,
-  ingredientList: PropTypes.arrayOf(ingredientPropTypes).isRequired,
-};

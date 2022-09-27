@@ -8,7 +8,7 @@ import { addIngredient } from '../../services/actions/constructor';
 import { selectBun, selectFillings } from '../../services/selectors/constructor';
 import { selectOrderRequest } from '../../services/selectors/order';
 
-export default function BurgerConstructor() {
+export function BurgerConstructor() {
   const filling = useSelector(selectFillings);
   const bun = useSelector(selectBun);
   const orderRequest = useSelector(selectOrderRequest);

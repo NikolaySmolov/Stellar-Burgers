@@ -42,11 +42,27 @@ export const refPropTypes = PropTypes.shape({
   current: PropTypes.object,
 });
 
+export type TIngredientType = typeof BUN | typeof SAUCE | typeof MAIN;
+
+export interface IIngredient {
+  _id: string;
+  name: string;
+  type: TIngredientType;
+  price: number;
+  image: string;
+  calories: number;
+  carbohydrates: number;
+  fat: number;
+  proteins: number;
+  image_large: string;
+  image_mobile: string;
+}
+
 export const OPEN = 'open';
 export const CLOSE = 'close';
-export const BUN = 'bun';
-export const SAUCE = 'sauce';
-export const MAIN = 'main';
+export const BUN: 'bun' = 'bun';
+export const SAUCE: 'sauce' = 'sauce';
+export const MAIN: 'main' = 'main';
 export const FILLING = 'filling';
 export const CALC = 'calc';
 export const ADD = 'add';

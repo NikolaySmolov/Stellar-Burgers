@@ -4,33 +4,40 @@ import { TabBar } from '../tab-bar/tab-bar';
 import { IngredientsSection } from '../ingredients-section/ingredients-section';
 import { useSelector } from 'react-redux';
 import { selectIngredients } from '../../services/selectors/ingredients';
-import { BUN, MAIN, SAUCE } from '../../utils/constants';
+import { BUN, IIngredient, MAIN, SAUCE, TIngredientType } from '../../utils/constants';
 
-export default function BurgerIngredients() {
-  const [currentTab, setCurrentTab] = useState('buns');
+type TIngredientsByCategory = {
+  [key in TIngredientType]: Array<IIngredient>
+}
 
-  const ingredients = useSelector(selectIngredients);
+export function BurgerIngredients() {
+  const [currentTab, setCurrentTab] = useState<TIngredientType>(BUN);
 
-  const bunHeading = useRef(null);
-  const saucesHeading = useRef(null);
-  const mainHeading = useRef(null);
+  const ingredients: ReadonlyArray<IIngredient> = useSelector(selectIngredients);
+
+  const bunHeading = useRef<HTMLHeadingElement>(null);
+  const saucesHeading = useRef<HTMLHeadingElement>(null);
+  const mainHeading = useRef<HTMLHeadingElement>(null);
 
   const tabsFollowing = () => {
-    const saucesHeadingBox = saucesHeading.current.getBoundingClientRect();
-    const mainHeadingBox = mainHeading.current.getBoundingClientRect();
+    if (saucesHeading.current && mainHeading.current) {
+      const saucesHeadingBox: DOMRect = saucesHeading.current.getBoundingClientRect();
+      const mainHeadingBox = mainHeading.current?.getBoundingClientRect();
 
-    if (saucesHeadingBox.y < 275 && mainHeadingBox.y > 275 && currentTab !== 'sauces') {
-      setCurrentTab('sauces');
-    } else if (mainHeadingBox.y < 275 && currentTab !== 'main') {
-      setCurrentTab('filling');
-    } else if (saucesHeadingBox.y > 275 && currentTab !== 'buns') {
-      setCurrentTab('buns');
+    if (saucesHeadingBox.y < 275 && mainHeadingBox.y > 275 && currentTab !== SAUCE) {
+      setCurrentTab(SAUCE);
+    } else if (mainHeadingBox.y < 275 && currentTab !== MAIN) {
+      setCurrentTab(MAIN);
+    } else if (saucesHeadingBox.y > 275 && currentTab !== BUN) {
+      setCurrentTab(BUN);
     }
+    }
+    
   };
 
   const content = useMemo(() => {
     const ingredientsByCategory = ingredients.reduce(
-      (acc, ingredient) => {
+      (acc: TIngredientsByCategory, ingredient) => {
         acc[ingredient.type].push(ingredient);
         return acc;
       },
@@ -40,19 +47,17 @@ export default function BurgerIngredients() {
     return (
       <>
         <IngredientsSection
-          menuSection="Булки"
+          menuSection={'Булки'}
           ingredientList={ingredientsByCategory[BUN]}
           ref={bunHeading}
         />
         <IngredientsSection
-          headingRef={saucesHeading}
-          menuSection="Соусы"
+          menuSection={'Соусы'}
           ingredientList={ingredientsByCategory[SAUCE]}
           ref={saucesHeading}
         />
         <IngredientsSection
-          headingRef={mainHeading}
-          menuSection="Начинки"
+          menuSection={'Начинки'}
           ingredientList={ingredientsByCategory[MAIN]}
           ref={mainHeading}
         />

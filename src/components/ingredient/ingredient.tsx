@@ -2,14 +2,14 @@ import React from 'react';
 import styles from './ingredient.module.css';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Counter } from '@ya.praktikum/react-developer-burger-ui-components';
-import { ADD, ingredientPropTypes } from '../../utils/constants';
+import { ADD, IIngredient } from '../../utils/constants';
 import { useDrag } from 'react-dnd';
-import { useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { useHistory } from 'react-router';
 import { selectCounter } from '../../services/selectors/constructor';
 
-export const Ingredient = React.memo(props => {
-  const counter = useSelector(selectCounter);
+export const Ingredient = React.memo<IIngredient>(props => {
+  const counter: any = useSelector(selectCounter);
   const history = useHistory();
 
   const qty = counter?.[props._id] || null;
@@ -51,5 +51,3 @@ export const Ingredient = React.memo(props => {
     </article>
   );
 });
-
-Ingredient.propTypes = ingredientPropTypes.isRequired;
