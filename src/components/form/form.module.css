@@ -9,13 +9,8 @@
   margin-bottom: calc(var(--offset-base-size) * -6);
 }
 
-.form [class='input__container'],
-[class~='input'] {
-  width: 100%;
-}
-
 .form [class~='input__error'] {
-  margin-bottom: 0;
+  margin-bottom: -24px;
 }
 
 .form [type='reset'] {
