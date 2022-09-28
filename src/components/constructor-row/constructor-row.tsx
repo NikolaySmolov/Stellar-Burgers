@@ -1,14 +1,23 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { ingredientPropTypes, SORT } from '../../utils/constants';
 import styles from './constructor-row.module.css';
 import { ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
 import { DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useDispatch } from 'react-redux';
 import { useDrag, useDrop } from 'react-dnd';
+import { IIngredient, SORT } from '../../utils/constants';
 import { deleteIngredient, sortIngredient } from '../../services/actions/constructor';
 
-export const ConstructorRow = React.memo(({ isBun = false, type, data, position }) => {
+interface IDragAndDropProp {
+  position: number;
+}
+
+interface IConstructorRow extends IDragAndDropProp {
+  isBun: boolean;
+  type?: 'top' | 'bottom';
+  ingredient: IIngredient;
+}
+
+export const ConstructorRow = React.memo<IConstructorRow>(({ isBun = false, type, ingredient, position }) => {
   const dispatch = useDispatch();
 
   const [, dragRef] = useDrag({
@@ -18,7 +27,7 @@ export const ConstructorRow = React.memo(({ isBun = false, type, data, position 
 
   const [{ isHover }, dropRef] = useDrop({
     accept: SORT,
-    drop(item) {
+    drop(item: IDragAndDropProp) {
       dispatch(sortIngredient(item.position, position));
     },
     collect: monitor => ({
@@ -34,10 +43,10 @@ export const ConstructorRow = React.memo(({ isBun = false, type, data, position 
     <div className={`${styles.bun} pl-4 pr-4`}>
       <ConstructorElement
         type={type}
-        text={`${data.name} ${type === 'top' ? '(верх)' : '(низ)'}`}
-        price={data.price}
-        thumbnail={data.image}
-        isLocked="true"
+        text={`${ingredient.name} ${type === 'top' ? '(верх)' : '(низ)'}`}
+        price={ingredient.price}
+        thumbnail={ingredient.image}
+        isLocked
       />
     </div>
   ) : (
@@ -45,21 +54,14 @@ export const ConstructorRow = React.memo(({ isBun = false, type, data, position 
       className={`${styles.wrapper} ${isHover ? styles.wrapper_dropHover : ''} mt-4 mb-4`}
       ref={dropRef}>
       <div className={styles.ingredient} draggable ref={dragRef}>
-        <DragIcon />
+        <DragIcon type={'primary'} />
         <ConstructorElement
-          text={data.name}
-          price={data.price}
-          thumbnail={data.image}
+          text={ingredient.name}
+          price={ingredient.price}
+          thumbnail={ingredient.image}
           handleClose={handleDelete}
         />
       </div>
     </li>
   );
 });
-
-ConstructorRow.propTypes = {
-  isBun: PropTypes.bool.isRequired,
-  type: PropTypes.string,
-  data: ingredientPropTypes.isRequired,
-  position: PropTypes.number.isRequired,
-};

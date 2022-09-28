@@ -11,7 +11,7 @@ import {
 } from '../../services/selectors/constructor';
 import { selectOrderRequest } from '../../services/selectors/order';
 
-export default function Ordering() {
+export function Ordering() {
   const orderRequest = useSelector(selectOrderRequest);
   const totalPrice = useSelector(selectTotalPrice);
   const orderButtonState = !useSelector(selectBurgerCompleteState);
@@ -20,7 +20,7 @@ export default function Ordering() {
   const dispatch = useDispatch();
 
   const handleSendOrder = () => {
-    dispatch(sendOrder(burgerIngredientsList));
+    dispatch(sendOrder(burgerIngredientsList)); //для перевода в tsx нужен кастомный тип dispatch
   };
 
   return (
@@ -30,7 +30,12 @@ export default function Ordering() {
         <CurrencyIcon type="primary" />
       </div>
       <div className={styles.button}>
-        <Button type="primary" size="large" onClick={handleSendOrder} disabled={orderButtonState}>
+        <Button
+          type="primary"
+          size="large"
+          onClick={handleSendOrder}
+          disabled={orderButtonState}
+          htmlType={'button'}>
           Оформить заказ
         </Button>
         {orderRequest ? <Loader /> : null}
