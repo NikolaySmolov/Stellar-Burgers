@@ -22,7 +22,7 @@ export const LoginPage = () => {
   const history = useHistory();
   const location = useLocation();
 
-  const emailInputLogic = useInputLogic({ initType: 'email', initIcon: null });
+  const { fieldReset, ...emailInputLogic } = useInputLogic({ initType: 'email', initIcon: null });
 
   const handleSetFieldValue = evt => {
     const field = evt.currentTarget;

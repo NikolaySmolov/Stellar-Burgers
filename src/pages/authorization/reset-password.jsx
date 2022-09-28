@@ -24,7 +24,10 @@ export const ResetPasswordPage = () => {
 
   const history = useHistory();
 
-  const passwordInputLogic = useInputLogic({ initType: 'password', initIcon: 'ShowIcon' });
+  const { fieldReset, ...passwordInputLogic } = useInputLogic({
+    initType: 'password',
+    initIcon: 'ShowIcon',
+  });
 
   const handleSetFieldValue = evt => {
     const field = evt.currentTarget;

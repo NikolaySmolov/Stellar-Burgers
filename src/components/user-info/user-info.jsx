@@ -22,13 +22,22 @@ export const UserInfo = () => {
     getUserInfoRequest,
     getUserInfoFailed,
     setUserInfoFailed,
-  } = useSelector((store) => store.profile);
+  } = useSelector(store => store.profile);
 
   const dispatch = useDispatch();
 
-  const nameInputLogic = useInputLogic({ initType: 'text', disabledState: true });
-  const emailInputLogic = useInputLogic({ initType: 'email', disabledState: true });
-  const passwordInputLogic = useInputLogic({ initType: 'password', disabledState: true });
+  const { fieldReset: nameFieldReset, ...nameInputLogic } = useInputLogic({
+    initType: 'text',
+    disabledState: true,
+  });
+  const { fieldReset: emailFieldReset, ...emailInputLogic } = useInputLogic({
+    initType: 'email',
+    disabledState: true,
+  });
+  const { fieldReset: passwordFieldReset, ...passwordInputLogic } = useInputLogic({
+    initType: 'password',
+    disabledState: true,
+  });
 
   const fieldsProps = [nameInputLogic, emailInputLogic, passwordInputLogic];
 
@@ -41,18 +50,20 @@ export const UserInfo = () => {
   const someEnabled = fieldsProps.some(({ disabled }) => disabled === false);
 
   const resetFields = () => {
-    fieldsProps.forEach((field) => field.fieldReset());
+    nameFieldReset();
+    emailFieldReset();
+    passwordFieldReset();
   };
 
   const handleSetFieldValue = useCallback(
-    (evt) => {
+    evt => {
       const field = evt.currentTarget;
       dispatch(setProfileUserInfoFormValue(field.name, field.value));
     },
     [dispatch]
   );
 
-  const handleSubmit = (evt) => {
+  const handleSubmit = evt => {
     evt.preventDefault();
     const formData = { ...userInfoForm };
     if (formData.password === FAKE_PASSWORD) {
