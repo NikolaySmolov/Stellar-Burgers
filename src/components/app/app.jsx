@@ -10,36 +10,48 @@ import {
   NotFoundPage,
   OrderDetailsPage,
 } from '../../pages';
-import { Route, Switch, useLocation, useHistory } from 'react-router-dom';
+import { Route, Switch, useLocation, useHistory, useRouteMatch } from 'react-router-dom';
 import { ProtectedRoute } from '../protected-route';
 import { useDispatch, useSelector } from 'react-redux';
 import { Modal } from '../modal/modal';
 import { IngredientDetails } from '../ingredient-details/ingredient-details';
 import { ModalError } from '../modal-error/modal-error';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { Loader } from '../loader/loader';
 import { FeedPage } from '../../pages/feed/feed';
 import { CardOrderDetails } from '../card-order-details/card-order-details';
 import { WS_ENDPOINT_ALL, WS_ENDPOINT_PROFILE } from '../../services/utils';
 import {
+  selectIngredients,
   selectIngredientsFailed,
   selectIngredientsRequest,
 } from '../../services/selectors/ingredients';
-import { selectIngredients } from '../../services/actions/ingredients';
+import { fetchIngredients } from '../../services/actions/ingredients';
 import { OrderDetails } from '../order-details/order-details';
 import { resetConstructor } from '../../services/actions/constructor';
 import { closeOrderDetails } from '../../services/actions/order';
 import { ORDER_PATH } from '../../utils/constants';
 
-export default function App() {
+export function App() {
   const ingredientsRequest = useSelector(selectIngredientsRequest);
+  const ingredients = useSelector(selectIngredients);
   const ingredientsFailed = useSelector(selectIngredientsFailed);
 
   const dispatch = useDispatch();
 
-  const location = useLocation();
+  const location = useLocation(); //пока не понятно что передавать в дженерик
   const history = useHistory();
   const background = location.state?.background;
+
+  const ingredientsRouteMatch = useRouteMatch('/ingredients/:id');
+
+  const ingredientData = useMemo(() => {
+    if (ingredientsRouteMatch) {
+      return ingredients.find(({ _id }) => _id === ingredientsRouteMatch.params.id);
+    } else {
+      return null;
+    }
+  }, [ingredientsRouteMatch, ingredients]);
 
   const handleCloseModal = () => {
     if (location.pathname.includes(ORDER_PATH)) {
@@ -52,12 +64,12 @@ export default function App() {
   };
 
   useEffect(() => {
-    dispatch(selectIngredients());
+    dispatch(fetchIngredients()); //здесь кастомная типизация из-за redux thunk
   }, [dispatch]);
 
-  if (ingredientsRequest) {
+  if (ingredientsRequest || ingredients.length === 0) {
     return <Loader />;
-  } else if (ingredientsFailed) {
+  } else if (ingredients.length === 0 && ingredientsFailed) {
     return <ModalError />;
   }
 
@@ -69,7 +81,7 @@ export default function App() {
           <ConstructorPage />
         </Route>
         <Route path="/ingredients/:id">
-          <IngredientPage />
+          <IngredientPage {...ingredientData} />
         </Route>
         <Route path="/feed" exact>
           <FeedPage />
@@ -103,11 +115,12 @@ export default function App() {
         <>
           <Modal onClose={handleCloseModal}>
             <Route path="/ingredients/:id">
-              <IngredientDetails />
+              <IngredientDetails {...ingredientData} />
             </Route>
-            <Route path="/order/:number">
-              <OrderDetails />
-            </Route>
+            <Route
+              path="/order/:number"
+              render={({ match }) => <OrderDetails orderNumber={match.params.number} />}
+            />
             <Route path="/feed/:id">
               <CardOrderDetails />
             </Route>

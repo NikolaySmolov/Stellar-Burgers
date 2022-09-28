@@ -1,10 +1,11 @@
 import styles from './order-details.module.css';
 import doneImg from '../../images/done.jpg';
-import { useParams } from 'react-router-dom';
 
-export function OrderDetails() {
-  const { number: orderNumber } = useParams();
+interface IOrderDetails {
+  orderNumber: number;
+}
 
+export function OrderDetails({ orderNumber }: IOrderDetails) {
   return (
     <div className={`${styles.wrapper} pt-30 pr-25 pb-30 pl-25`}>
       <h2 className={`${styles.title} text text_type_digits-large`}>{orderNumber}</h2>

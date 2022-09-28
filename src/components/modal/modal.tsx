@@ -8,9 +8,11 @@ interface IModal extends React.PropsWithChildren {
   onClose: () => void
 }
 
-const modalRoot = document.getElementById('#modal-root')!;
+const modalRoot = document.getElementById('modal-root') as HTMLElement;
+
 
 export function Modal({ onClose, children }: IModal) {
+  
   
   const closeOnEsc = (e: KeyboardEvent) => {
     if (e.key === 'Escape') {

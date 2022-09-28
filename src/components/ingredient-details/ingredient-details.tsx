@@ -1,19 +1,8 @@
+import { IIngredient } from '../../utils/constants';
 import styles from './ingredient-details.module.css';
-import { useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { selectIngredients } from '../../services/selectors/ingredients';
 
-export function IngredientDetails() {
-  const ingredients = useSelector(selectIngredients);
-  const { id } = useParams();
-
-  if (ingredients.length === 0) {
-    return null;
-  }
-
-  const { name, image_large, calories, proteins, fat, carbohydrates } = ingredients.find(
-    ({ _id }) => _id === id
-  );
+export function IngredientDetails( ingredientData: IIngredient) {
+  const { name, image_large, calories, proteins, fat, carbohydrates } = ingredientData;
 
   return (
     <div className={`${styles.wrapper} pt-10 pr-10 pb-15 pl-10`}>
