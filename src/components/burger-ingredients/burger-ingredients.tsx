@@ -70,9 +70,7 @@ export function BurgerIngredients() {
       <section>
         <h1 className="text text_type_main-large mt-10 mb-5">Соберите бургер</h1>
         <TabBar
-          bunSectionRef={bunHeading}
-          sauceSectionRef={saucesHeading}
-          mainSectionRef={mainHeading}
+          headingRefs={{[BUN]: bunHeading, [SAUCE]: saucesHeading, [MAIN]: mainHeading}}
           currentTab={currentTab}
         />
         <ul onScroll={tabsFollowing} className={`${styles.menu} custom-scroll`}>

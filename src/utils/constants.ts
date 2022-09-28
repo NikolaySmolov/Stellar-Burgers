@@ -38,9 +38,10 @@ export const ingredientPropTypes = PropTypes.shape({
   count: PropTypes.number,
 });
 
-export const refPropTypes = PropTypes.shape({
-  current: PropTypes.object,
-});
+export const BUN: 'bun' = 'bun';
+export const SAUCE: 'sauce' = 'sauce';
+export const MAIN: 'main' = 'main';
+export const FILLING: 'filling' = 'filling';
 
 export type TIngredientType = typeof BUN | typeof SAUCE | typeof MAIN;
 
@@ -60,10 +61,6 @@ export interface IIngredient {
 
 export const OPEN = 'open';
 export const CLOSE = 'close';
-export const BUN: 'bun' = 'bun';
-export const SAUCE: 'sauce' = 'sauce';
-export const MAIN: 'main' = 'main';
-export const FILLING = 'filling';
 export const CALC = 'calc';
 export const ADD = 'add';
 export const SORT = 'sort';
