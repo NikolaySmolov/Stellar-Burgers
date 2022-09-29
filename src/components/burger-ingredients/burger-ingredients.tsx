@@ -2,9 +2,9 @@ import { useMemo, useRef, useState } from 'react';
 import styles from './burger-ingredients.module.css';
 import { TabBar } from '../tab-bar/tab-bar';
 import { IngredientsSection } from '../ingredients-section/ingredients-section';
-import { useSelector } from 'react-redux';
 import { selectIngredients } from '../../services/selectors/ingredients';
 import { BUN, IIngredient, MAIN, SAUCE, TIngredientType } from '../../utils/constants';
+import { useAppSelector } from '../../services/redux-hooks';
 
 type TIngredientsByCategory = {
   [key in TIngredientType]: Array<IIngredient>
@@ -13,7 +13,7 @@ type TIngredientsByCategory = {
 export function BurgerIngredients() {
   const [currentTab, setCurrentTab] = useState<TIngredientType>(BUN);
 
-  const ingredients: ReadonlyArray<IIngredient> = useSelector(selectIngredients);
+  const ingredients = useAppSelector(selectIngredients);
 
   const bunHeading = useRef<HTMLHeadingElement>(null);
   const saucesHeading = useRef<HTMLHeadingElement>(null);

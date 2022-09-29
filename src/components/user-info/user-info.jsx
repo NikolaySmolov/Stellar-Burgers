@@ -28,14 +28,17 @@ export const UserInfo = () => {
 
   const { fieldReset: nameFieldReset, ...nameInputLogic } = useInputLogic({
     initType: 'text',
+    initIcon: 'EditIcon',
     disabledState: true,
   });
   const { fieldReset: emailFieldReset, ...emailInputLogic } = useInputLogic({
     initType: 'email',
+    initIcon: 'EditIcon',
     disabledState: true,
   });
   const { fieldReset: passwordFieldReset, ...passwordInputLogic } = useInputLogic({
     initType: 'password',
+    initIcon: 'EditIcon',
     disabledState: true,
   });
 

@@ -10,6 +10,7 @@ import {
   selectBurgerCompleteState,
 } from '../../services/selectors/constructor';
 import { selectOrderRequest } from '../../services/selectors/order';
+import { useAppDispatch} from '../../services/redux-hooks';
 
 export function Ordering() {
   const orderRequest = useSelector(selectOrderRequest);
@@ -17,10 +18,10 @@ export function Ordering() {
   const orderButtonState = !useSelector(selectBurgerCompleteState);
   const burgerIngredientsList = useSelector(selectConstructorIngredientsIdList);
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const handleSendOrder = () => {
-    dispatch(sendOrder(burgerIngredientsList)); //для перевода в tsx нужен кастомный тип dispatch
+    dispatch(sendOrder(burgerIngredientsList));
   };
 
   return (

@@ -4,9 +4,9 @@ import { Form } from '../../components/form/form';
 import { useHistory, useLocation, Redirect } from 'react-router-dom';
 //eslint-disable-next-line
 import styles from './login.module.css';
-import { useSelector, useDispatch } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../../services/redux-hooks';
 import { resetLoginFormValues, setLoginFormValue, signIn } from '../../services/actions/login';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { getCookie } from '../../services/utils';
 import { TOKEN } from '../../utils/constants';
 import { FormCaption } from '../../components/form-caption/form-caption';
@@ -14,22 +14,23 @@ import { useInputLogic } from '../../services/hooks';
 import { Loader } from '../../components/loader/loader';
 import { setOrderPermissionSuccess } from '../../services/actions/order';
 import { selectLoginState } from '../../services/selectors/login';
+import { IFromLocation } from '../../services/types';
 
 export const LoginPage = () => {
-  const { form, loginRequest, loginFailed } = useSelector(selectLoginState);
-  const dispatch = useDispatch();
+  const { form, loginRequest, loginFailed } = useAppSelector(selectLoginState);
+  const dispatch = useAppDispatch();
 
   const history = useHistory();
-  const location = useLocation();
+  const location = useLocation<IFromLocation>();
 
-  const { fieldReset, ...emailInputLogic } = useInputLogic({ initType: 'email', initIcon: null });
+  const { fieldReset, ...emailInputLogic } = useInputLogic({ initType: 'email' });
 
-  const handleSetFieldValue = evt => {
+  const handleSetFieldValue = (evt: React.ChangeEvent<HTMLInputElement>) => {
     const field = evt.currentTarget;
     dispatch(setLoginFormValue(field.name, field.value));
   };
 
-  const handleSignIn = evt => {
+  const handleSignIn = (evt: React.SyntheticEvent<HTMLFormElement, SubmitEvent>) => {
     evt.preventDefault();
 
     dispatch(signIn(form));
@@ -45,11 +46,13 @@ export const LoginPage = () => {
 
   useEffect(() => {
     dispatch(setOrderPermissionSuccess());
-    return () => dispatch(resetLoginFormValues());
+    return () => {
+      dispatch(resetLoginFormValues());
+    };
   }, [dispatch]);
 
   if (getCookie(TOKEN)) {
-    return <Redirect to={location.state?.from || '/'} />;
+    return <Redirect to={location.state?.from.pathname || '/'} />;
   }
 
   return (

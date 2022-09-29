@@ -2,7 +2,7 @@ import { useRef, useState, useMemo, useEffect } from 'react';
 import { BUN, CREATED, DONE, PENDING } from '../utils/constants';
 import { setTimeFormat } from './utils';
 
-export const useInputLogic = ({ initType, initIcon = 'EditIcon', disabledState = false }) => {
+export const useInputLogic = ({ initType, initIcon = undefined, disabledState = false }) => {
   const [disabled, setDisabled] = useState(disabledState);
   const [icon, setIcon] = useState(initIcon);
   const [visible, setVisible] = useState(false);
@@ -11,7 +11,7 @@ export const useInputLogic = ({ initType, initIcon = 'EditIcon', disabledState =
 
   const inputRef = useRef(null);
 
-  const validateField = (fieldValue) => {
+  const validateField = fieldValue => {
     switch (initType) {
       case 'password':
         if (fieldValue.length > 0 && fieldValue.length < 6 && !disabled) {
@@ -54,7 +54,7 @@ export const useInputLogic = ({ initType, initIcon = 'EditIcon', disabledState =
     setError(false);
   };
 
-  const onBlur = (evt) => {
+  const onBlur = evt => {
     if (initType === 'password') {
       setType('password');
       setIcon('ShowIcon');
@@ -87,7 +87,7 @@ export const useOrderData = (ingredientsArray, ingredientsMenu, dateString, stat
 
     const difference = Math.floor((today - createdAt) / (1000 * 60 * 60 * 24));
 
-    const defineNumber = (number) => {
+    const defineNumber = number => {
       const lastDigit = Number(String(number).split('').at(-1));
       return lastDigit;
     };
@@ -130,7 +130,7 @@ export const useOrderData = (ingredientsArray, ingredientsMenu, dateString, stat
     }
 
     const result = ingredientsArray.reduce((acc, item) => {
-      const itemIndex = acc.findIndex((ingredient) => ingredient.id === item);
+      const itemIndex = acc.findIndex(ingredient => ingredient.id === item);
 
       if (~itemIndex) {
         acc[itemIndex].qty++;
