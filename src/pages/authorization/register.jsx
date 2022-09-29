@@ -1,3 +1,4 @@
+import styles from './index.module.css';
 import { Button, Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import { AdditionalAction } from '../../components/additional-action/additional-action';
 import { Form } from '../../components/form/form';
@@ -51,9 +52,11 @@ export const RegisterPage = () => {
   }
 
   return (
-    <main className={'authentication'}>
-      <section className={'authentication__content'}>
-        <h1 className={'authentication__title text text_type_main-medium mb-6'}>Регистрация</h1>
+    <main className={styles.authentication}>
+      <section className={styles.authentication__content}>
+        <h1 className={`${styles.authentication__title} text text_type_main-medium mb-6`}>
+          Регистрация
+        </h1>
         <Form formName={'registration'} onSubmit={handleSignUp}>
           <Input
             type={'text'}

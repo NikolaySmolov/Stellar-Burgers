@@ -3,7 +3,7 @@ import { AdditionalAction } from '../../components/additional-action/additional-
 import { Form } from '../../components/form/form';
 import { useHistory, useLocation, Redirect } from 'react-router-dom';
 //eslint-disable-next-line
-import styles from './login.module.css';
+import styles from './index.module.css';
 import { useAppDispatch, useAppSelector } from '../../services/redux-hooks';
 import { resetLoginFormValues, setLoginFormValue, signIn } from '../../services/actions/login';
 import React, { useEffect } from 'react';
@@ -56,9 +56,9 @@ export const LoginPage = () => {
   }
 
   return (
-    <main className={'authentication'}>
-      <section className={'authentication__content'}>
-        <h1 className={'authentication__title text text_type_main-medium mb-6'}>Вход</h1>
+    <main className={styles.authentication}>
+      <section className={styles.authentication__content}>
+        <h1 className={`${styles.authentication__title} text text_type_main-medium mb-6`}>Вход</h1>
         <Form formName={'login'} onSubmit={handleSignIn}>
           <Input
             {...emailInputLogic}
