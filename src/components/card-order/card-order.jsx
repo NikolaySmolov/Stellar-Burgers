@@ -7,28 +7,30 @@ import { useMemo } from 'react';
 import { DONE } from '../../utils/constants';
 import { useOrderData } from '../../services/hooks';
 import { Link, useRouteMatch } from 'react-router-dom';
+import { selectIngredients } from '../../services/selectors/ingredients';
 
 export const CardOrder = ({
-  withStatus = true,
+  withStatus,
   number,
   name,
-  ingredients,
+  burgerIngredientsId,
   status,
   createdAt,
   id,
 }) => {
-  const ingredientsMenu = useSelector(store => store.ingredients.ingredients);
+  const ingredients = useSelector(selectIngredients);
 
   const { url } = useRouteMatch();
 
   const [ingredientsList, orderDate, totalPrice, statusText] = useOrderData(
+    burgerIngredientsId,
     ingredients,
-    ingredientsMenu,
     createdAt,
     status
   );
 
   const thumbnailList = useMemo(() => {
+    console.log(ingredientsList);
     if (ingredientsList) {
       const uniqList = new Set(ingredientsList);
       const renderList = Array.from(uniqList).slice(0, 6).reverse();

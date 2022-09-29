@@ -48,7 +48,7 @@ export const UserOrders = () => {
                 withStatus={true}
                 number={number}
                 name={name}
-                ingredients={ingredients}
+                burgerIngredientsId={ingredients}
                 status={status}
                 createdAt={createdAt}
                 id={_id}

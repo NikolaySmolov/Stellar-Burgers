@@ -9,8 +9,7 @@ import { DONE, PENDING } from '../../utils/constants';
 import style from './feed.module.css';
 
 export const FeedPage = () => {
-  const { ingredients, ordersData, error } = useSelector(store => ({
-    ingredients: store.ingredients.ingredients,
+  const { ordersData, error } = useSelector(store => ({
     ...store.orders,
   }));
 
@@ -48,7 +47,7 @@ export const FeedPage = () => {
     return null;
   }, [ordersData]);
 
-  if (ingredients.length === 0 || ordersData.length === 0) {
+  if (ordersData.length === 0 && !error) {
     return <Loader />;
   } else if (error) {
     return <ModalError />;
@@ -66,7 +65,7 @@ export const FeedPage = () => {
                   withStatus={false}
                   number={number}
                   name={name}
-                  ingredients={ingredients}
+                  burgerIngredientsId={ingredients}
                   status={status}
                   createdAt={createdAt}
                   id={_id}

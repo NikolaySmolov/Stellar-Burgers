@@ -74,12 +74,11 @@ export const useInputLogic = ({ initType, initIcon = undefined, disabledState = 
   return { icon, ref: inputRef, onIconClick, onBlur, onFocus, error, type, disabled, fieldReset };
 };
 
-export const useOrderData = (ingredientsArray, ingredientsMenu, dateString, status) => {
+export const useOrderData = (burgerIngredientsId, ingredients, dateString, status) => {
   const [ingredientList, setIngredientsList] = useState(null);
   const [orderDate, setOrderDate] = useState(null);
   const [totalPrice, setTotalPrice] = useState(null);
   const [statusText, setStatusText] = useState(null);
-
   const date = () => {
     const today = new Date();
     today.setHours(24, 0, 0, 0);
@@ -127,17 +126,17 @@ export const useOrderData = (ingredientsArray, ingredientsMenu, dateString, stat
   }, [dateString]);
 
   const preparedIngredientsData = useMemo(() => {
-    if (!ingredientsArray) {
+    if (!burgerIngredientsId) {
       return null;
     }
 
-    const result = ingredientsArray.reduce((acc, item) => {
+    const result = burgerIngredientsId.reduce((acc, item) => {
       const itemIndex = acc.findIndex(ingredient => ingredient.id === item);
 
       if (~itemIndex) {
         acc[itemIndex].qty++;
       } else {
-        const { name, image, price, type } = ingredientsMenu.find(({ _id }) => _id === item);
+        const { name, image, price, type } = ingredients.find(({ _id }) => _id === item);
 
         const ingredientData = { id: item, name, price, image, qty: 1 };
 
@@ -151,7 +150,7 @@ export const useOrderData = (ingredientsArray, ingredientsMenu, dateString, stat
     }, []);
 
     return result;
-  }, [ingredientsArray, ingredientsMenu]);
+  }, [burgerIngredientsId, ingredients]);
 
   const preparedTotalPrice = useMemo(() => {
     if (!preparedIngredientsData) {
