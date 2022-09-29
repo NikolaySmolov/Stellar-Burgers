@@ -2,7 +2,7 @@ import styles from './order-details.module.css';
 import doneImg from '../../images/done.jpg';
 
 interface IOrderDetails {
-  orderNumber: number;
+  orderNumber: string;
 }
 
 export function OrderDetails({ orderNumber }: IOrderDetails) {

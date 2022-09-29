@@ -1,8 +1,8 @@
 import { IIngredient } from '../../utils/constants';
 import styles from './ingredient-details.module.css';
 
-export function IngredientDetails( ingredientData: IIngredient) {
-  const { name, image_large, calories, proteins, fat, carbohydrates } = ingredientData;
+export function IngredientDetails(props: IIngredient) {
+  const { name, image_large, calories, proteins, fat, carbohydrates } = props;
 
   return (
     <div className={`${styles.wrapper} pt-10 pr-10 pb-15 pl-10`}>

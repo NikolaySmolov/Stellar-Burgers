@@ -12,7 +12,6 @@ import {
 } from '../../pages';
 import { Route, Switch, useLocation, useHistory, useRouteMatch } from 'react-router-dom';
 import { ProtectedRoute } from '../protected-route';
-import { useDispatch, useSelector } from 'react-redux';
 import { Modal } from '../modal/modal';
 import { IngredientDetails } from '../ingredient-details/ingredient-details';
 import { ModalError } from '../modal-error/modal-error';
@@ -30,20 +29,22 @@ import { fetchIngredients } from '../../services/actions/ingredients';
 import { OrderDetails } from '../order-details/order-details';
 import { resetConstructor } from '../../services/actions/constructor';
 import { closeOrderDetails } from '../../services/actions/order';
-import { ORDER_PATH } from '../../utils/constants';
+import { IIngredient, ORDER_PATH } from '../../utils/constants';
+import { useAppDispatch, useAppSelector } from '../../services/redux-hooks';
+import { IParamsForId, TLocation } from '../../services/types';
 
 export function App() {
-  const ingredientsRequest = useSelector(selectIngredientsRequest);
-  const ingredients = useSelector(selectIngredients);
-  const ingredientsFailed = useSelector(selectIngredientsFailed);
+  const ingredientsRequest = useAppSelector(selectIngredientsRequest);
+  const ingredients = useAppSelector(selectIngredients);
+  const ingredientsFailed = useAppSelector(selectIngredientsFailed);
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
-  const location = useLocation(); //пока не понятно что передавать в дженерик
+  const location = useLocation<TLocation<'background'>>();
   const history = useHistory();
   const background = location.state?.background;
 
-  const ingredientsRouteMatch = useRouteMatch('/ingredients/:id');
+  const ingredientsRouteMatch = useRouteMatch<IParamsForId>('/ingredients/:id');
 
   const ingredientData = useMemo(() => {
     if (ingredientsRouteMatch) {
@@ -51,7 +52,7 @@ export function App() {
     } else {
       return null;
     }
-  }, [ingredientsRouteMatch, ingredients]);
+  }, [ingredientsRouteMatch, ingredients]) as IIngredient;
 
   const handleCloseModal = () => {
     if (location.pathname.includes(ORDER_PATH)) {
@@ -64,7 +65,7 @@ export function App() {
   };
 
   useEffect(() => {
-    dispatch(fetchIngredients()); //здесь кастомная типизация из-за redux thunk
+    dispatch(fetchIngredients());
   }, [dispatch]);
 
   if (ingredientsRequest || ingredients.length === 0) {

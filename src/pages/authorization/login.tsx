@@ -14,14 +14,14 @@ import { useInputLogic } from '../../services/hooks';
 import { Loader } from '../../components/loader/loader';
 import { setOrderPermissionSuccess } from '../../services/actions/order';
 import { selectLoginState } from '../../services/selectors/login';
-import { IFromLocation } from '../../services/types';
+import { TLocation } from '../../services/types';
 
 export const LoginPage = () => {
   const { form, loginRequest, loginFailed } = useAppSelector(selectLoginState);
   const dispatch = useAppDispatch();
 
   const history = useHistory();
-  const location = useLocation<IFromLocation>();
+  const location = useLocation<TLocation<'from'>>();
 
   const { fieldReset, ...emailInputLogic } = useInputLogic({ initType: 'email' });
 
