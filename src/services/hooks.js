@@ -96,8 +96,10 @@ export const useOrderData = (ingredientsArray, ingredientsMenu, dateString, stat
       return 'Сегодня';
     } else if (difference === 1) {
       return 'Вчера';
-    } else if (defineNumber(difference) && difference !== 1 && difference > 20) {
+    } else if (defineNumber(difference) === 1 && difference !== 1 && difference > 20) {
       return `${difference} день назад`;
+    } else if (defineNumber(difference) > 1 && defineNumber(difference) < 5 && difference < 10) {
+      return `${difference} дня назад`;
     } else if (defineNumber(difference) > 1 && defineNumber(difference) < 5 && difference > 20) {
       return `${difference} дня назад`;
     } else {
