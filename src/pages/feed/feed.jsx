@@ -24,7 +24,7 @@ export const FeedPage = () => {
   }, [dispatch]);
 
   const ordersStats = useMemo(() => {
-    if (ordersData.orders) {
+    if (ordersData?.orders) {
       const preparedStats = ordersData.orders.reduce(
         (acc, curr) => {
           if (curr.status === DONE && acc.done.length < 20) {
@@ -47,7 +47,7 @@ export const FeedPage = () => {
     return null;
   }, [ordersData]);
 
-  if (ordersData.length === 0 && !error) {
+  if (!ordersData && !error) {
     return <Loader />;
   } else if (error) {
     return <ModalError />;

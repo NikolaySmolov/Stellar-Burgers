@@ -10,12 +10,12 @@ import {
   NotFoundPage,
   OrderDetailsPage,
 } from '../../pages';
-import { Route, Switch, useLocation, useHistory, useRouteMatch } from 'react-router-dom';
+import { Route, Switch, useLocation, useHistory } from 'react-router-dom';
 import { ProtectedRoute } from '../protected-route';
 import { Modal } from '../modal/modal';
 import { IngredientDetails } from '../ingredient-details/ingredient-details';
 import { ModalError } from '../modal-error/modal-error';
-import { useEffect, useMemo } from 'react';
+import { useEffect } from 'react';
 import { Loader } from '../loader/loader';
 import { FeedPage } from '../../pages/feed/feed';
 import { CardOrderDetails } from '../card-order-details/card-order-details';
@@ -29,9 +29,9 @@ import { fetchIngredients } from '../../services/actions/ingredients';
 import { OrderDetails } from '../order-details/order-details';
 import { resetConstructor } from '../../services/actions/constructor';
 import { closeOrderDetails } from '../../services/actions/order';
-import { IIngredient, ORDER_PATH } from '../../utils/constants';
+import { ORDER_PATH } from '../../utils/constants';
 import { useAppDispatch, useAppSelector } from '../../services/redux-hooks';
-import { IParamsForId, TLocation } from '../../services/types';
+import { TLocation } from '../../services/types';
 
 export function App() {
   const ingredientsRequest = useAppSelector(selectIngredientsRequest);
@@ -43,16 +43,6 @@ export function App() {
   const location = useLocation<TLocation<'background'>>();
   const history = useHistory();
   const background = location.state?.background;
-
-  const ingredientsRouteMatch = useRouteMatch<IParamsForId>('/ingredients/:id');
-
-  const ingredientData = useMemo(() => {
-    if (ingredientsRouteMatch) {
-      return ingredients.find(({ _id }) => _id === ingredientsRouteMatch.params.id);
-    } else {
-      return null;
-    }
-  }, [ingredientsRouteMatch, ingredients]) as IIngredient;
 
   const handleCloseModal = () => {
     if (location.pathname.includes(ORDER_PATH)) {
@@ -82,7 +72,7 @@ export function App() {
           <ConstructorPage />
         </Route>
         <Route path="/ingredients/:id">
-          <IngredientPage {...ingredientData} />
+          <IngredientPage />
         </Route>
         <Route path="/feed" exact>
           <FeedPage />
@@ -116,7 +106,7 @@ export function App() {
         <>
           <Modal onClose={handleCloseModal}>
             <Route path="/ingredients/:id">
-              <IngredientDetails {...ingredientData} />
+              <IngredientDetails />
             </Route>
             <Route
               path="/order/:number"

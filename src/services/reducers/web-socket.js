@@ -8,7 +8,7 @@ import {
 
 const initialState = {
   connected: false,
-  ordersData: [],
+  ordersData: null,
   error: null,
 };
 

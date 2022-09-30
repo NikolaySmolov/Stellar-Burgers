@@ -1,12 +1,11 @@
 import styles from './ingredient.module.css';
 import { IngredientDetails } from '../../components/ingredient-details/ingredient-details';
-import { IIngredient } from '../../utils/constants';
 
-export const IngredientPage = ( ingredientData: IIngredient) => {
+export const IngredientPage = () => {
   return (
     <main className={styles.content}>
       <section className={styles.detailsWrapper}>
-        <IngredientDetails {...ingredientData} />
+        <IngredientDetails />
       </section>
     </main>
   );

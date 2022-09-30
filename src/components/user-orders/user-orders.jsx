@@ -22,7 +22,7 @@ export const UserOrders = () => {
     };
   }, [dispatch]);
 
-  if (ingredients.length === 0 || ordersData.length === 0) {
+  if (ingredients.length === 0 || !ordersData) {
     return (
       <div className={style.loaderWrapper}>
         <Loader />
