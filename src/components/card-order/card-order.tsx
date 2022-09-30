@@ -1,13 +1,22 @@
 import style from './card-order.module.css';
-import PropTypes from 'prop-types';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useSelector } from 'react-redux';
 import { IngredientThumbnail } from '../ingredient-thumbnail/ingredient-thumbnail';
 import { useMemo } from 'react';
-import { DONE } from '../../utils/constants';
-import { useOrderData } from '../../services/hooks';
+import { DONE, TOrderStatus } from '../../utils/constants';
+import { useOrderData } from './hook';
 import { Link, useRouteMatch } from 'react-router-dom';
 import { selectIngredients } from '../../services/selectors/ingredients';
+
+interface ICardOrder {
+  withStatus: boolean;
+  number: string;
+  name: string;
+  burgerIngredientsId: Array<string>;
+  status: TOrderStatus;
+  createdAt: string;
+  id: string;
+}
 
 export const CardOrder = ({
   withStatus,
@@ -17,7 +26,7 @@ export const CardOrder = ({
   status,
   createdAt,
   id,
-}) => {
+}: ICardOrder) => {
   const ingredients = useSelector(selectIngredients);
 
   const { url } = useRouteMatch();
@@ -30,7 +39,6 @@ export const CardOrder = ({
   );
 
   const thumbnailList = useMemo(() => {
-    console.log(ingredientsList);
     if (ingredientsList) {
       const uniqList = new Set(ingredientsList);
       const renderList = Array.from(uniqList).slice(0, 6).reverse();
@@ -85,14 +93,4 @@ export const CardOrder = ({
       </article>
     </Link>
   );
-};
-
-CardOrder.propTypes = {
-  withStatus: PropTypes.bool,
-  number: PropTypes.number.isRequired,
-  name: PropTypes.string.isRequired,
-  ingredients: PropTypes.arrayOf(PropTypes.string).isRequired,
-  status: PropTypes.string.isRequired,
-  createdAt: PropTypes.string.isRequired,
-  id: PropTypes.string.isRequired,
 };

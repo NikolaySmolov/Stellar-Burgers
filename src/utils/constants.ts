@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import {
   WS_CONNECTION_START,
   WS_CONNECTION_SUCCESS,
@@ -23,21 +22,6 @@ export const WS_ACTIONS = {
   onError: WS_CONNECTION_ERROR,
 };
 
-export const ingredientPropTypes = PropTypes.shape({
-  _id: PropTypes.string,
-  name: PropTypes.string,
-  type: PropTypes.string,
-  price: PropTypes.number,
-  image: PropTypes.string,
-  calories: PropTypes.number,
-  carbohydrates: PropTypes.number,
-  fat: PropTypes.number,
-  proteins: PropTypes.number,
-  image_large: PropTypes.string,
-  image_mobile: PropTypes.string,
-  count: PropTypes.number,
-});
-
 export const BUN: 'bun' = 'bun';
 export const SAUCE: 'sauce' = 'sauce';
 export const MAIN: 'main' = 'main';
@@ -59,14 +43,17 @@ export interface IIngredient {
   image_mobile: string;
 }
 
+export type TOrderStatus = typeof CREATED | typeof PENDING | typeof DONE;
+
+export const CREATED: 'created' = 'created';
+export const PENDING: 'pending' = 'pending';
+export const DONE: 'done' = 'done';
+
 export const OPEN = 'open';
 export const CLOSE = 'close';
 export const CALC = 'calc';
 export const ADD = 'add';
 export const SORT = 'sort';
-export const CREATED = 'created';
-export const PENDING = 'pending';
-export const DONE = 'done';
 
 export const ACCESS_TOKEN = 'accessToken';
 export const TOKEN = 'token';
