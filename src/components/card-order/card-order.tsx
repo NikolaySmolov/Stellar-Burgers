@@ -4,9 +4,9 @@ import { useSelector } from 'react-redux';
 import { IngredientThumbnail } from '../ingredient-thumbnail/ingredient-thumbnail';
 import { useMemo } from 'react';
 import { DONE, TOrderStatus } from '../../utils/constants';
-import { useOrderData } from './hook';
 import { Link, useRouteMatch } from 'react-router-dom';
 import { selectIngredients } from '../../services/selectors/ingredients';
+import { useOrderData } from '../../services/hooks';
 
 interface ICardOrder {
   withStatus: boolean;
