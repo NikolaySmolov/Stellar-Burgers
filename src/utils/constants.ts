@@ -55,6 +55,14 @@ export interface IOrderInFeed {
   number: number;
 }
 
+export interface IIngredientDataInOrder {
+  id: string;
+  name: string;
+  price: number;
+  image: string;
+  qty: number;
+}
+
 export const CREATED: 'created' = 'created';
 export const PENDING: 'pending' = 'pending';
 export const DONE: 'done' = 'done';

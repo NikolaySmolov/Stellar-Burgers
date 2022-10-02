@@ -2,8 +2,11 @@ import style from './order-row.module.css';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { IngredientThumbnail } from '../ingredient-thumbnail/ingredient-thumbnail';
 import PropTypes from 'prop-types';
+import { IIngredientDataInOrder } from '../../utils/constants';
 
-export const OrderRow = ({ image, name, qty, price }) => {
+type TOrderRow = Omit<IIngredientDataInOrder, 'id'>;
+
+export const OrderRow = ({ image, name, qty, price }: TOrderRow) => {
   return (
     <div className={style.rowWrapper}>
       <IngredientThumbnail image={image} />
@@ -16,11 +19,4 @@ export const OrderRow = ({ image, name, qty, price }) => {
       </div>
     </div>
   );
-};
-
-OrderRow.propTypes = {
-  image: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
-  qty: PropTypes.number.isRequired,
-  price: PropTypes.number.isRequired,
 };

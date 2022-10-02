@@ -1,6 +1,14 @@
 import { TICons } from '@ya.praktikum/react-developer-burger-ui-components/dist/ui/icons';
 import { useRef, useState, useMemo, useEffect, FocusEvent } from 'react';
-import { BUN, CREATED, DONE, IIngredient, PENDING, TOrderStatus } from '../utils/constants';
+import {
+  BUN,
+  CREATED,
+  DONE,
+  IIngredient,
+  IIngredientDataInOrder,
+  PENDING,
+  TOrderStatus,
+} from '../utils/constants';
 import { setTimeFormat } from './utils';
 
 type TInputType = 'text' | 'email' | 'password';
@@ -104,7 +112,7 @@ type TUseOrderData = (
   ingredients: ReadonlyArray<IIngredient>,
   dateString: string,
   status: TOrderStatus
-) => [Array<IIngredientData>, string, string, TStatusText];
+) => [Array<IIngredientDataInOrder>, string, string, TStatusText];
 
 export const useOrderData: TUseOrderData = (
   burgerIngredientsId,
