@@ -3,8 +3,7 @@ import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-component
 import { AdditionalAction } from '../../components/additional-action/additional-action';
 import { Form } from '../../components/form/form';
 import { useHistory, Redirect } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import {
   getResetCode,
   resetForgotPasswordFormValues,
@@ -14,21 +13,25 @@ import { getCookie } from '../../services/utils';
 import { TOKEN } from '../../utils/constants';
 import { Loader } from '../../components/loader/loader';
 import { selectForgotPasswordState } from '../../services/selectors/forgot-password';
+import { useAppDispatch, useAppSelector } from '../../services/redux-hooks';
+import { useInputLogic } from '../../services/hooks';
 
 export const ForgotPasswordPage = () => {
-  const { form, getCodeRequest, getCodeSuccess } = useSelector(selectForgotPasswordState);
+  const { form, getCodeRequest, getCodeSuccess } = useAppSelector(selectForgotPasswordState);
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const history = useHistory();
 
-  const handleSetFieldValue = evt => {
-    const field = evt.currentTarget;
+  const { fieldReset, ...emailInputLogic } = useInputLogic({ initType: 'email' });
+
+  const handleSetFieldValue = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const field = e.currentTarget;
     dispatch(setForgotPasswordFormValue(field.name, field.value));
   };
 
-  const handleRestorePassword = event => {
-    event.preventDefault();
+  const handleRestorePassword = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     dispatch(getResetCode(form));
   };
 
@@ -36,7 +39,11 @@ export const ForgotPasswordPage = () => {
     history.push({ pathname: '/login' });
   };
 
-  useEffect(() => () => dispatch(resetForgotPasswordFormValues()), [dispatch]);
+  useEffect(() => {
+    return () => {
+      dispatch(resetForgotPasswordFormValues());
+    };
+  }, [dispatch]);
 
   if (getCookie(TOKEN)) {
     return <Redirect to={{ pathname: '/' }} />;
@@ -52,12 +59,13 @@ export const ForgotPasswordPage = () => {
         </h1>
         <Form formName={'forgotPassword'} onSubmit={handleRestorePassword}>
           <Input
+            {...emailInputLogic}
             type={'email'}
             placeholder={'Укажите e-mail'}
             name={'email'}
             value={form.email}
             onChange={handleSetFieldValue}
-            errorText={'Ошибка'}
+            errorText={'Некорректный e-mail'}
           />
           <div style={{ position: 'relative' }}>
             <Button htmlType={'submit'}>Восстановить</Button>

@@ -3,37 +3,40 @@ import { Button, Input, PasswordInput } from '@ya.praktikum/react-developer-burg
 import { AdditionalAction } from '../../components/additional-action/additional-action';
 import { Form } from '../../components/form/form';
 import { useHistory, useLocation, Redirect } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
 import {
   resetRegisterFormValue,
   setRegisterFormFailed,
   setRegisterFormValue,
   signUp,
 } from '../../services/actions/register';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { getCookie } from '../../services/utils';
 import { TOKEN } from '../../utils/constants';
 import { FormCaption } from '../../components/form-caption/form-caption';
 import { useInputLogic } from '../../services/hooks';
 import { Loader } from '../../components/loader/loader';
 import { selectRegisterState } from '../../services/selectors/register';
+import { useAppDispatch, useAppSelector } from '../../services/redux-hooks';
+import { TLocation } from '../../services/types';
 
 export const RegisterPage = () => {
-  const { form, registerRequest, registerFailed, failedMessage } = useSelector(selectRegisterState);
-  const dispatch = useDispatch();
+  const { form, registerRequest, registerFailed, failedMessage } =
+    useAppSelector(selectRegisterState);
+
+  const dispatch = useAppDispatch();
 
   const history = useHistory();
-  const location = useLocation();
+  const location = useLocation<TLocation<'from'>>();
 
-  const { fieldReset, ...emailInputLogic } = useInputLogic({ initType: 'email', initIcon: null });
+  const { fieldReset, ...emailInputLogic } = useInputLogic({ initType: 'email' });
 
-  const handleSetFieldValue = evt => {
-    const field = evt.currentTarget;
+  const handleSetFieldValue = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const field = e.currentTarget;
     dispatch(setRegisterFormValue(field.name, field.value));
   };
 
-  const handleSignUp = event => {
-    event.preventDefault();
+  const handleSignUp = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     if (form.password.length < 6) {
       dispatch(setRegisterFormFailed());
     } else {
@@ -45,7 +48,11 @@ export const RegisterPage = () => {
     history.push({ pathname: '/login', state: location.state });
   };
 
-  useEffect(() => () => dispatch(resetRegisterFormValue()), [dispatch]);
+  useEffect(() => {
+    return () => {
+      dispatch(resetRegisterFormValue());
+    };
+  }, [dispatch]);
 
   if (getCookie(TOKEN)) {
     return <Redirect to={location.state?.from || '/'} />;

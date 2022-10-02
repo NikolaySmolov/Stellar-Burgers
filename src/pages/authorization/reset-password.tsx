@@ -4,24 +4,24 @@ import { AdditionalAction } from '../../components/additional-action/additional-
 import { Form } from '../../components/form/form';
 import { useInputLogic } from '../../services/hooks';
 import { useHistory, Redirect } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
 import {
   resetForgotPasswordCode,
   resetForgotPasswordFormValues,
   setForgotPasswordFormValue,
   setPassword,
 } from '../../services/actions/forgot-password';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { TOKEN } from '../../utils/constants';
 import { getCookie } from '../../services/utils';
 import { FormCaption } from '../../components/form-caption/form-caption';
 import { Loader } from '../../components/loader/loader';
 import { selectForgotPasswordState } from '../../services/selectors/forgot-password';
+import { useAppDispatch, useAppSelector } from '../../services/redux-hooks';
 
 export const ResetPasswordPage = () => {
   const { form, setPasswordRequest, setPasswordFailed, setPasswordSuccess, getCodeSuccess } =
-    useSelector(selectForgotPasswordState);
-  const dispatch = useDispatch();
+    useAppSelector(selectForgotPasswordState);
+  const dispatch = useAppDispatch();
 
   const history = useHistory();
 
@@ -30,13 +30,13 @@ export const ResetPasswordPage = () => {
     initIcon: 'ShowIcon',
   });
 
-  const handleSetFieldValue = evt => {
-    const field = evt.currentTarget;
+  const handleSetFieldValue = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const field = e.currentTarget;
     dispatch(setForgotPasswordFormValue(field.name, field.value));
   };
 
-  const handleSetPassword = event => {
-    event.preventDefault();
+  const handleSetPassword = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     dispatch(setPassword(form));
   };
 
