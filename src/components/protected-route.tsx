@@ -1,15 +1,19 @@
-import { Route, Redirect } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
-import { useEffect } from 'react';
+import { Route, Redirect, RouteProps } from 'react-router-dom';
+import React, { useEffect } from 'react';
 import { getClientAccessState, getClientTokenState, getCookie } from '../services/utils';
 import { TOKEN, USER_ACCESS_FAILED, USER_ACCESS_SUCCESS } from '../utils/constants';
 import { getUserAccess } from '../services/actions/profile';
-import PropTypes from 'prop-types';
 import { Loader } from './loader/loader';
+import { useAppDispatch, useAppSelector } from '../services/redux-hooks';
+import { selectUserAccessFailed, selectUserAccessRequest } from '../services/selectors/profile';
 
-export const ProtectedRoute = ({ children, ...props }) => {
-  const { getUserAccessRequest, getUserAccessFailed } = useSelector((store) => store.profile);
-  const dispatch = useDispatch();
+type TProtectedRoute = RouteProps & React.PropsWithChildren;
+
+export const ProtectedRoute = ({ children, ...props }: TProtectedRoute) => {
+  const getUserAccessRequest = useAppSelector(selectUserAccessRequest);
+  const getUserAccessFailed = useAppSelector(selectUserAccessFailed);
+
+  const dispatch = useAppDispatch();
 
   const hasAccessToken = getClientAccessState();
   const hasToken = getClientTokenState();
@@ -46,8 +50,4 @@ export const ProtectedRoute = ({ children, ...props }) => {
       }
     />
   );
-};
-
-ProtectedRoute.propTypes = {
-  children: PropTypes.object.isRequired,
 };

@@ -1,10 +1,11 @@
 import { createSelector } from 'reselect';
 import { BUN } from '../../utils/constants';
+import { RootState } from '../types';
 
-export const selectBun = store =>
+export const selectBun = (store: RootState) =>
   store.burgerConstructor.bun.length > 0 ? store.burgerConstructor.bun : null;
 
-export const selectFillings = store =>
+export const selectFillings = (store: RootState) =>
   store.burgerConstructor.filling.length > 0 ? store.burgerConstructor.filling : null;
 
 export const selectBurgerCompleteState = createSelector(
@@ -52,7 +53,9 @@ export const selectTotalPrice = createSelector([selectConstructorIngredients], i
 });
 
 export const selectCounter = createSelector([selectBun, selectFillings], (bun, fillings) => {
-  const counter = {};
+  const counter: {
+    [key in string]: number;
+  } = {};
 
   if (bun) {
     counter[bun[0]._id] = 2;
