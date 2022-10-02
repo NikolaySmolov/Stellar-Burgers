@@ -1,18 +1,18 @@
 import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { setSocketConnection, setSocketDisconnect } from '../../services/actions/web-socket';
+import { useAppDispatch, useAppSelector } from '../../services/redux-hooks';
+import { selectFeedError, selectFeedOrders } from '../../services/selectors/orders';
 import { WS_ENDPOINT_PROFILE } from '../../services/utils';
 import { CardOrder } from '../card-order/card-order';
 import { Loader } from '../loader/loader';
 import style from './user-orders.module.css';
 
 export const UserOrders = () => {
-  const { ingredients, ordersData, error } = useSelector(store => ({
-    ingredients: store.ingredients.ingredients,
-    ...store.orders,
-  }));
+  const feedOrders = useAppSelector(selectFeedOrders);
 
-  const dispatch = useDispatch();
+  const feedError = useAppSelector(selectFeedError);
+
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     dispatch(setSocketConnection(WS_ENDPOINT_PROFILE));
@@ -22,13 +22,13 @@ export const UserOrders = () => {
     };
   }, [dispatch]);
 
-  if (ingredients.length === 0 || !ordersData) {
+  if (feedOrders.length === 0 && !feedError) {
     return (
       <div className={style.loaderWrapper}>
         <Loader />
       </div>
     );
-  } else if (error) {
+  } else if (feedError) {
     return (
       <h2 className={'text text_type_main-medium'}>
         Что-то пошло не так... Попробуйте обновить страницу
@@ -36,7 +36,7 @@ export const UserOrders = () => {
     );
   }
 
-  const reversedOrders = [...ordersData.orders].reverse();
+  const reversedOrders = [...feedOrders].reverse();
 
   return (
     <div className={`${style.ordersWrapper} custom-scroll`}>

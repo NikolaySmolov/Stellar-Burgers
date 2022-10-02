@@ -1,6 +1,10 @@
 import { ACCESS_TOKEN, TOKEN } from '../utils/constants';
 
-export function setCookie(name, value, props) {
+export function setCookie(
+  name: string,
+  value: string,
+  props: { [key: string]: any } & { expires?: number | Date | string }
+) {
   props = props || {};
   let exp = props.expires;
   if (typeof exp == 'number' && exp) {
@@ -8,8 +12,8 @@ export function setCookie(name, value, props) {
     d.setTime(d.getTime() + exp * 1000);
     exp = props.expires = d;
   }
-  if (exp && exp.toUTCString) {
-    props.expires = exp.toUTCString();
+  if (exp && (exp as Date).toUTCString) {
+    props.expires = (exp as Date).toUTCString();
   }
   value = encodeURIComponent(value);
   let updatedCookie = name + '=' + value;
@@ -23,7 +27,7 @@ export function setCookie(name, value, props) {
   document.cookie = updatedCookie;
 }
 
-export function getCookie(name) {
+export function getCookie(name: string): string | undefined {
   const matches = document.cookie.match(
     // eslint-disable-next-line
     new RegExp('(?:^|; )' + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + '=([^;]*)')
@@ -31,7 +35,7 @@ export function getCookie(name) {
   return matches ? decodeURIComponent(matches[1]) : undefined;
 }
 
-export function deleteCookie(name) {
+export function deleteCookie(name: string) {
   setCookie(name, '', { 'max-age': -1, path: '/' });
 }
 
@@ -39,7 +43,7 @@ export const getClientAccessState = () => (getCookie(ACCESS_TOKEN) ? true : fals
 
 export const getClientTokenState = () => (getCookie(TOKEN) ? true : false);
 
-export const setTimeFormat = (number) => {
+export const setTimeFormat = (number: number) => {
   if (number >= 0 && number < 10) {
     return '0' + number;
   }
