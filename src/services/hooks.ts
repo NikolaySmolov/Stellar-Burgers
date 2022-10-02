@@ -5,9 +5,9 @@ import { setTimeFormat } from './utils';
 
 type TInputType = 'text' | 'email' | 'password';
 
-interface IUseInputLogin {
+interface IUseInputLogic {
   initType: TInputType;
-  initIcon?: keyof TICons | undefined;
+  initIcon?: keyof TICons;
   disabledState?: boolean;
 }
 
@@ -15,7 +15,7 @@ export const useInputLogic = ({
   initType,
   initIcon = undefined,
   disabledState = false,
-}: IUseInputLogin) => {
+}: IUseInputLogic) => {
   const [disabled, setDisabled] = useState(disabledState);
   const [icon, setIcon] = useState(initIcon);
   const [visible, setVisible] = useState(false);
@@ -104,7 +104,7 @@ type TUseOrderData = (
   ingredients: ReadonlyArray<IIngredient>,
   dateString: string,
   status: TOrderStatus
-) => [Array<IIngredientData> | null, string | null, string | null, TStatusText | null];
+) => [Array<IIngredientData>, string, string, TStatusText];
 
 export const useOrderData: TUseOrderData = (
   burgerIngredientsId,
@@ -112,10 +112,10 @@ export const useOrderData: TUseOrderData = (
   dateString,
   status
 ) => {
-  const [ingredientList, setIngredientsList] = useState<Array<IIngredientData> | null>(null);
-  const [orderDate, setOrderDate] = useState<string | null>(null);
-  const [totalPrice, setTotalPrice] = useState<string | null>(null);
-  const [statusText, setStatusText] = useState<TStatusText | null>(null);
+  const [ingredientList, setIngredientsList] = useState<Array<IIngredientData>>([]);
+  const [orderDate, setOrderDate] = useState<string>('');
+  const [totalPrice, setTotalPrice] = useState<string>('');
+  const [statusText, setStatusText] = useState<TStatusText>('Выполнен');
 
   const date = () => {
     const today = new Date();
@@ -150,24 +150,16 @@ export const useOrderData: TUseOrderData = (
     const hours = setTimeFormat(createdAt.getHours());
     const minutes = setTimeFormat(createdAt.getMinutes());
 
-    return `${hours}:${minutes} `;
+    return `${hours}:${minutes}`;
   };
 
   const preparedDate = useMemo(() => {
-    if (!dateString) {
-      return null;
-    }
-
     const result = `${date()}, ${time()} i-GMT+3`;
     return result;
     // eslint-disable-next-line
   }, [dateString]);
 
   const preparedIngredientsData = useMemo(() => {
-    if (!burgerIngredientsId) {
-      return null;
-    }
-
     const result: Array<IIngredientData> = burgerIngredientsId.reduce(
       (acc: Array<any> | Array<IIngredientData>, item) => {
         const itemIndex = acc.findIndex(ingredient => ingredient.id === item);
@@ -196,10 +188,6 @@ export const useOrderData: TUseOrderData = (
   }, [burgerIngredientsId, ingredients]);
 
   const preparedTotalPrice = useMemo(() => {
-    if (!preparedIngredientsData) {
-      return null;
-    }
-
     const sum = preparedIngredientsData.reduce((acc, ing) => {
       acc += ing.price * ing.qty;
       return acc;
@@ -208,10 +196,6 @@ export const useOrderData: TUseOrderData = (
   }, [preparedIngredientsData]);
 
   const preparedStatusText = useMemo(() => {
-    if (!status) {
-      return null;
-    }
-
     switch (status) {
       case CREATED:
         return 'Создан';

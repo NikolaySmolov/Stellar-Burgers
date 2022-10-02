@@ -1,19 +1,29 @@
 import { useEffect, useMemo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { CardOrder } from '../../components/card-order/card-order';
 import { Loader } from '../../components/loader/loader';
 import { ModalError } from '../../components/modal-error/modal-error';
 import { setSocketConnection, setSocketDisconnect } from '../../services/actions/web-socket';
+import { useAppSelector, useAppDispatch } from '../../services/redux-hooks';
+import {
+  selectFeedError,
+  selectFeedOrders,
+  selectFeedTodayCount,
+  selectFeedTotalCount,
+} from '../../services/selectors/orders';
 import { WS_ENDPOINT_ALL } from '../../services/utils';
 import { DONE, PENDING } from '../../utils/constants';
 import style from './feed.module.css';
 
 export const FeedPage = () => {
-  const { ordersData, error } = useSelector(store => ({
-    ...store.orders,
-  }));
+  const feedOrders = useAppSelector(selectFeedOrders);
 
-  const dispatch = useDispatch();
+  const feedTotal = useAppSelector(selectFeedTotalCount);
+
+  const feedToday = useAppSelector(selectFeedTodayCount);
+
+  const feedError = useAppSelector(selectFeedError);
+
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     dispatch(setSocketConnection(WS_ENDPOINT_ALL));
@@ -24,32 +34,28 @@ export const FeedPage = () => {
   }, [dispatch]);
 
   const ordersStats = useMemo(() => {
-    if (ordersData?.orders) {
-      const preparedStats = ordersData.orders.reduce(
-        (acc, curr) => {
-          if (curr.status === DONE && acc.done.length < 20) {
-            acc.done.push(curr.number);
-          } else if (curr.status === PENDING && acc.inProgress < 20) {
-            acc.inProgress.push(curr.number);
-          }
-
-          return acc;
-        },
-        {
-          done: [],
-          inProgress: [],
+    const preparedStats = feedOrders.reduce(
+      (acc: { done: number[]; inProgress: number[] }, curr) => {
+        if (curr.status === DONE && acc.done.length < 20) {
+          acc.done.push(curr.number);
+        } else if (curr.status === PENDING && acc.inProgress.length < 20) {
+          acc.inProgress.push(curr.number);
         }
-      );
 
-      return preparedStats;
-    }
+        return acc;
+      },
+      {
+        done: [],
+        inProgress: [],
+      }
+    );
 
-    return null;
-  }, [ordersData]);
+    return preparedStats;
+  }, [feedOrders]);
 
-  if (!ordersData && !error) {
+  if (feedOrders.length === 0 && !feedError) {
     return <Loader />;
-  } else if (error) {
+  } else if (feedError) {
     return <ModalError />;
   }
 
@@ -58,7 +64,7 @@ export const FeedPage = () => {
       <section>
         <h1 className={'text text_type_main-large mt-10 mb-5 pl-2'}>Лента заказов</h1>
         <ul className={`${style.orderList} pl-2 pr-2 custom-scroll`}>
-          {ordersData.orders.map(({ _id, number, createdAt, name, status, ingredients }) => {
+          {feedOrders.map(({ _id, number, createdAt, name, status, ingredients }) => {
             return (
               <li className={style.orderListItem} key={_id}>
                 <CardOrder
@@ -108,15 +114,15 @@ export const FeedPage = () => {
             Выполнено за&nbsp;все время:
           </h2>
           <p className={`${style.counterText} text text_type_digits-large`}>
-            {ordersData.total.toLocaleString('ru-RU')}
+            {feedTotal.toLocaleString('ru-RU')}
           </p>
         </div>
         <div className={style.completedTodayWrapper}>
           <h2 className={`${style.statsTitle}  text text_type_main-medium`}>
-            Выполнено за&nbsp;все сегодня:
+            Выполнено за&nbsp;сегодня:
           </h2>
           <p className={`${style.counterText} text text_type_digits-large`}>
-            {ordersData.totalToday.toLocaleString('ru-RU')}
+            {feedToday.toLocaleString('ru-RU')}
           </p>
         </div>
       </section>

@@ -1,16 +1,16 @@
 import style from './card-order.module.css';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useSelector } from 'react-redux';
 import { IngredientThumbnail } from '../ingredient-thumbnail/ingredient-thumbnail';
 import { useMemo } from 'react';
 import { DONE, TOrderStatus } from '../../utils/constants';
 import { Link, useRouteMatch } from 'react-router-dom';
 import { selectIngredients } from '../../services/selectors/ingredients';
 import { useOrderData } from '../../services/hooks';
+import { useAppSelector } from '../../services/redux-hooks';
 
 interface ICardOrder {
   withStatus: boolean;
-  number: string;
+  number: number;
   name: string;
   burgerIngredientsId: Array<string>;
   status: TOrderStatus;
@@ -27,7 +27,7 @@ export const CardOrder = ({
   createdAt,
   id,
 }: ICardOrder) => {
-  const ingredients = useSelector(selectIngredients);
+  const ingredients = useAppSelector(selectIngredients);
 
   const { url } = useRouteMatch();
 
@@ -57,10 +57,6 @@ export const CardOrder = ({
       );
     }
   }, [ingredientsList]);
-
-  if (!ingredientsList) {
-    return null;
-  }
 
   return (
     <Link

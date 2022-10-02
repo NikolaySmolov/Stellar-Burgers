@@ -16,5 +16,5 @@ export const rootReducer = combineReducers({
   login: loginReducer,
   forgotPassword: forgotPasswordReducer,
   profile: profileReducer,
-  orders: wsReducer,
+  feed: wsReducer,
 });

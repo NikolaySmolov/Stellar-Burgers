@@ -8,7 +8,9 @@ import {
 
 const initialState = {
   connected: false,
-  ordersData: null,
+  orders: [],
+  total: null,
+  totalToday: null,
   error: null,
 };
 
@@ -21,9 +23,9 @@ export const wsReducer = (state = initialState, action) => {
     case WS_CONNECTION_CLOSED:
       return { ...state, connected: false, error: null };
     case WS_GET_MESSAGE:
-      return { ...state, ordersData: action.payload };
+      return { ...state, ...action.payload };
     case WS_CLEAR_STORE:
-      return { ...state, ordersData: initialState.ordersData };
+      return { ...initialState };
     default:
       return state;
   }

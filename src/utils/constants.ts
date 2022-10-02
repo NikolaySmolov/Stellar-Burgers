@@ -45,6 +45,16 @@ export interface IIngredient {
 
 export type TOrderStatus = typeof CREATED | typeof PENDING | typeof DONE;
 
+export interface IOrderInFeed {
+  _id: string;
+  ingredients: Array<string>;
+  status: TOrderStatus;
+  name: string;
+  createdAt: string;
+  updatedAt: string;
+  number: number;
+}
+
 export const CREATED: 'created' = 'created';
 export const PENDING: 'pending' = 'pending';
 export const DONE: 'done' = 'done';

@@ -1,21 +1,25 @@
 import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { useParams, Redirect } from 'react-router-dom';
 import { CardOrderDetails } from '../../components/card-order-details/card-order-details';
 import { Loader } from '../../components/loader/loader';
 import { ModalError } from '../../components/modal-error/modal-error';
 import { setSocketConnection, setSocketDisconnect } from '../../services/actions/web-socket';
+import { useAppDispatch, useAppSelector } from '../../services/redux-hooks';
+import { selectFeedError, selectFeedOrders } from '../../services/selectors/orders';
+import { IParamsForId } from '../../services/types';
 import style from './card-order-details.module.css';
 
-export const OrderDetailsPage = ({ connectionPayload }) => {
-  const { ordersData, error } = useSelector(store => ({
-    ingredients: store.burger.ingredients,
-    ...store.orders,
-  }));
+interface IOrderDetailsPage {
+  connectionPayload: string;
+}
 
-  const dispatch = useDispatch();
+export const OrderDetailsPage = ({ connectionPayload }: IOrderDetailsPage) => {
+  const feedError = useAppSelector(selectFeedError);
+  const feedOrders = useAppSelector(selectFeedOrders);
 
-  const { id: orderId } = useParams();
+  const dispatch = useAppDispatch();
+
+  const { id: orderId } = useParams<IParamsForId>();
 
   useEffect(() => {
     dispatch(setSocketConnection(connectionPayload));
@@ -25,13 +29,13 @@ export const OrderDetailsPage = ({ connectionPayload }) => {
     };
   }, [dispatch, connectionPayload]);
 
-  if (!ordersData.orders && !error) {
+  if (feedOrders.length === 0 && !feedError) {
     return <Loader />;
-  } else if (error) {
+  } else if (feedError) {
     return <ModalError />;
   }
 
-  const hasOrder = ordersData.orders.some(({ _id }) => _id === orderId);
+  const hasOrder = feedOrders.some(({ _id }) => _id === orderId);
 
   if (!hasOrder) {
     return <Redirect to={{ pathname: '/order-not-found' }} />;

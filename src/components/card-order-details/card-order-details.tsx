@@ -1,43 +1,31 @@
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useMemo } from 'react';
-import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { useOrderData } from '../../services/hooks';
+import { useAppSelector } from '../../services/redux-hooks';
 import { selectIngredients } from '../../services/selectors/ingredients';
+import { selectFeedOrders } from '../../services/selectors/orders';
+import { IParamsForId } from '../../services/types';
 import { DONE } from '../../utils/constants';
-import { Loader } from '../loader/loader';
 import { OrderRow } from '../order-row/order-row';
 import style from './card-order-details.module.css';
 
 export const CardOrderDetails = () => {
-  const ingredientsMenu = useSelector(selectIngredients);
-  const { orders } = useSelector(store => ({
-    orders: store.orders.ordersData.orders,
-  }));
+  const ingredientsMenu = useAppSelector(selectIngredients);
+  const feedOrders = useAppSelector(selectFeedOrders);
 
-  const { id: orderId } = useParams();
+  const { id: orderId } = useParams<IParamsForId>();
 
   const orderData = useMemo(() => {
-    if (orders) {
-      return orders.find(({ _id }) => _id === orderId);
-    }
-
-    return null;
-  }, [orders, orderId]);
+    return feedOrders.find(({ _id }) => _id === orderId);
+  }, [feedOrders, orderId]);
 
   const [ingredientsList, orderDate, totalPrice, statusText] = useOrderData(
-    orderData?.ingredients,
+    orderData.ingredients,
     ingredientsMenu,
-    orderData?.createdAt,
-    orderData?.status
+    orderData.createdAt,
+    orderData.status
   );
-
-  if (!ingredientsList && orders) {
-    return null;
-  }
-  if (!orders) {
-    return <Loader />;
-  }
 
   return (
     <section className={style.details}>
