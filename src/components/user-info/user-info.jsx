@@ -1,5 +1,4 @@
 import { useCallback, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Form } from '../form/form';
 import { useInputLogic } from '../../services/hooks';
@@ -13,6 +12,7 @@ import {
 } from '../../services/actions/profile';
 import { getCookie } from '../../services/utils';
 import { Loader } from '../loader/loader';
+import { useAppDispatch, useAppSelector } from '../../services/redux-hooks';
 
 export const UserInfo = () => {
   const {
@@ -22,9 +22,9 @@ export const UserInfo = () => {
     getUserInfoRequest,
     getUserInfoFailed,
     setUserInfoFailed,
-  } = useSelector(store => store.profile);
+  } = useAppSelector(store => store.profile);
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const { fieldReset: nameFieldReset, ...nameInputLogic } = useInputLogic({
     initType: 'text',

@@ -1,7 +1,6 @@
 import styles from './ordering.module.css';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useSelector, useDispatch } from 'react-redux';
 import { sendOrder } from '../../services/actions/order';
 import { Loader } from '../loader/loader';
 import {
@@ -10,13 +9,13 @@ import {
   selectBurgerCompleteState,
 } from '../../services/selectors/constructor';
 import { selectOrderRequest } from '../../services/selectors/order';
-import { useAppDispatch} from '../../services/redux-hooks';
+import { useAppDispatch, useAppSelector } from '../../services/redux-hooks';
 
 export function Ordering() {
-  const orderRequest = useSelector(selectOrderRequest);
-  const totalPrice = useSelector(selectTotalPrice);
-  const orderButtonState = !useSelector(selectBurgerCompleteState);
-  const burgerIngredientsList = useSelector(selectConstructorIngredientsIdList);
+  const orderRequest = useAppSelector(selectOrderRequest);
+  const totalPrice = useAppSelector(selectTotalPrice);
+  const orderButtonState = !useAppSelector(selectBurgerCompleteState);
+  const burgerIngredientsList = useAppSelector(selectConstructorIngredientsIdList);
 
   const dispatch = useAppDispatch();
 
