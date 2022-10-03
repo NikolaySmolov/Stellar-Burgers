@@ -26,10 +26,8 @@ const initialState = {
     password: FAKE_PASSWORD,
   },
   userInfoLoaded: false,
-  getUserInfoRequest: false,
-  getUserInfoFailed: false,
-  setUserInfoRequest: false,
-  setUserInfoFailed: false,
+  userInfoRequest: false,
+  userInfoFailed: false,
   getUserAccessRequest: false,
   getUserAccessFailed: false,
   setUserLogoutRequest: false,
@@ -42,8 +40,8 @@ export const profileReducer = (state = initialState, action) => {
       return {
         ...state,
         userInfoLoaded: false,
-        getUserInfoRequest: true,
-        getUserInfoFailed: false,
+        userInfoRequest: true,
+        userInfoFailed: false,
       };
     case PROFILE_USER_INFO_SUCCESS:
       return {
@@ -53,8 +51,8 @@ export const profileReducer = (state = initialState, action) => {
         },
         userInfoForm: { ...state.userInfoForm, ...action.payload },
         userInfoLoaded: true,
-        getUserInfoRequest: false,
-        getUserInfoFailed: false,
+        userInfoRequest: false,
+        userInfoFailed: false,
       };
     case PROFILE_USER_INFO_FAILED:
       return {
@@ -64,8 +62,8 @@ export const profileReducer = (state = initialState, action) => {
         },
         userInfoForm: { ...initialState.userInfoForm },
         userInfoLoaded: false,
-        getUserInfoRequest: false,
-        getUserInfoFailed: true,
+        userInfoRequest: false,
+        userInfoFailed: true,
       };
     case PROFILE_USER_INFO_FORM_VALUE:
       return {
@@ -86,22 +84,22 @@ export const profileReducer = (state = initialState, action) => {
         },
       };
     case PROFILE_USER_INFO_FORM_SUBMIT:
-      return { ...state, userInfoForm: { ...state.userInfoForm }, setUserInfoRequest: true };
+      return { ...state, userInfoForm: { ...state.userInfoForm }, userInfoRequest: true };
 
     case PROFILE_USER_INFO_FORM_SUCCESS:
       return {
         ...state,
         userInfo: { ...state.userInfo, ...action.payload },
         userInfoForm: { ...state.userInfoForm, password: initialState.userInfoForm.password },
-        setUserInfoRequest: false,
+        userInfoRequest: false,
         userInfoLoaded: true,
       };
     case PROFILE_USER_INFO_FORM_FAILED:
       return {
         ...state,
         userInfoForm: { ...state.userInfoForm },
-        setUserInfoRequest: false,
-        setUserInfoFailed: true,
+        userInfoRequest: false,
+        userInfoFailed: true,
       };
     case USER_ACCESS_REQUEST:
       return {

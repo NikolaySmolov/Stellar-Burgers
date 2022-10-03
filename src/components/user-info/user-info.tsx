@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react';
+import React, { ChangeEvent, useCallback, useEffect } from 'react';
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Form } from '../form/form';
 import { useInputLogic } from '../../services/hooks';
@@ -13,16 +13,20 @@ import {
 import { getCookie } from '../../services/utils';
 import { Loader } from '../loader/loader';
 import { useAppDispatch, useAppSelector } from '../../services/redux-hooks';
+import {
+  selectUserInfo,
+  selectUserInfoFailed,
+  selectUserInfoForm,
+  selectUserInfoLoaded,
+  selectUserInfoRequest,
+} from '../../services/selectors/profile';
 
 export const UserInfo = () => {
-  const {
-    userInfo,
-    userInfoForm,
-    userInfoLoaded,
-    getUserInfoRequest,
-    getUserInfoFailed,
-    setUserInfoFailed,
-  } = useAppSelector(store => store.profile);
+  const userInfo = useAppSelector(selectUserInfo);
+  const userInfoForm = useAppSelector(selectUserInfoForm);
+  const userInfoLoaded = useAppSelector(selectUserInfoLoaded);
+  const userInfoRequest = useAppSelector(selectUserInfoRequest);
+  const userInfoFailed = useAppSelector(selectUserInfoFailed);
 
   const dispatch = useAppDispatch();
 
@@ -59,15 +63,15 @@ export const UserInfo = () => {
   };
 
   const handleSetFieldValue = useCallback(
-    evt => {
-      const field = evt.currentTarget;
+    (e: ChangeEvent<HTMLInputElement>) => {
+      const field = e.currentTarget;
       dispatch(setProfileUserInfoFormValue(field.name, field.value));
     },
     [dispatch]
   );
 
-  const handleSubmit = evt => {
-    evt.preventDefault();
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     const formData = { ...userInfoForm };
     if (formData.password === FAKE_PASSWORD) {
       delete formData.password;
@@ -91,16 +95,14 @@ export const UserInfo = () => {
     // eslint-disable-next-line
   }, [dispatch, userInfoLoaded]);
 
-  if (!userInfoLoaded && getUserInfoRequest) {
-    return <Loader />;
-  } else if (!userInfoLoaded) {
-    return null;
-  } else if (getUserInfoFailed || setUserInfoFailed) {
+  if (userInfoFailed) {
     return (
       <h1 className={'text text_type_main-default text_color_inactive pt-20'}>
         Что-то пошло не так... Попробуйте обновить страницу
       </h1>
     );
+  } else if (!userInfoLoaded || userInfoRequest) {
+    return <Loader />;
   }
 
   return (
