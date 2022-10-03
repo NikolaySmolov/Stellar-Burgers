@@ -124,7 +124,12 @@ export const profileReducer = (state = initialState, action) => {
     case USER_LOGOUT_REQUEST:
       return { ...state, setUserLogoutRequest: true };
     case USER_LOGOUT_SUCCESS:
-      return { ...state, setUserLogoutRequest: false, userInfoLoaded: false };
+      return {
+        ...state,
+        setUserLogoutRequest: false,
+        userInfoLoaded: false,
+        getUserAccessFailed: true,
+      };
     default:
       return state;
   }
