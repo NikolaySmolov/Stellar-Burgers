@@ -51,5 +51,7 @@ export const setTimeFormat = (number: number) => {
   return String(number);
 };
 
-export const WS_ENDPOINT_ALL = '/all';
-export const WS_ENDPOINT_PROFILE = `?token=${getCookie(ACCESS_TOKEN)}`;
+export const getWsProfileEndpoint = () => {
+  const accessToken = getCookie(ACCESS_TOKEN);
+  return '?token=' + accessToken;
+};

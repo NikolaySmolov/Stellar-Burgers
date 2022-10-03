@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useParams, Redirect } from 'react-router-dom';
+import { useParams, Redirect, useRouteMatch } from 'react-router-dom';
 import { CardOrderDetails } from '../../components/card-order-details/card-order-details';
 import { Loader } from '../../components/loader/loader';
 import { ModalError } from '../../components/modal-error/modal-error';
@@ -7,27 +7,31 @@ import { setSocketConnection, setSocketDisconnect } from '../../services/actions
 import { useAppDispatch, useAppSelector } from '../../services/redux-hooks';
 import { selectFeedError, selectFeedOrders } from '../../services/selectors/orders';
 import { IParamsForId } from '../../services/types';
+import { getWsProfileEndpoint } from '../../services/utils';
+import { WS_ENDPOINT_ALL } from '../../utils/constants';
 import style from './card-order-details.module.css';
 
-interface IOrderDetailsPage {
-  connectionPayload: string;
-}
-
-export const OrderDetailsPage = ({ connectionPayload }: IOrderDetailsPage) => {
+export const OrderDetailsPage = () => {
   const feedError = useAppSelector(selectFeedError);
   const feedOrders = useAppSelector(selectFeedOrders);
 
   const dispatch = useAppDispatch();
 
+  const isProfileFeed = useRouteMatch('/profile/orders/');
+
   const { id: orderId } = useParams<IParamsForId>();
 
   useEffect(() => {
-    dispatch(setSocketConnection(connectionPayload));
+    if (isProfileFeed) {
+      dispatch(setSocketConnection(getWsProfileEndpoint()));
+    } else {
+      dispatch(setSocketConnection(WS_ENDPOINT_ALL));
+    }
 
     return () => {
       dispatch(setSocketDisconnect());
-    };
-  }, [dispatch, connectionPayload]);
+    }; // eslint-disable-next-line
+  }, [dispatch]);
 
   if (feedOrders.length === 0 && !feedError) {
     return <Loader />;

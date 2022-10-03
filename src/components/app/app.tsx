@@ -19,7 +19,6 @@ import { useEffect } from 'react';
 import { Loader } from '../loader/loader';
 import { FeedPage } from '../../pages/feed/feed';
 import { CardOrderDetails } from '../card-order-details/card-order-details';
-import { WS_ENDPOINT_ALL, WS_ENDPOINT_PROFILE } from '../../services/utils';
 import {
   selectIngredients,
   selectIngredientsFailed,
@@ -78,7 +77,7 @@ export function App() {
           <FeedPage />
         </Route>
         <Route path="/feed/:id">
-          <OrderDetailsPage connectionPayload={WS_ENDPOINT_ALL} />
+          <OrderDetailsPage />
         </Route>
         <Route path="/login" exact>
           <LoginPage />
@@ -93,7 +92,7 @@ export function App() {
           <ResetPasswordPage />
         </Route>
         <ProtectedRoute path="/profile/orders/:id">
-          <OrderDetailsPage connectionPayload={WS_ENDPOINT_PROFILE} />
+          <OrderDetailsPage />
         </ProtectedRoute>
         <ProtectedRoute path="/profile">
           <ProfilePage />

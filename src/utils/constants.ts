@@ -12,6 +12,8 @@ export const API = 'https://norma.nomoreparties.space/api';
 
 export const WS = 'wss://norma.nomoreparties.space/orders';
 
+export const WS_ENDPOINT_ALL = '/all';
+
 export const WS_ACTIONS = {
   wsInit: WS_CONNECTION_START,
   wsClose: WS_CONNECTION_CLOSE,

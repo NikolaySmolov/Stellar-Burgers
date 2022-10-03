@@ -10,8 +10,7 @@ import {
   selectFeedTodayCount,
   selectFeedTotalCount,
 } from '../../services/selectors/orders';
-import { WS_ENDPOINT_ALL } from '../../services/utils';
-import { DONE, PENDING } from '../../utils/constants';
+import { DONE, PENDING, WS_ENDPOINT_ALL } from '../../utils/constants';
 import style from './feed.module.css';
 
 export const FeedPage = () => {

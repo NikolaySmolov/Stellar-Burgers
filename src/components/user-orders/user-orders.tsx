@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { setSocketConnection, setSocketDisconnect } from '../../services/actions/web-socket';
 import { useAppDispatch, useAppSelector } from '../../services/redux-hooks';
 import { selectFeedError, selectFeedOrders } from '../../services/selectors/orders';
-import { WS_ENDPOINT_PROFILE } from '../../services/utils';
+import { getWsProfileEndpoint } from '../../services/utils';
 import { CardOrder } from '../card-order/card-order';
 import { Loader } from '../loader/loader';
 import style from './user-orders.module.css';
@@ -15,7 +15,9 @@ export const UserOrders = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(setSocketConnection(WS_ENDPOINT_PROFILE));
+    const wsProfileEndpoint = getWsProfileEndpoint();
+
+    dispatch(setSocketConnection(wsProfileEndpoint)); //вот тут явный косяк с передачей токена токен = undefined
 
     return () => {
       dispatch(setSocketDisconnect());
@@ -31,7 +33,7 @@ export const UserOrders = () => {
   } else if (feedError) {
     return (
       <h2 className={'text text_type_main-medium'}>
-        Что-то пошло не так... Попробуйте обновить страницу
+        {`Что-то пошло не так... Попробуйте обновить страницу. Ошибка: ${feedError}`}
       </h2>
     );
   }

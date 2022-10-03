@@ -31,7 +31,11 @@ export const wsMiddleware = (wsUrl, wsActions) => {
 
       webSocket.onmessage = event => {
         const { success, ...data } = JSON.parse(event.data);
-        dispatch({ type: onMessage, payload: data });
+        if (success) {
+          dispatch({ type: onMessage, payload: data });
+        } else {
+          dispatch({ type: onError, payload: data.message });
+        }
       };
     }
     return next(action);
