@@ -2,12 +2,12 @@ import { combineReducers } from 'redux';
 import { ingredientsReducer } from './ingredients';
 import { orderReducer } from './order';
 import { registrationReducer } from './register';
-import { loginReducer } from './login';
+import { loginReducer } from './login-form';
 import { forgotPasswordReducer } from './forgot-password';
 import { userReducer } from './user';
 import { wsReducer } from './web-socket';
 import { constructorReducer } from './constructor';
-import { authReducer } from './authUser';
+import { authReducer } from './auth';
 
 export const rootReducer = combineReducers({
   auth: authReducer,
@@ -15,7 +15,7 @@ export const rootReducer = combineReducers({
   burgerConstructor: constructorReducer,
   order: orderReducer,
   registration: registrationReducer,
-  login: loginReducer,
+  loginForm: loginReducer,
   forgotPassword: forgotPasswordReducer,
   user: userReducer,
   feed: wsReducer,

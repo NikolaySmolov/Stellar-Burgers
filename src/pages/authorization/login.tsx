@@ -2,22 +2,31 @@ import { Button, Input, PasswordInput } from '@ya.praktikum/react-developer-burg
 import { AdditionalAction } from '../../components/additional-action/additional-action';
 import { Form } from '../../components/form/form';
 import { useHistory, useLocation, Redirect } from 'react-router-dom';
-//eslint-disable-next-line
 import styles from './index.module.css';
 import { useAppDispatch, useAppSelector } from '../../services/redux-hooks';
-import { resetLoginFormValues, setLoginFormValue, signIn } from '../../services/actions/login';
 import React, { useEffect } from 'react';
-import { getCookie } from '../../services/utils';
-import { TOKEN } from '../../utils/constants';
 import { FormCaption } from '../../components/form-caption/form-caption';
 import { useInputLogic } from '../../services/hooks';
 import { Loader } from '../../components/loader/loader';
 import { setOrderPermissionSuccess } from '../../services/actions/order';
-import { selectLoginState } from '../../services/selectors/login';
+import { selectLoginFormState } from '../../services/selectors/login-form';
 import { TLocation } from '../../services/hooks';
+import {
+  getLoginFormResetValuesAction,
+  getLoginFormSetValueAction,
+  setUserSignIn,
+} from '../../services/actions/login-form';
 
 export const LoginPage = () => {
-  const { form, loginRequest, loginFailed } = useAppSelector(selectLoginState);
+  const {
+    email: emailValue,
+    password: passwordValue,
+    loginRequest,
+    loginFailed,
+  } = useAppSelector(selectLoginFormState);
+
+  const authFailed = useAppSelector(store => store.auth.failed);
+
   const dispatch = useAppDispatch();
 
   const history = useHistory();
@@ -27,13 +36,13 @@ export const LoginPage = () => {
 
   const handleSetFieldValue = (evt: React.ChangeEvent<HTMLInputElement>) => {
     const field = evt.currentTarget;
-    dispatch(setLoginFormValue(field.name, field.value));
+    dispatch(getLoginFormSetValueAction({ [field.name]: field.value }));
   };
 
   const handleSignIn = (evt: React.SyntheticEvent<HTMLFormElement, SubmitEvent>) => {
     evt.preventDefault();
 
-    dispatch(signIn(form));
+    dispatch(setUserSignIn({ email: emailValue, password: passwordValue }));
   };
 
   const handleRouteSignUp = () => {
@@ -45,13 +54,13 @@ export const LoginPage = () => {
   };
 
   useEffect(() => {
-    dispatch(setOrderPermissionSuccess());
+    dispatch(setOrderPermissionSuccess()); //переделать
     return () => {
-      dispatch(resetLoginFormValues());
+      dispatch(getLoginFormResetValuesAction());
     };
   }, [dispatch]);
 
-  if (getCookie(TOKEN)) {
+  if (!authFailed) {
     return <Redirect to={location.state?.from.pathname || '/'} />;
   }
 
@@ -65,11 +74,11 @@ export const LoginPage = () => {
             type={'email'}
             placeholder={'E-mail'}
             name={'email'}
-            value={form.email}
+            value={emailValue}
             onChange={handleSetFieldValue}
             errorText={'Некорректный e-mail'}
           />
-          <PasswordInput value={form.password} name={'password'} onChange={handleSetFieldValue} />
+          <PasswordInput value={passwordValue} name={'password'} onChange={handleSetFieldValue} />
           <div style={{ position: 'relative' }}>
             <Button htmlType={'submit'}>Войти</Button>
             {loginRequest ? <Loader /> : null}

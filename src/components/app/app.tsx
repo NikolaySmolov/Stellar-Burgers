@@ -31,7 +31,7 @@ import { closeOrderDetails } from '../../services/actions/order';
 import { ORDER_PATH } from '../../utils/constants';
 import { useAppDispatch, useAppSelector } from '../../services/redux-hooks';
 import { TLocation } from '../../services/hooks';
-import { getUserInfo } from '../../services/actions/authUser';
+import { getUserInfo } from '../../services/actions/auth';
 
 export function App() {
   const ingredientsRequest = useAppSelector(selectIngredientsRequest);

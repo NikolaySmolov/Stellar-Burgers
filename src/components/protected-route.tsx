@@ -10,27 +10,39 @@ import { selectUserAccessFailed, selectUserAccessRequest } from '../services/sel
 type TProtectedRoute = RouteProps & React.PropsWithChildren;
 
 export const ProtectedRoute = ({ children, ...props }: TProtectedRoute) => {
-  const getUserAccessRequest = useAppSelector(selectUserAccessRequest);
-  const getUserAccessFailed = useAppSelector(selectUserAccessFailed);
+  // const getUserAccessRequest = useAppSelector(selectUserAccessRequest);
+  // const getUserAccessFailed = useAppSelector(selectUserAccessFailed);
 
-  const dispatch = useAppDispatch();
+  // const dispatch = useAppDispatch();
 
-  const hasAccessToken = getClientAccessState();
-  const hasToken = getClientTokenState();
+  // const hasAccessToken = getClientAccessState();
+  // const hasToken = getClientTokenState();
 
-  useEffect(() => {
-    if (!getUserAccessRequest) {
-      if (hasAccessToken) {
-        dispatch({ type: USER_ACCESS_SUCCESS });
-      } else if (hasToken) {
-        dispatch(getUserAccess(getCookie(TOKEN)));
-      } else {
-        dispatch({ type: USER_ACCESS_FAILED });
-      }
-    }
-  }, [dispatch, getUserAccessRequest, hasAccessToken, hasToken]);
+  // useEffect(() => {
+  //   if (!getUserAccessRequest) {
+  //     if (hasAccessToken) {
+  //       dispatch({ type: USER_ACCESS_SUCCESS });
+  //     } else if (hasToken) {
+  //       dispatch(getUserAccess(getCookie(TOKEN)));
+  //     } else {
+  //       dispatch({ type: USER_ACCESS_FAILED });
+  //     }
+  //   }
+  // }, [dispatch, getUserAccessRequest, hasAccessToken, hasToken]);
 
-  if ((!hasAccessToken && !getUserAccessFailed) || getUserAccessRequest) {
+  // if ((!hasAccessToken && !getUserAccessFailed) || getUserAccessRequest) {
+  //   return (
+  //     <div>
+  //       <Loader />
+  //     </div>
+  //   );
+  // }
+
+  const authRequest = useAppSelector(store => store.auth.request);
+
+  const authFailed = useAppSelector(store => store.auth.failed);
+
+  if (authRequest) {
     return (
       <div>
         <Loader />
@@ -42,11 +54,7 @@ export const ProtectedRoute = ({ children, ...props }: TProtectedRoute) => {
     <Route
       {...props}
       render={({ location }) =>
-        getUserAccessFailed ? (
-          <Redirect to={{ pathname: '/login', state: { from: location } }} />
-        ) : (
-          children
-        )
+        authFailed ? <Redirect to={{ pathname: '/login', state: { from: location } }} /> : children
       }
     />
   );

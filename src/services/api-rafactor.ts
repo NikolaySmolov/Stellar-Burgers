@@ -1,5 +1,5 @@
 import { ACCESS_TOKEN, API, TOKEN } from '../utils/constants';
-import { IUpdateToken, IUser } from './types/data';
+import { ILogin, IUpdateToken, IUser } from './types/data';
 import { getCookie, setCookie } from './utils';
 
 interface IRequestOptions extends RequestInit {
@@ -48,8 +48,8 @@ const fetchWithUpdateToken = async (url: string, options: IRequestOptions) => {
       if (!updateData.success) {
         return Promise.reject(updateData);
       }
-      setCookie(TOKEN, updateData.refreshToken);
-      setCookie(ACCESS_TOKEN, updateData.accessToken.split('Bearer ')[1]);
+      setCookie(TOKEN, updateData.refreshToken, { path: '/' });
+      setCookie(ACCESS_TOKEN, updateData.accessToken.split('Bearer ')[1], { path: '/' });
       options.headers.Authorization = updateData.accessToken;
       const res = await fetch(url, options);
       return await checkResponse(res);
@@ -67,4 +67,17 @@ export const fetchUserInfo = (): Promise<TResponseBody<'user', IUser>> => {
       Authorization: `Bearer ${getCookie(ACCESS_TOKEN)}`,
     },
   });
+};
+
+export const fetchUserLogin = async (
+  form: ILogin
+): Promise<TResponseBody<'user', IUser> & IUpdateToken> => {
+  const res = await fetch(`${API}/auth/login`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(form),
+  });
+  return checkResponse(res);
 };
