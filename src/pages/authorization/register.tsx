@@ -17,7 +17,7 @@ import { useInputLogic } from '../../services/hooks';
 import { Loader } from '../../components/loader/loader';
 import { selectRegisterState } from '../../services/selectors/register';
 import { useAppDispatch, useAppSelector } from '../../services/redux-hooks';
-import { TLocation } from '../../services/types';
+import { TLocation } from '../../services/hooks';
 
 export const RegisterPage = () => {
   const { form, registerRequest, registerFailed, failedMessage } =

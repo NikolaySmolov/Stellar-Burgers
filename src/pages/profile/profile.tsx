@@ -3,12 +3,12 @@ import { Switch, Route, useRouteMatch, NavLink } from 'react-router-dom';
 import styles from './profile.module.css';
 import { getCookie } from '../../services/utils';
 import { TOKEN } from '../../utils/constants';
-import { setUserLogout } from '../../services/actions/profile';
+import { setUserLogout } from '../../services/actions/user';
 import { UserInfo } from '../../components/user-info/user-info';
 import { ModalError } from '../../components/modal-error/modal-error';
 import { UserOrders } from '../../components/user-orders/user-orders';
 import { useAppDispatch, useAppSelector } from '../../services/redux-hooks';
-import { selectUserLogoutFailed, selectUserLogoutRequest } from '../../services/selectors/profile';
+import { selectUserLogoutFailed, selectUserLogoutRequest } from '../../services/selectors/user';
 import { Loader } from '../../components/loader/loader';
 
 export const ProfilePage = () => {

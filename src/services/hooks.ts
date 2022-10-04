@@ -11,6 +11,19 @@ import {
 } from '../utils/constants';
 import { setTimeFormat } from './utils';
 
+export type TLocation<S extends 'from' | 'background'> = {
+  [key in S]: {
+    hash: string;
+    pathname: string;
+    search: string;
+    state: unknown;
+  };
+};
+
+export interface IParamsForId {
+  id: string;
+}
+
 type TInputType = 'text' | 'email' | 'password';
 
 interface IUseInputLogic {

@@ -3,7 +3,7 @@ import { ACCESS_TOKEN, TOKEN } from '../utils/constants';
 export function setCookie(
   name: string,
   value: string,
-  props: { [key: string]: any } & { expires?: number | Date | string }
+  props?: { [key: string]: any } & { expires?: number | Date | string }
 ) {
   props = props || {};
   let exp = props.expires;

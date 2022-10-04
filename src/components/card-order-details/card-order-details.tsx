@@ -5,7 +5,7 @@ import { useOrderData } from '../../services/hooks';
 import { useAppSelector } from '../../services/redux-hooks';
 import { selectIngredients } from '../../services/selectors/ingredients';
 import { selectFeedOrders } from '../../services/selectors/orders';
-import { IParamsForId } from '../../services/types';
+import { IParamsForId } from '../../services/hooks';
 import { DONE } from '../../utils/constants';
 import { OrderRow } from '../order-row/order-row';
 import style from './card-order-details.module.css';

@@ -2,10 +2,10 @@ import { Route, Redirect, RouteProps } from 'react-router-dom';
 import React, { useEffect } from 'react';
 import { getClientAccessState, getClientTokenState, getCookie } from '../services/utils';
 import { TOKEN, USER_ACCESS_FAILED, USER_ACCESS_SUCCESS } from '../utils/constants';
-import { getUserAccess } from '../services/actions/profile';
+import { getUserAccess } from '../services/actions/user';
 import { Loader } from './loader/loader';
 import { useAppDispatch, useAppSelector } from '../services/redux-hooks';
-import { selectUserAccessFailed, selectUserAccessRequest } from '../services/selectors/profile';
+import { selectUserAccessFailed, selectUserAccessRequest } from '../services/selectors/user';
 
 type TProtectedRoute = RouteProps & React.PropsWithChildren;
 

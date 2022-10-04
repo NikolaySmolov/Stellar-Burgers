@@ -34,7 +34,7 @@ const initialState = {
   setUserLogoutFailed: false,
 };
 
-export const profileReducer = (state = initialState, action) => {
+export const userReducer = (state = initialState, action) => {
   switch (action.type) {
     case PROFILE_USER_INFO_REQUEST:
       return {

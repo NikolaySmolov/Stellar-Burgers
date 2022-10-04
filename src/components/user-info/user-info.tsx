@@ -9,7 +9,7 @@ import {
   setProfileUserInfoFormReset,
   setProfileUserInfoFormValue,
   setUserProfileInfo,
-} from '../../services/actions/profile';
+} from '../../services/actions/user';
 import { getCookie } from '../../services/utils';
 import { Loader } from '../loader/loader';
 import { useAppDispatch, useAppSelector } from '../../services/redux-hooks';
@@ -19,7 +19,7 @@ import {
   selectUserInfoForm,
   selectUserInfoLoaded,
   selectUserInfoRequest,
-} from '../../services/selectors/profile';
+} from '../../services/selectors/user';
 
 export const UserInfo = () => {
   const userInfo = useAppSelector(selectUserInfo);

@@ -1,7 +1,7 @@
 import { useParams } from 'react-router';
 import { useAppSelector } from '../../services/redux-hooks';
 import { selectIngredients } from '../../services/selectors/ingredients';
-import { IParamsForId } from '../../services/types';
+import { IParamsForId } from '../../services/hooks';
 import styles from './ingredient-details.module.css';
 
 export function IngredientDetails() {
