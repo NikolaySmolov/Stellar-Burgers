@@ -1,7 +1,7 @@
 import { ACCESS_TOKEN, TOKEN } from '../../utils/constants';
-import { fetchUserLogin } from '../api-rafactor';
+import { fetchUserLogin, IErrorResponse } from '../api-rafactor';
 import { AppDispatch } from '../types';
-import { ILogin } from '../types/data';
+import { ILoginForm } from '../types/data';
 import { setCookie } from '../utils';
 import { getAuthFailedAction, getAuthSuccessAction } from './auth';
 export const LOGIN_FORM_REQUEST: 'LOGIN_FORM_REQUEST' = 'LOGIN_FORM_REQUEST';
@@ -20,13 +20,12 @@ interface IGetLoginFormSuccessAction {
 
 interface IGetLoginFormFailedAction {
   readonly type: typeof LOGIN_FORM_FAILED;
+  readonly payload: string;
 }
 
 interface IGetLoginFormSetValueAction {
   readonly type: typeof LOGIN_FORM_SET_VALUE;
-  readonly payload: {
-    [key in string]: string;
-  };
+  readonly payload: Partial<ILoginForm>;
 }
 
 interface IGetLoginFormResetValuesAction {
@@ -41,13 +40,14 @@ export const getLoginFormSuccessAction = (): IGetLoginFormSuccessAction => ({
   type: LOGIN_FORM_SUCCESS,
 });
 
-export const getLoginFormFailedAction = (): IGetLoginFormFailedAction => ({
+export const getLoginFormFailedAction = (payload: string): IGetLoginFormFailedAction => ({
   type: LOGIN_FORM_FAILED,
+  payload,
 });
 
-export const getLoginFormSetValueAction = (payload: {
-  [key in string]: string;
-}): IGetLoginFormSetValueAction => ({
+export const getLoginFormSetValueAction = (
+  payload: Partial<ILoginForm>
+): IGetLoginFormSetValueAction => ({
   type: LOGIN_FORM_SET_VALUE,
   payload,
 });
@@ -63,7 +63,7 @@ export type TLoginActions =
   | IGetLoginFormSetValueAction
   | IGetLoginFormResetValuesAction;
 
-export const setUserSignIn = (form: ILogin) => async (dispatch: AppDispatch) => {
+export const setUserSignIn = (form: ILoginForm) => async (dispatch: AppDispatch) => {
   dispatch(getLoginFormRequestAction);
 
   try {
@@ -74,8 +74,16 @@ export const setUserSignIn = (form: ILogin) => async (dispatch: AppDispatch) => 
 
     dispatch(getLoginFormSuccessAction());
     dispatch(getAuthSuccessAction(res.user));
-  } catch {
-    dispatch(getLoginFormFailedAction());
-    dispatch(getAuthFailedAction);
+  } catch (err) {
+    if ((err as IErrorResponse).success === false) {
+      dispatch(getLoginFormFailedAction('Неверное имя пользователя или пароль'));
+    } else {
+      dispatch(
+        getLoginFormFailedAction(
+          'Произошла ошибка, попробуйте обновить страницу и\xA0отправить форму повторно'
+        )
+      );
+    }
+    dispatch(getAuthFailedAction());
   }
 };

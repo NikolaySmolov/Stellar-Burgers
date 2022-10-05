@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux';
 import { ingredientsReducer } from './ingredients';
 import { orderReducer } from './order';
-import { registrationReducer } from './register';
-import { loginReducer } from './login-form';
+import { registrationFormReducer } from './registration-form';
+import { loginFormReducer } from './login-form';
 import { forgotPasswordReducer } from './forgot-password';
 import { userReducer } from './user';
 import { wsReducer } from './web-socket';
@@ -14,8 +14,8 @@ export const rootReducer = combineReducers({
   ingredients: ingredientsReducer,
   burgerConstructor: constructorReducer,
   order: orderReducer,
-  registration: registrationReducer,
-  loginForm: loginReducer,
+  registrationForm: registrationFormReducer,
+  loginForm: loginFormReducer,
   forgotPassword: forgotPasswordReducer,
   user: userReducer,
   feed: wsReducer,

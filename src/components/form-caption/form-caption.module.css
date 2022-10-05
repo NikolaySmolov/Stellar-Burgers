@@ -8,5 +8,6 @@
 .text {
   top: 16px;
   position: absolute;
+  text-align: center;
   color: var(--colors-interface-error);
 }

@@ -1,6 +1,6 @@
 import { fetchUserInfo } from '../api-rafactor';
 import { AppDispatch } from '../types';
-import { IUser } from '../types/data';
+import { IUserInfo } from '../types/data';
 
 export const AUTH_CHECKED: 'AUTH_CHECKED' = 'AUTH_CHECKED';
 
@@ -28,7 +28,7 @@ interface IGetAuthFailedAction {
   readonly type: typeof AUTH_FAILED;
 }
 
-export type TGetAuthActions =
+export type TAuthActions =
   | IAuthCheckedAction
   | IGetAuthRequestAction
   | IGetAuthSuccessAction
@@ -43,7 +43,7 @@ export const getAuthRequestAction = (): IGetAuthRequestAction => ({
   type: AUTH_REQUEST,
 });
 
-export const getAuthSuccessAction = (payload: IUser): IGetAuthSuccessAction => ({
+export const getAuthSuccessAction = (payload: IUserInfo): IGetAuthSuccessAction => ({
   type: AUTH_SUCCESS,
   payload,
 });

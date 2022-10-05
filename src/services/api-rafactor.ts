@@ -1,15 +1,14 @@
 import { ACCESS_TOKEN, API, TOKEN } from '../utils/constants';
-import { ILogin, IUpdateToken, IUser } from './types/data';
+import { ILoginForm, IUpdateToken, IUserInfo, IRegistrationForm, TAuthUser } from './types/data';
 import { getCookie, setCookie } from './utils';
 
-interface IRequestOptions extends RequestInit {
-  headers: {
-    'Content-type': string;
+interface IRequestWithTokenOptions extends RequestInit {
+  headers: HeadersInit & {
     Authorization?: string;
   };
 }
 
-interface IErrorResponse {
+export interface IErrorResponse {
   message: string;
   success: boolean;
 }
@@ -25,7 +24,7 @@ const checkResponse = async (res: Response) => {
   return res.ok ? await res.json() : Promise.reject(await res.json());
 };
 
-const updateToken = async (): Promise<IUpdateToken> => {
+const updateToken = async (): Promise<TResponseBody<''> & IUpdateToken> => {
   const res = await fetch(`${API}/auth/token`, {
     method: 'POST',
     headers: {
@@ -37,7 +36,7 @@ const updateToken = async (): Promise<IUpdateToken> => {
   return await checkResponse(res);
 };
 
-const fetchWithUpdateToken = async (url: string, options: IRequestOptions) => {
+const fetchWithUpdateToken = async (url: string, options: IRequestWithTokenOptions) => {
   try {
     const res = await fetch(url, options);
     return await checkResponse(res);
@@ -59,7 +58,7 @@ const fetchWithUpdateToken = async (url: string, options: IRequestOptions) => {
   }
 };
 
-export const fetchUserInfo = (): Promise<TResponseBody<'user', IUser>> => {
+export const fetchUserInfo = (): Promise<TResponseBody<'user', IUserInfo>> => {
   return fetchWithUpdateToken(`${API}/auth/user`, {
     method: 'GET',
     headers: {
@@ -69,9 +68,7 @@ export const fetchUserInfo = (): Promise<TResponseBody<'user', IUser>> => {
   });
 };
 
-export const fetchUserLogin = async (
-  form: ILogin
-): Promise<TResponseBody<'user', IUser> & IUpdateToken> => {
+export const fetchUserLogin = async (form: ILoginForm): Promise<TResponseBody<''> & TAuthUser> => {
   const res = await fetch(`${API}/auth/login`, {
     method: 'POST',
     headers: {
@@ -79,5 +76,19 @@ export const fetchUserLogin = async (
     },
     body: JSON.stringify(form),
   });
+  return checkResponse(res);
+};
+
+export const fetchUserRegistration = async (
+  form: IRegistrationForm
+): Promise<TResponseBody<''> & TAuthUser> => {
+  const res = await fetch(`${API}/auth/register`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(form),
+  });
+
   return checkResponse(res);
 };

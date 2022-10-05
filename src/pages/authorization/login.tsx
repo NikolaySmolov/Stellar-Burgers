@@ -8,7 +8,7 @@ import React, { useEffect } from 'react';
 import { FormCaption } from '../../components/form-caption/form-caption';
 import { useInputLogic } from '../../services/hooks';
 import { Loader } from '../../components/loader/loader';
-import { setOrderPermissionSuccess } from '../../services/actions/order';
+// import { setOrderPermissionSuccess } from '../../services/actions/order';
 import { selectLoginFormState } from '../../services/selectors/login-form';
 import { TLocation } from '../../services/hooks';
 import {
@@ -23,6 +23,7 @@ export const LoginPage = () => {
     password: passwordValue,
     loginRequest,
     loginFailed,
+    error,
   } = useAppSelector(selectLoginFormState);
 
   const authFailed = useAppSelector(store => store.auth.failed);
@@ -54,7 +55,7 @@ export const LoginPage = () => {
   };
 
   useEffect(() => {
-    dispatch(setOrderPermissionSuccess()); //переделать
+    // dispatch(setOrderPermissionSuccess()); //переделать или удалить
     return () => {
       dispatch(getLoginFormResetValuesAction());
     };
@@ -84,7 +85,7 @@ export const LoginPage = () => {
             {loginRequest ? <Loader /> : null}
           </div>
         </Form>
-        {loginFailed ? <FormCaption>Неверные имя пользователя или пароль</FormCaption> : null}
+        {loginFailed ? <FormCaption>{error}</FormCaption> : null}
         <div className={'authentication__additional-actions mt-20'}>
           <AdditionalAction
             text={'Вы\xA0\u2014 новый пользователь?'}

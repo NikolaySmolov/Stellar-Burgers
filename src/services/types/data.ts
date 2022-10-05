@@ -1,15 +1,22 @@
 export interface IUpdateToken {
-  success: boolean;
   accessToken: string;
   refreshToken: string;
 }
 
-export interface IUser {
+export interface IUserInfo {
   email: string;
   name: string;
 }
 
-export interface ILogin {
+export type TAuthUser = IUpdateToken & {
+  user: IUserInfo;
+};
+
+export interface ILoginForm {
   email: string;
   password: string;
+}
+
+export interface IRegistrationForm extends ILoginForm {
+  name: string;
 }

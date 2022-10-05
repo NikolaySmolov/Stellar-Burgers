@@ -3,25 +3,30 @@ import { Button, Input, PasswordInput } from '@ya.praktikum/react-developer-burg
 import { AdditionalAction } from '../../components/additional-action/additional-action';
 import { Form } from '../../components/form/form';
 import { useHistory, useLocation, Redirect } from 'react-router-dom';
-import {
-  resetRegisterFormValue,
-  setRegisterFormFailed,
-  setRegisterFormValue,
-  signUp,
-} from '../../services/actions/register';
 import React, { useEffect } from 'react';
-import { getCookie } from '../../services/utils';
-import { TOKEN } from '../../utils/constants';
 import { FormCaption } from '../../components/form-caption/form-caption';
 import { useInputLogic } from '../../services/hooks';
 import { Loader } from '../../components/loader/loader';
-import { selectRegisterState } from '../../services/selectors/register';
 import { useAppDispatch, useAppSelector } from '../../services/redux-hooks';
 import { TLocation } from '../../services/hooks';
+import { selectRegistrationFormState } from '../../services/selectors/registration-form';
+import {
+  getRegistrationFormResetValuesAction,
+  getRegistrationFormSetValueAction,
+  setUserSignUp,
+} from '../../services/actions/registration-form';
 
 export const RegisterPage = () => {
-  const { form, registerRequest, registerFailed, failedMessage } =
-    useAppSelector(selectRegisterState);
+  const {
+    email: emailValue,
+    name: nameValue,
+    password: passwordValue,
+    registrationRequest,
+    registrationFailed,
+    error,
+  } = useAppSelector(selectRegistrationFormState);
+
+  const authFailed = useAppSelector(store => store.auth.failed);
 
   const dispatch = useAppDispatch();
 
@@ -32,16 +37,12 @@ export const RegisterPage = () => {
 
   const handleSetFieldValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     const field = e.currentTarget;
-    dispatch(setRegisterFormValue(field.name, field.value));
+    dispatch(getRegistrationFormSetValueAction({ [field.name]: field.value }));
   };
 
   const handleSignUp = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (form.password.length < 6) {
-      dispatch(setRegisterFormFailed());
-    } else {
-      dispatch(signUp(form));
-    }
+    dispatch(setUserSignUp({ name: nameValue, email: emailValue, password: passwordValue }));
   };
 
   const handleRouteSignIn = () => {
@@ -50,11 +51,11 @@ export const RegisterPage = () => {
 
   useEffect(() => {
     return () => {
-      dispatch(resetRegisterFormValue());
+      dispatch(getRegistrationFormResetValuesAction());
     };
   }, [dispatch]);
 
-  if (getCookie(TOKEN)) {
+  if (!authFailed) {
     return <Redirect to={location.state?.from || '/'} />;
   }
 
@@ -69,7 +70,7 @@ export const RegisterPage = () => {
             type={'text'}
             placeholder={'Имя'}
             name={'name'}
-            value={form.name}
+            value={nameValue}
             onChange={handleSetFieldValue}
           />
           <Input
@@ -77,21 +78,17 @@ export const RegisterPage = () => {
             type={'email'}
             placeholder={'E-mail'}
             name={'email'}
-            value={form.email}
+            value={emailValue}
             onChange={handleSetFieldValue}
             errorText={'Некорректный e-mail'}
           />
-          <PasswordInput value={form.password} name={'password'} onChange={handleSetFieldValue} />
+          <PasswordInput value={passwordValue} name={'password'} onChange={handleSetFieldValue} />
           <div style={{ position: 'relative' }}>
             <Button htmlType={'submit'}>Зарегистрироваться</Button>
-            {registerRequest ? <Loader /> : null}
+            {registrationRequest ? <Loader /> : null}
           </div>
         </Form>
-        {registerFailed ? (
-          <FormCaption>
-            {failedMessage ? failedMessage : 'Все поля обязательны для заполнения'}
-          </FormCaption>
-        ) : null}
+        {registrationFailed ? <FormCaption>{error}</FormCaption> : null}
         <div className={'authentication__additional-actions mt-20'}>
           <AdditionalAction
             text={'Уже зарегистрированы?'}

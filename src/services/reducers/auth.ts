@@ -1,12 +1,12 @@
 import {
   AUTH_CHECKED,
-  TGetAuthActions,
+  TAuthActions,
   AUTH_FAILED,
   AUTH_REQUEST,
   AUTH_SUCCESS,
 } from '../actions/auth';
 
-interface IInitState {
+interface IAuthState {
   name: string | null;
   email: string | null;
   request: boolean;
@@ -14,7 +14,7 @@ interface IInitState {
   authChecked: boolean;
 }
 
-const initState: IInitState = {
+const initState: IAuthState = {
   name: null,
   email: null,
   request: false,
@@ -22,7 +22,7 @@ const initState: IInitState = {
   authChecked: false, //пока не понимаю как применить
 };
 
-export const authReducer = (state = initState, action: TGetAuthActions) => {
+export const authReducer = (state = initState, action: TAuthActions): IAuthState => {
   switch (action.type) {
     case AUTH_CHECKED: //пока не понятно зачем
       return { ...state, authChecked: true };

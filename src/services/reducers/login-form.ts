@@ -7,21 +7,23 @@ import {
   TLoginActions,
 } from '../actions/login-form';
 
-interface IInitState {
+interface ILoginFormState {
   email: string;
   password: string;
   loginRequest: boolean;
   loginFailed: boolean;
+  error: null | string;
 }
 
-const initState: IInitState = {
+const initState: ILoginFormState = {
   email: '',
   password: '',
   loginRequest: false,
   loginFailed: false,
+  error: null,
 };
 
-export const loginReducer = (state = initState, action: TLoginActions) => {
+export const loginFormReducer = (state = initState, action: TLoginActions): ILoginFormState => {
   switch (action.type) {
     case LOGIN_FORM_SET_VALUE:
       return { ...state, loginFailed: false, ...action.payload };
@@ -32,7 +34,7 @@ export const loginReducer = (state = initState, action: TLoginActions) => {
     case LOGIN_FORM_SUCCESS:
       return { ...state, loginRequest: false };
     case LOGIN_FORM_FAILED:
-      return { ...state, loginRequest: false, loginFailed: true };
+      return { ...state, loginRequest: false, loginFailed: true, error: action.payload };
     default:
       return state;
   }
