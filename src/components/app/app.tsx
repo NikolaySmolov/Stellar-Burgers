@@ -37,6 +37,7 @@ export function App() {
   const ingredientsRequest = useAppSelector(selectIngredientsRequest);
   const ingredients = useAppSelector(selectIngredients);
   const ingredientsFailed = useAppSelector(selectIngredientsFailed);
+  const authChecked = useAppSelector(store => store.auth.authChecked);
 
   const dispatch = useAppDispatch();
 
@@ -60,7 +61,7 @@ export function App() {
     dispatch(getUserInfo());
   }, [dispatch]);
 
-  if (ingredientsRequest || ingredients.length === 0) {
+  if (ingredientsRequest || ingredients.length === 0 || !authChecked) {
     return <Loader />;
   } else if (ingredients.length === 0 && ingredientsFailed) {
     return <ModalError />;

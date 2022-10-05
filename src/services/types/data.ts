@@ -3,20 +3,32 @@ export interface IUpdateToken {
   refreshToken: string;
 }
 
-export interface IUserInfo {
+export interface IEmail {
   email: string;
-  name: string;
 }
 
-export type TAuthUser = IUpdateToken & {
-  user: IUserInfo;
-};
-
-export interface ILoginForm {
-  email: string;
+export interface IPassword {
   password: string;
 }
 
-export interface IRegistrationForm extends ILoginForm {
+export interface IName {
   name: string;
 }
+
+export interface IMailCode {
+  token: string;
+}
+
+export type TUserInfo = IName & IEmail;
+
+export type TLoginForm = IEmail & IPassword;
+
+export type TRegistrationForm = TLoginForm & IName;
+
+export type TAuthUser = IUpdateToken & {
+  user: TUserInfo;
+};
+
+export type TResetPassword<T = {}> = {
+  [K in keyof T]: T[K];
+};

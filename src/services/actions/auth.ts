@@ -1,6 +1,6 @@
 import { fetchUserInfo } from '../api-rafactor';
 import { AppDispatch } from '../types';
-import { IUserInfo } from '../types/data';
+import { TUserInfo } from '../types/data';
 
 export const AUTH_CHECKED: 'AUTH_CHECKED' = 'AUTH_CHECKED';
 
@@ -9,7 +9,7 @@ export const AUTH_SUCCESS: 'AUTH_SUCCESS' = 'AUTH_SUCCESS';
 export const AUTH_FAILED: 'AUTH_FAILED' = 'AUTH_FAILED';
 
 interface IAuthCheckedAction {
-  readonly type: typeof AUTH_CHECKED; //может быть убрать
+  readonly type: typeof AUTH_CHECKED;
 }
 
 interface IGetAuthRequestAction {
@@ -35,7 +35,6 @@ export type TAuthActions =
   | IGetAuthFailedAction;
 
 export const getCheckedAction = (): IAuthCheckedAction => ({
-  // может быть удалить
   type: AUTH_CHECKED,
 });
 
@@ -43,7 +42,7 @@ export const getAuthRequestAction = (): IGetAuthRequestAction => ({
   type: AUTH_REQUEST,
 });
 
-export const getAuthSuccessAction = (payload: IUserInfo): IGetAuthSuccessAction => ({
+export const getAuthSuccessAction = (payload: TUserInfo): IGetAuthSuccessAction => ({
   type: AUTH_SUCCESS,
   payload,
 });
@@ -61,6 +60,6 @@ export const getUserInfo = () => async (dispatch: AppDispatch) => {
   } catch {
     dispatch(getAuthFailedAction());
   } finally {
-    dispatch(getCheckedAction()); //может быть не понадобится
+    dispatch(getCheckedAction());
   }
 };

@@ -1,7 +1,7 @@
 import { ACCESS_TOKEN, TOKEN } from '../../utils/constants';
-import { fetchUserLogin, IErrorResponse } from '../api-rafactor';
+import { fetchUserLogin, IStatusResponse } from '../api-rafactor';
 import { AppDispatch } from '../types';
-import { ILoginForm } from '../types/data';
+import { TLoginForm } from '../types/data';
 import { setCookie } from '../utils';
 import { getAuthFailedAction, getAuthSuccessAction } from './auth';
 export const LOGIN_FORM_REQUEST: 'LOGIN_FORM_REQUEST' = 'LOGIN_FORM_REQUEST';
@@ -25,7 +25,7 @@ interface IGetLoginFormFailedAction {
 
 interface IGetLoginFormSetValueAction {
   readonly type: typeof LOGIN_FORM_SET_VALUE;
-  readonly payload: Partial<ILoginForm>;
+  readonly payload: Partial<TLoginForm>;
 }
 
 interface IGetLoginFormResetValuesAction {
@@ -46,7 +46,7 @@ export const getLoginFormFailedAction = (payload: string): IGetLoginFormFailedAc
 });
 
 export const getLoginFormSetValueAction = (
-  payload: Partial<ILoginForm>
+  payload: Partial<TLoginForm>
 ): IGetLoginFormSetValueAction => ({
   type: LOGIN_FORM_SET_VALUE,
   payload,
@@ -63,19 +63,19 @@ export type TLoginActions =
   | IGetLoginFormSetValueAction
   | IGetLoginFormResetValuesAction;
 
-export const setUserSignIn = (form: ILoginForm) => async (dispatch: AppDispatch) => {
+export const setUserSignIn = (form: TLoginForm) => async (dispatch: AppDispatch) => {
   dispatch(getLoginFormRequestAction);
 
   try {
     const res = await fetchUserLogin(form);
 
-    setCookie(ACCESS_TOKEN, res.accessToken, { path: '/' });
+    setCookie(ACCESS_TOKEN, res.accessToken.split('Bearer ')[1], { path: '/' });
     setCookie(TOKEN, res.refreshToken, { path: '/' });
 
     dispatch(getLoginFormSuccessAction());
     dispatch(getAuthSuccessAction(res.user));
   } catch (err) {
-    if ((err as IErrorResponse).success === false) {
+    if ((err as IStatusResponse).success === false) {
       dispatch(getLoginFormFailedAction('Неверное имя пользователя или пароль'));
     } else {
       dispatch(

@@ -1,14 +1,24 @@
 import { ACCESS_TOKEN, API, TOKEN } from '../utils/constants';
-import { ILoginForm, IUpdateToken, IUserInfo, IRegistrationForm, TAuthUser } from './types/data';
+import {
+  TLoginForm,
+  IUpdateToken,
+  TUserInfo,
+  TRegistrationForm,
+  TAuthUser,
+  TResetPassword,
+  IEmail,
+  IMailCode,
+  IPassword,
+} from './types/data';
 import { getCookie, setCookie } from './utils';
 
-interface IRequestWithTokenOptions extends RequestInit {
+interface IRequestWithAuthorization extends RequestInit {
   headers: HeadersInit & {
     Authorization?: string;
   };
 }
 
-export interface IErrorResponse {
+export interface IStatusResponse {
   message: string;
   success: boolean;
 }
@@ -36,12 +46,12 @@ const updateToken = async (): Promise<TResponseBody<''> & IUpdateToken> => {
   return await checkResponse(res);
 };
 
-const fetchWithUpdateToken = async (url: string, options: IRequestWithTokenOptions) => {
+const fetchWithUpdateToken = async (url: string, options: IRequestWithAuthorization) => {
   try {
     const res = await fetch(url, options);
     return await checkResponse(res);
   } catch (err) {
-    if ((err as IErrorResponse).message === 'jwt expired') {
+    if ((err as IStatusResponse).message === 'jwt expired') {
       const updateData = await updateToken();
 
       if (!updateData.success) {
@@ -58,17 +68,17 @@ const fetchWithUpdateToken = async (url: string, options: IRequestWithTokenOptio
   }
 };
 
-export const fetchUserInfo = (): Promise<TResponseBody<'user', IUserInfo>> => {
+export const fetchUserInfo = (): Promise<TResponseBody<'user', TUserInfo>> => {
   return fetchWithUpdateToken(`${API}/auth/user`, {
     method: 'GET',
     headers: {
       'Content-type': 'application/json',
-      Authorization: `Bearer ${getCookie(ACCESS_TOKEN)}`,
+      Authorization: 'Bearer ' + getCookie(ACCESS_TOKEN),
     },
   });
 };
 
-export const fetchUserLogin = async (form: ILoginForm): Promise<TResponseBody<''> & TAuthUser> => {
+export const fetchUserLogin = async (form: TLoginForm): Promise<TResponseBody<''> & TAuthUser> => {
   const res = await fetch(`${API}/auth/login`, {
     method: 'POST',
     headers: {
@@ -80,9 +90,37 @@ export const fetchUserLogin = async (form: ILoginForm): Promise<TResponseBody<''
 };
 
 export const fetchUserRegistration = async (
-  form: IRegistrationForm
+  form: TRegistrationForm
 ): Promise<TResponseBody<''> & TAuthUser> => {
   const res = await fetch(`${API}/auth/register`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(form),
+  });
+
+  return checkResponse(res);
+};
+
+export const fetchResetPasswordCode = async (
+  form: TResetPassword<IEmail>
+): Promise<TResponseBody<''> & IStatusResponse> => {
+  const res = await fetch(`${API}/password-reset`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(form),
+  });
+
+  return checkResponse(res);
+};
+
+export const fetchSetNewPassword = async (
+  form: TResetPassword<IMailCode & IPassword>
+): Promise<TResponseBody<''> & IStatusResponse> => {
+  const res = await fetch(`${API}/password-reset/reset`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

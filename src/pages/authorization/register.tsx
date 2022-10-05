@@ -89,7 +89,7 @@ export const RegisterPage = () => {
           </div>
         </Form>
         {registrationFailed ? <FormCaption>{error}</FormCaption> : null}
-        <div className={'authentication__additional-actions mt-20'}>
+        <div className={`${styles['authentication__additional-actions']} mt-20`}>
           <AdditionalAction
             text={'Уже зарегистрированы?'}
             buttonText={'Войти'}

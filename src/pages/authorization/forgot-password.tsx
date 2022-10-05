@@ -4,20 +4,27 @@ import { AdditionalAction } from '../../components/additional-action/additional-
 import { Form } from '../../components/form/form';
 import { useHistory, Redirect } from 'react-router-dom';
 import React, { useEffect } from 'react';
-import {
-  getResetCode,
-  resetForgotPasswordFormValues,
-  setForgotPasswordFormValue,
-} from '../../services/actions/forgot-password';
-import { getCookie } from '../../services/utils';
-import { TOKEN } from '../../utils/constants';
 import { Loader } from '../../components/loader/loader';
-import { selectForgotPasswordState } from '../../services/selectors/forgot-password';
 import { useAppDispatch, useAppSelector } from '../../services/redux-hooks';
 import { useInputLogic } from '../../services/hooks';
+import { selectResetPasswordFormState } from '../../services/selectors/reset-password-form';
+import {
+  getCodeForReset,
+  getResetPassFormResetValuesAction,
+  getResetPassFormSetValueAction,
+} from '../../services/actions/reset-password-form';
+import { FormCaption } from '../../components/form-caption/form-caption';
 
 export const ForgotPasswordPage = () => {
-  const { form, getCodeRequest, getCodeSuccess } = useAppSelector(selectForgotPasswordState);
+  const {
+    email: emailValue,
+    request,
+    codeSuccess,
+    failed,
+    error,
+  } = useAppSelector(selectResetPasswordFormState);
+
+  const authFailed = useAppSelector(store => store.auth.failed);
 
   const dispatch = useAppDispatch();
 
@@ -27,12 +34,12 @@ export const ForgotPasswordPage = () => {
 
   const handleSetFieldValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     const field = e.currentTarget;
-    dispatch(setForgotPasswordFormValue(field.name, field.value));
+    dispatch(getResetPassFormSetValueAction({ [field.name]: field.value }));
   };
 
-  const handleRestorePassword = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleGetCode = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    dispatch(getResetCode(form));
+    dispatch(getCodeForReset({ email: emailValue }));
   };
 
   const handleRouteSignIn = () => {
@@ -41,13 +48,13 @@ export const ForgotPasswordPage = () => {
 
   useEffect(() => {
     return () => {
-      dispatch(resetForgotPasswordFormValues());
+      dispatch(getResetPassFormResetValuesAction());
     };
   }, [dispatch]);
 
-  if (getCookie(TOKEN)) {
+  if (!authFailed) {
     return <Redirect to={{ pathname: '/' }} />;
-  } else if (getCodeSuccess) {
+  } else if (codeSuccess) {
     return <Redirect push to={{ pathname: '/reset-password' }} />;
   }
 
@@ -57,22 +64,23 @@ export const ForgotPasswordPage = () => {
         <h1 className={`${styles.authentication__title} text text_type_main-medium mb-6`}>
           Восстановление пароля
         </h1>
-        <Form formName={'forgotPassword'} onSubmit={handleRestorePassword}>
+        <Form formName={'forgotPassword'} onSubmit={handleGetCode}>
           <Input
             {...emailInputLogic}
             type={'email'}
             placeholder={'Укажите e-mail'}
             name={'email'}
-            value={form.email}
+            value={emailValue}
             onChange={handleSetFieldValue}
             errorText={'Некорректный e-mail'}
           />
           <div style={{ position: 'relative' }}>
             <Button htmlType={'submit'}>Восстановить</Button>
-            {getCodeRequest ? <Loader /> : null}
+            {request ? <Loader /> : null}
           </div>
         </Form>
-        <div className={'authentication__additional-actions mt-20'}>
+        {failed ? <FormCaption>{error}</FormCaption> : null}
+        <div className={`${styles['authentication__additional-actions']} mt-20`}>
           <AdditionalAction
             text={'Вспомнили пароль?'}
             buttonText={'Войти'}

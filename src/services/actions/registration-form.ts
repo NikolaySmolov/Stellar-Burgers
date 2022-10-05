@@ -1,7 +1,7 @@
 import { ACCESS_TOKEN, TOKEN } from '../../utils/constants';
-import { fetchUserRegistration, IErrorResponse } from '../api-rafactor';
+import { fetchUserRegistration, IStatusResponse } from '../api-rafactor';
 import { AppDispatch } from '../types';
-import { IRegistrationForm } from '../types/data';
+import { TRegistrationForm } from '../types/data';
 import { setCookie } from '../utils';
 import { getAuthFailedAction, getAuthSuccessAction } from './auth';
 
@@ -27,7 +27,7 @@ interface IGetRegistrationFormFailedAction {
 
 interface IGetRegistrationFormSetValueAction {
   readonly type: typeof REGISTER_FORM_SET_VALUE;
-  readonly payload: Partial<IRegistrationForm>;
+  readonly payload: Partial<TRegistrationForm>;
 }
 
 interface IGetRegistrationFormResetValuesAction {
@@ -57,7 +57,7 @@ export const getRegistrationFormFailedAction = (
 });
 
 export const getRegistrationFormSetValueAction = (
-  payload: Partial<IRegistrationForm>
+  payload: Partial<TRegistrationForm>
 ): IGetRegistrationFormSetValueAction => ({
   type: REGISTER_FORM_SET_VALUE,
   payload,
@@ -67,21 +67,21 @@ export const getRegistrationFormResetValuesAction = (): IGetRegistrationFormRese
   type: REGISTER_FORM_RESET_VALUES,
 });
 
-export const setUserSignUp = (form: IRegistrationForm) => async (dispatch: AppDispatch) => {
+export const setUserSignUp = (form: TRegistrationForm) => async (dispatch: AppDispatch) => {
   dispatch(getRegistrationFormRequestAction);
 
   try {
     const res = await fetchUserRegistration(form);
 
-    setCookie(ACCESS_TOKEN, res.accessToken, { path: '/' });
+    setCookie(ACCESS_TOKEN, res.accessToken.split('Bearer ')[1], { path: '/' });
     setCookie(TOKEN, res.refreshToken, { path: '/' });
 
     dispatch(getRegistrationFormSuccessAction());
     dispatch(getAuthSuccessAction(res.user));
   } catch (err) {
-    if ((err as IErrorResponse).message === 'Email, password and name are required fields') {
+    if ((err as IStatusResponse).message === 'Email, password and name are required fields') {
       dispatch(getRegistrationFormFailedAction('Зполните все поля'));
-    } else if ((err as IErrorResponse).message === 'User already exists') {
+    } else if ((err as IStatusResponse).message === 'User already exists') {
       dispatch(getRegistrationFormFailedAction('Пользователь уже зарегистрирован'));
     } else {
       dispatch(

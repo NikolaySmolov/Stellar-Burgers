@@ -4,23 +4,30 @@ import { AdditionalAction } from '../../components/additional-action/additional-
 import { Form } from '../../components/form/form';
 import { useInputLogic } from '../../services/hooks';
 import { useHistory, Redirect } from 'react-router-dom';
-import {
-  resetForgotPasswordCode,
-  resetForgotPasswordFormValues,
-  setForgotPasswordFormValue,
-  setPassword,
-} from '../../services/actions/forgot-password';
 import React, { useEffect } from 'react';
-import { TOKEN } from '../../utils/constants';
-import { getCookie } from '../../services/utils';
 import { FormCaption } from '../../components/form-caption/form-caption';
 import { Loader } from '../../components/loader/loader';
-import { selectForgotPasswordState } from '../../services/selectors/forgot-password';
 import { useAppDispatch, useAppSelector } from '../../services/redux-hooks';
+import {
+  getResetPassFormResetStateAction,
+  getResetPassFormSetValueAction,
+  setNewPassword,
+} from '../../services/actions/reset-password-form';
+import { selectResetPasswordFormState } from '../../services/selectors/reset-password-form';
 
 export const ResetPasswordPage = () => {
-  const { form, setPasswordRequest, setPasswordFailed, setPasswordSuccess, getCodeSuccess } =
-    useAppSelector(selectForgotPasswordState);
+  const {
+    password: passwordValue,
+    token: codeValue,
+    request,
+    codeSuccess,
+    savedPass,
+    failed,
+    error,
+  } = useAppSelector(selectResetPasswordFormState);
+
+  const authFailed = useAppSelector(store => store.auth.failed);
+
   const dispatch = useAppDispatch();
 
   const history = useHistory();
@@ -32,31 +39,29 @@ export const ResetPasswordPage = () => {
 
   const handleSetFieldValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     const field = e.currentTarget;
-    dispatch(setForgotPasswordFormValue(field.name, field.value));
+    dispatch(getResetPassFormSetValueAction({ [field.name]: field.value }));
   };
 
   const handleSetPassword = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    dispatch(setPassword(form));
+    dispatch(setNewPassword({ password: passwordValue, token: codeValue }));
   };
 
   const handleRouteSignIn = () => {
     history.replace({ pathname: '/login' });
   };
 
-  useEffect(
-    () => () => {
-      dispatch(resetForgotPasswordCode());
-      dispatch(resetForgotPasswordFormValues());
-    },
-    [dispatch]
-  );
+  useEffect(() => {
+    return () => {
+      dispatch(getResetPassFormResetStateAction());
+    };
+  }, [dispatch]);
 
-  if (getCookie(TOKEN)) {
-    return <Redirect to={{ pathname: '/' }} />;
-  } else if (!getCodeSuccess) {
+  if (!codeSuccess && authFailed) {
     return <Redirect to={{ pathname: '/forgot-password' }} />;
-  } else if (setPasswordSuccess) {
+  } else if (!authFailed) {
+    return <Redirect to={{ pathname: '/' }} />;
+  } else if (savedPass) {
     return <Redirect to={{ pathname: '/login' }} />;
   }
 
@@ -71,23 +76,23 @@ export const ResetPasswordPage = () => {
             {...passwordInputLogic}
             name={'password'}
             placeholder={'Введите новый пароль'}
-            value={form.password}
+            value={passwordValue}
             errorText={'Некорректный пароль'}
             onChange={handleSetFieldValue}
           />
           <Input
             placeholder={'Введите код из письма'}
             name={'token'}
-            value={form.token}
+            value={codeValue}
             errorText={'Некорректный код'}
             onChange={handleSetFieldValue}
           />
           <div style={{ position: 'relative' }}>
             <Button htmlType={'submit'}>Сохранить</Button>
-            {setPasswordRequest ? <Loader /> : null}
+            {request ? <Loader /> : null}
           </div>
         </Form>
-        {setPasswordFailed ? <FormCaption>Неверный код</FormCaption> : null}
+        {failed ? <FormCaption>{error}</FormCaption> : null}
         <div className={'authentication__additional-actions mt-20'}>
           <AdditionalAction
             text={'Вспомнили пароль?'}

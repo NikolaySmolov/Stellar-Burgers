@@ -7,7 +7,7 @@ import {
   TRegistrationActions,
 } from '../actions/registration-form';
 
-interface IRegistrationFormState {
+interface TRegistrationFormState {
   name: string;
   email: string;
   password: string;
@@ -16,7 +16,7 @@ interface IRegistrationFormState {
   error: null | string;
 }
 
-const initState: IRegistrationFormState = {
+const initState: TRegistrationFormState = {
   name: '',
   email: '',
   password: '',
@@ -28,7 +28,7 @@ const initState: IRegistrationFormState = {
 export const registrationFormReducer = (
   state = initState,
   action: TRegistrationActions
-): IRegistrationFormState => {
+): TRegistrationFormState => {
   switch (action.type) {
     case REGISTER_FORM_SET_VALUE:
       return { ...state, ...action.payload, error: null };

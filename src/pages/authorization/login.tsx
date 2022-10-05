@@ -86,7 +86,7 @@ export const LoginPage = () => {
           </div>
         </Form>
         {loginFailed ? <FormCaption>{error}</FormCaption> : null}
-        <div className={'authentication__additional-actions mt-20'}>
+        <div className={`${styles['authentication__additional-actions']} mt-20`}>
           <AdditionalAction
             text={'Вы\xA0\u2014 новый пользователь?'}
             buttonText={'Зарегистрироваться'}
