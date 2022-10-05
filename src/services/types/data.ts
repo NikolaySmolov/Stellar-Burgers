@@ -25,6 +25,8 @@ export type TLoginForm = IEmail & IPassword;
 
 export type TRegistrationForm = TLoginForm & IName;
 
+export type TProfileForm = TUserInfo & Partial<IPassword>;
+
 export type TAuthUser = IUpdateToken & {
   user: TUserInfo;
 };

@@ -50,7 +50,7 @@ interface IGetResetPassFormResetState {
   readonly type: typeof RESET_PASS_FORM_RESET_STATE;
 }
 
-export type TResetPassActions =
+export type TResetPassFormActions =
   | IGetResetPassFormRequestAction
   | IGetResetPassFormGetCodeSuccessAction
   | IGetResetPassFormSetPassSuccessAction

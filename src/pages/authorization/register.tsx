@@ -21,8 +21,8 @@ export const RegisterPage = () => {
     email: emailValue,
     name: nameValue,
     password: passwordValue,
-    registrationRequest,
-    registrationFailed,
+    request,
+    failed,
     error,
   } = useAppSelector(selectRegistrationFormState);
 
@@ -85,10 +85,10 @@ export const RegisterPage = () => {
           <PasswordInput value={passwordValue} name={'password'} onChange={handleSetFieldValue} />
           <div style={{ position: 'relative' }}>
             <Button htmlType={'submit'}>Зарегистрироваться</Button>
-            {registrationRequest ? <Loader /> : null}
+            {request ? <Loader /> : null}
           </div>
         </Form>
-        {registrationFailed ? <FormCaption>{error}</FormCaption> : null}
+        {failed ? <FormCaption>{error}</FormCaption> : null}
         <div className={`${styles['authentication__additional-actions']} mt-20`}>
           <AdditionalAction
             text={'Уже зарегистрированы?'}

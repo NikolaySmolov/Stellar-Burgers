@@ -70,9 +70,6 @@ export const useInputLogic = ({
 
     if (initType === 'password' && disabled) {
       setIcon('ShowIcon');
-      if (inputRef.current) {
-        inputRef.current.value = '';
-      }
     } else if (initType === 'password' && !disabled && !visible) {
       setIcon('HideIcon');
       setVisible(true);

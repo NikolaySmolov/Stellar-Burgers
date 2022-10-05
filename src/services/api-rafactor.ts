@@ -9,6 +9,7 @@ import {
   IEmail,
   IMailCode,
   IPassword,
+  TProfileForm,
 } from './types/data';
 import { getCookie, setCookie } from './utils';
 
@@ -129,4 +130,17 @@ export const fetchSetNewPassword = async (
   });
 
   return checkResponse(res);
+};
+
+export const fetchSetProfileData = (
+  form: TProfileForm
+): Promise<TResponseBody<'user', TUserInfo>> => {
+  return fetchWithUpdateToken(`${API}/auth/user`, {
+    method: 'PATCH',
+    headers: {
+      'Content-type': 'application/json',
+      Authorization: 'Bearer ' + getCookie(ACCESS_TOKEN),
+    },
+    body: JSON.stringify(form),
+  });
 };

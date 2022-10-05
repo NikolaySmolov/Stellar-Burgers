@@ -8,6 +8,7 @@ import { userReducer } from './user';
 import { wsReducer } from './web-socket';
 import { constructorReducer } from './constructor';
 import { authReducer } from './auth';
+import { profileFormReducer } from './profile-form';
 
 export const rootReducer = combineReducers({
   auth: authReducer,
@@ -17,6 +18,7 @@ export const rootReducer = combineReducers({
   registrationForm: registrationFormReducer,
   loginForm: loginFormReducer,
   resetPasswordForm: resetPasswordFormReducer,
+  profileForm: profileFormReducer,
   user: userReducer,
   feed: wsReducer,
 });

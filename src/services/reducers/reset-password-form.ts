@@ -5,7 +5,7 @@ import {
   RESET_PASS_FORM_FAILED,
   RESET_PASS_FORM_SET_VALUE,
   RESET_PASS_FORM_RESET_VALUES,
-  TResetPassActions,
+  TResetPassFormActions,
   RESET_PASS_FORM_RESET_STATE,
 } from '../actions/reset-password-form';
 
@@ -33,7 +33,7 @@ const initState: IResetPassState = {
 
 export const resetPasswordFormReducer = (
   state = initState,
-  action: TResetPassActions
+  action: TResetPassFormActions
 ): IResetPassState => {
   switch (action.type) {
     case RESET_PASS_FORM_REQUEST:

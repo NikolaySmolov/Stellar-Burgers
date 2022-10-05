@@ -34,7 +34,7 @@ interface IGetRegistrationFormResetValuesAction {
   readonly type: typeof REGISTER_FORM_RESET_VALUES;
 }
 
-export type TRegistrationActions =
+export type TRegistrationFormActions =
   | IGetRegistrationFormRequestAction
   | IGetRegistrationFormSuccessAction
   | IGetRegistrationFormFailedAction

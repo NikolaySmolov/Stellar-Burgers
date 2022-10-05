@@ -56,7 +56,7 @@ export const getLoginFormResetValuesAction = (): IGetLoginFormResetValuesAction 
   type: LOGIN_FORM_RESET_VALUES,
 });
 
-export type TLoginActions =
+export type TLoginFormActions =
   | IGetLoginFormRequestAction
   | IGetLoginFormSuccessAction
   | IGetLoginFormFailedAction

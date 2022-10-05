@@ -21,8 +21,8 @@ export const LoginPage = () => {
   const {
     email: emailValue,
     password: passwordValue,
-    loginRequest,
-    loginFailed,
+    request,
+    failed,
     error,
   } = useAppSelector(selectLoginFormState);
 
@@ -82,10 +82,10 @@ export const LoginPage = () => {
           <PasswordInput value={passwordValue} name={'password'} onChange={handleSetFieldValue} />
           <div style={{ position: 'relative' }}>
             <Button htmlType={'submit'}>Войти</Button>
-            {loginRequest ? <Loader /> : null}
+            {request ? <Loader /> : null}
           </div>
         </Form>
-        {loginFailed ? <FormCaption>{error}</FormCaption> : null}
+        {failed ? <FormCaption>{error}</FormCaption> : null}
         <div className={`${styles['authentication__additional-actions']} mt-20`}>
           <AdditionalAction
             text={'Вы\xA0\u2014 новый пользователь?'}

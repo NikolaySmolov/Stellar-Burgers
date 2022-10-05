@@ -4,15 +4,15 @@ import {
   REGISTER_FORM_RESET_VALUES,
   REGISTER_FORM_SET_VALUE,
   REGISTER_FORM_SUCCESS,
-  TRegistrationActions,
+  TRegistrationFormActions,
 } from '../actions/registration-form';
 
 interface TRegistrationFormState {
   name: string;
   email: string;
   password: string;
-  registrationRequest: boolean;
-  registrationFailed: boolean;
+  request: boolean;
+  failed: boolean;
   error: null | string;
 }
 
@@ -20,27 +20,27 @@ const initState: TRegistrationFormState = {
   name: '',
   email: '',
   password: '',
-  registrationRequest: false,
-  registrationFailed: false,
+  request: false,
+  failed: false,
   error: null,
 };
 
 export const registrationFormReducer = (
   state = initState,
-  action: TRegistrationActions
+  action: TRegistrationFormActions
 ): TRegistrationFormState => {
   switch (action.type) {
     case REGISTER_FORM_SET_VALUE:
       return { ...state, ...action.payload, error: null };
     case REGISTER_FORM_REQUEST:
-      return { ...state, registrationRequest: true };
+      return { ...state, request: true };
     case REGISTER_FORM_SUCCESS:
-      return { ...state, registrationRequest: false, registrationFailed: false };
+      return { ...state, request: false, failed: false };
     case REGISTER_FORM_FAILED:
       return {
         ...state,
-        registrationRequest: false,
-        registrationFailed: true,
+        request: false,
+        failed: true,
         error: action.payload,
       };
     case REGISTER_FORM_RESET_VALUES:

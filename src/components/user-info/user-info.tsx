@@ -20,13 +20,30 @@ import {
   selectUserInfoLoaded,
   selectUserInfoRequest,
 } from '../../services/selectors/user';
+import { selectProfileFormState } from '../../services/selectors/profile-form';
+import {
+  getProfileFormSetValueAction,
+  setNewProfileData,
+} from '../../services/actions/profile-form';
+import { TProfileForm } from '../../services/types/data';
 
 export const UserInfo = () => {
-  const userInfo = useAppSelector(selectUserInfo);
-  const userInfoForm = useAppSelector(selectUserInfoForm);
-  const userInfoLoaded = useAppSelector(selectUserInfoLoaded);
-  const userInfoRequest = useAppSelector(selectUserInfoRequest);
-  const userInfoFailed = useAppSelector(selectUserInfoFailed);
+  // const userInfo = useAppSelector(selectUserInfo);
+  // const userInfoForm = useAppSelector(selectUserInfoForm);
+  // const userInfoLoaded = useAppSelector(selectUserInfoLoaded);
+  // const userInfoRequest = useAppSelector(selectUserInfoRequest);
+  // const userInfoFailed = useAppSelector(selectUserInfoFailed);
+
+  const {
+    name: nameValue,
+    email: emailValue,
+    password: passwordValue,
+    request,
+    failed,
+    error,
+  } = useAppSelector(selectProfileFormState);
+
+  const { name: userName, email: userEmail } = useAppSelector(store => store.auth);
 
   const dispatch = useAppDispatch();
 
@@ -50,9 +67,7 @@ export const UserInfo = () => {
 
   const canSubmit =
     fieldsProps.every(({ error }) => error === false) &&
-    (userInfo.name !== userInfoForm.name ||
-      userInfo.email !== userInfoForm.email ||
-      userInfoForm.password !== FAKE_PASSWORD);
+    (userName !== nameValue || userEmail !== emailValue || passwordValue !== FAKE_PASSWORD);
 
   const someEnabled = fieldsProps.some(({ disabled }) => disabled === false);
 
@@ -65,20 +80,22 @@ export const UserInfo = () => {
   const handleSetFieldValue = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
       const field = e.currentTarget;
-      dispatch(setProfileUserInfoFormValue(field.name, field.value));
+      dispatch(getProfileFormSetValueAction({ [field.name]: field.value }));
     },
     [dispatch]
   );
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const formData = { ...userInfoForm };
-    if (formData.password === FAKE_PASSWORD) {
-      delete formData.password;
-    }
-    dispatch(setUserProfileInfo(getCookie(ACCESS_TOKEN), formData));
 
-    resetFields();
+    const formData: TProfileForm = { name: nameValue, email: emailValue };
+    if (passwordValue !== FAKE_PASSWORD) {
+      formData.password = passwordValue;
+    }
+    debugger;
+    dispatch(setNewProfileData(formData));
+
+    resetFields(); // maybe move in effect
   };
 
   const handleReset = () => {
@@ -88,48 +105,53 @@ export const UserInfo = () => {
   };
 
   useEffect(() => {
-    if (!userInfoLoaded) {
-      dispatch(getUserProfileInfo(getCookie(ACCESS_TOKEN)));
-    }
-    return () => handleReset();
-    // eslint-disable-next-line
-  }, [dispatch, userInfoLoaded]);
+    debugger;
+    dispatch(getProfileFormSetValueAction({ name: userName, email: userEmail }));
+    // if (!userInfoLoaded) {
+    //   dispatch(getUserProfileInfo(getCookie(ACCESS_TOKEN)));
+    // }
+    // return () => {
+    //   handleReset();
+    // }
+  }, [dispatch, userName, userEmail]);
 
-  if (userInfoFailed) {
-    return (
-      <h1 className={'text text_type_main-default text_color_inactive pt-20'}>
-        Что-то пошло не так... Попробуйте обновить страницу
-      </h1>
-    );
-  } else if (!userInfoLoaded || userInfoRequest) {
+  if (request) {
     return <Loader />;
   }
-
+  // if (userInfoFailed) {
+  //   return (
+  //     <h1 className={'text text_type_main-default text_color_inactive pt-20'}>
+  //       Что-то пошло не так... Попробуйте обновить страницу
+  //     </h1>
+  //   );
+  // } else if (!userInfoLoaded || userInfoRequest) {
+  //   return <Loader />;
+  // }
   return (
     <Form formName={'profile'} onSubmit={handleSubmit} onReset={handleReset}>
       <Input
         {...nameInputLogic}
         name={'name'}
         placeholder={'Имя'}
-        value={userInfoForm.name}
+        value={nameValue}
         onChange={handleSetFieldValue}
-        errorText={'Error message'}
+        errorText={'Error message'} //delete or in work
       />
       <Input
         {...emailInputLogic}
         name={'email'}
         placeholder={'Логин'}
-        value={userInfoForm.email}
+        value={emailValue}
         onChange={handleSetFieldValue}
-        errorText={'Error message'}
+        errorText={'Error message'} //delete or in work
       />
       <Input
         {...passwordInputLogic}
         name={'password'}
         placeholder={'Пароль'}
-        value={userInfoForm.password}
+        value={passwordValue}
         onChange={handleSetFieldValue}
-        errorText={'Error message'}
+        errorText={'Error message'} //delete or in work
       />
       {someEnabled ? (
         <div className={styles.formActions}>
