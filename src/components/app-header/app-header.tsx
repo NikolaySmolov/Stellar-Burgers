@@ -8,7 +8,11 @@ import { ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import { useLocation, useRouteMatch } from 'react-router';
 import { Link } from 'react-router-dom';
 
-export const AppHeader = React.memo(() => {
+interface IAppHeader {
+  userName: null | string;
+}
+
+export const AppHeader = React.memo(({ userName }: IAppHeader) => {
   const location = useLocation();
   const constructorRouteMatch = useRouteMatch('/');
   const profileRouteMatch = useRouteMatch('/profile');
@@ -17,7 +21,7 @@ export const AppHeader = React.memo(() => {
   const isConstructor: boolean =
     constructorRouteMatch?.isExact || location.pathname.includes('/ingredients');
   const isOrders: boolean = ordersRouteMatch?.isExact || location.pathname.includes('/feed');
-  const isProfile: boolean= profileRouteMatch?.isExact || location.pathname.includes('/profile');
+  const isProfile: boolean = profileRouteMatch?.isExact || location.pathname.includes('/profile');
 
   return (
     <header className={`${styles.header} pt-4 pb-4`}>
@@ -52,7 +56,7 @@ export const AppHeader = React.memo(() => {
                 to={{ pathname: '/profile' }}
                 routeMatch={isProfile}
                 renderIcon={() => <ProfileIcon type={isProfile ? 'primary' : 'secondary'} />}>
-                Личный кабинет
+                {userName ? userName : 'Личный кабинет'}
               </HeaderLink>
             </li>
           </ul>

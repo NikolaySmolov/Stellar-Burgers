@@ -1,5 +1,5 @@
 import { ACCESS_TOKEN, TOKEN } from '../../utils/constants';
-import { fetchUserLogin, IStatusResponse } from '../api-rafactor';
+import { fetchUserLogin, IStatusResponse } from '../api-refactor';
 import { AppDispatch } from '../types';
 import { TLoginForm } from '../types/data';
 import { setCookie } from '../utils';

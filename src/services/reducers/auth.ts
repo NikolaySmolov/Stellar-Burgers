@@ -19,12 +19,12 @@ const initState: IAuthState = {
   email: null,
   request: false,
   failed: false,
-  authChecked: false, //пока не понимаю как применить
+  authChecked: false,
 };
 
 export const authReducer = (state = initState, action: TAuthActions): IAuthState => {
   switch (action.type) {
-    case AUTH_CHECKED: //пока не понятно зачем
+    case AUTH_CHECKED:
       return { ...state, authChecked: true };
     case AUTH_REQUEST:
       return { ...state, request: true };

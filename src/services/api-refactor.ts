@@ -144,3 +144,15 @@ export const fetchSetProfileData = (
     body: JSON.stringify(form),
   });
 };
+
+export const fetchSetUserLogout = async (): Promise<TResponseBody<''>> => {
+  const res = await fetch(`${API}/auth/logout`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ token: getCookie(TOKEN) }),
+  });
+
+  return checkResponse(res);
+};

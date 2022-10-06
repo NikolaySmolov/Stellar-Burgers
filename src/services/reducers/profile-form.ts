@@ -1,5 +1,12 @@
 import { FAKE_PASSWORD } from '../../utils/constants';
-import { TProfileFormActions } from '../actions/profile-form';
+import {
+  PROFILE_FORM_FAILED,
+  PROFILE_FORM_REQUEST,
+  PROFILE_FORM_RESET_VALUES,
+  PROFILE_FORM_SET_VALUE,
+  PROFILE_FORM_SUCCESS,
+  TProfileFormActions,
+} from '../actions/profile-form';
 import { TProfileForm } from '../types/data';
 
 interface IProfileFormState extends Required<TProfileForm> {
@@ -22,16 +29,16 @@ export const profileFormReducer = (
   action: TProfileFormActions
 ): IProfileFormState => {
   switch (action.type) {
-    case 'PROFILE_FORM_REQUEST':
+    case PROFILE_FORM_REQUEST:
       return { ...state, request: true };
-    case 'PROFILE_FORM_SUCCESS':
+    case PROFILE_FORM_SUCCESS:
       return { ...state, request: false, failed: false };
-    case 'PROFILE_FORM_FAILED':
+    case PROFILE_FORM_FAILED:
       return { ...state, request: false, failed: true, error: action.payload };
-    case 'PROFILE_FORM_SET_VALUE':
+    case PROFILE_FORM_SET_VALUE:
       return { ...state, failed: false, error: null, request: false, ...action.payload };
-    case 'PROFILE_FORM_RESET_VALUES':
-      return { ...initState, ...action.payload };
+    case PROFILE_FORM_RESET_VALUES:
+      return { ...initState, request: false, ...action.payload };
     default:
       return state;
   }

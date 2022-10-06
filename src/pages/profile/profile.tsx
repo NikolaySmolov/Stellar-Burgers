@@ -1,19 +1,14 @@
 import { useMemo } from 'react';
 import { Switch, Route, useRouteMatch, NavLink } from 'react-router-dom';
 import styles from './profile.module.css';
-import { getCookie } from '../../services/utils';
-import { TOKEN } from '../../utils/constants';
-import { setUserLogout } from '../../services/actions/user';
+import { setUserLogout } from '../../services/actions/auth';
 import { UserInfo } from '../../components/user-info/user-info';
-import { ModalError } from '../../components/modal-error/modal-error';
 import { UserOrders } from '../../components/user-orders/user-orders';
 import { useAppDispatch, useAppSelector } from '../../services/redux-hooks';
-import { selectUserLogoutFailed, selectUserLogoutRequest } from '../../services/selectors/user';
 import { Loader } from '../../components/loader/loader';
 
 export const ProfilePage = () => {
-  const userLogoutRequest = useAppSelector(selectUserLogoutRequest);
-  const userLogoutFailed = useAppSelector(selectUserLogoutFailed);
+  const { request } = useAppSelector(store => store.auth);
 
   const dispatch = useAppDispatch();
 
@@ -32,17 +27,15 @@ export const ProfilePage = () => {
   }, [isProfile]);
 
   const handleLogout = () => {
-    dispatch(setUserLogout(getCookie(TOKEN)));
+    dispatch(setUserLogout());
   };
 
   const contentStyle = isProfile
     ? `${styles.contentProfile} mt-30`
     : `${styles.contentOrders} mt-10`;
 
-  if (userLogoutRequest) {
+  if (request) {
     return <Loader />;
-  } else if (userLogoutFailed) {
-    return <ModalError />;
   }
 
   return (

@@ -77,7 +77,7 @@ export const ResetPasswordPage = () => {
             name={'password'}
             placeholder={'Введите новый пароль'}
             value={passwordValue}
-            errorText={'Некорректный пароль'}
+            errorText={'Минимум 6 символов'}
             onChange={handleSetFieldValue}
           />
           <Input

@@ -1,4 +1,4 @@
-import { fetchSetProfileData, IStatusResponse } from '../api-rafactor';
+import { fetchSetProfileData, IStatusResponse } from '../api-refactor';
 import { AppDispatch } from '../types';
 import { TProfileForm } from '../types/data';
 import { getAuthSuccessAction } from './auth';
@@ -70,9 +70,7 @@ export const setNewProfileData = (form: TProfileForm) => async (dispatch: AppDis
   dispatch(getProfileFormRequestAction());
 
   try {
-    debugger;
     const res = await fetchSetProfileData(form);
-    debugger;
     dispatch(getAuthSuccessAction(res.user));
     dispatch(getProfileFormSuccessAction());
   } catch (err) {

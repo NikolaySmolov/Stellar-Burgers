@@ -1,4 +1,4 @@
-import { fetchResetPasswordCode, fetchSetNewPassword, IStatusResponse } from '../api-rafactor';
+import { fetchResetPasswordCode, fetchSetNewPassword, IStatusResponse } from '../api-refactor';
 import { AppDispatch } from '../types';
 import { IEmail, IMailCode, IPassword, TResetPassword } from '../types/data';
 

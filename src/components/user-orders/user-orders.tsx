@@ -17,7 +17,7 @@ export const UserOrders = () => {
   useEffect(() => {
     const wsProfileEndpoint = getWsProfileEndpoint();
 
-    dispatch(setSocketConnection(wsProfileEndpoint)); //вот тут явный косяк с передачей токена токен = undefined
+    dispatch(setSocketConnection(wsProfileEndpoint));
 
     return () => {
       dispatch(setSocketDisconnect());

@@ -8,7 +8,6 @@ import React, { useEffect } from 'react';
 import { FormCaption } from '../../components/form-caption/form-caption';
 import { useInputLogic } from '../../services/hooks';
 import { Loader } from '../../components/loader/loader';
-// import { setOrderPermissionSuccess } from '../../services/actions/order';
 import { selectLoginFormState } from '../../services/selectors/login-form';
 import { TLocation } from '../../services/hooks';
 import {
@@ -55,7 +54,6 @@ export const LoginPage = () => {
   };
 
   useEffect(() => {
-    // dispatch(setOrderPermissionSuccess()); //переделать или удалить
     return () => {
       dispatch(getLoginFormResetValuesAction());
     };

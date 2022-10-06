@@ -1,9 +1,10 @@
-import { fetchUserInfo } from '../api-rafactor';
+import { ACCESS_TOKEN, TOKEN } from '../../utils/constants';
+import { fetchSetUserLogout, fetchUserInfo } from '../api-refactor';
 import { AppDispatch } from '../types';
 import { TUserInfo } from '../types/data';
+import { deleteCookie } from '../utils';
 
 export const AUTH_CHECKED: 'AUTH_CHECKED' = 'AUTH_CHECKED';
-
 export const AUTH_REQUEST: 'AUTH_REQUEST' = 'AUTH_REQUEST';
 export const AUTH_SUCCESS: 'AUTH_SUCCESS' = 'AUTH_SUCCESS';
 export const AUTH_FAILED: 'AUTH_FAILED' = 'AUTH_FAILED';
@@ -61,5 +62,19 @@ export const getUserInfo = () => async (dispatch: AppDispatch) => {
     dispatch(getAuthFailedAction());
   } finally {
     dispatch(getCheckedAction());
+  }
+};
+
+export const setUserLogout = () => async (dispatch: AppDispatch) => {
+  dispatch(getAuthRequestAction());
+
+  try {
+    await fetchSetUserLogout();
+    deleteCookie(TOKEN);
+    deleteCookie(ACCESS_TOKEN);
+    dispatch(getAuthFailedAction());
+  } catch (err) {
+    //infinite loader
+    console.log(err);
   }
 };

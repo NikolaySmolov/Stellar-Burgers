@@ -38,6 +38,7 @@ export function App() {
   const ingredients = useAppSelector(selectIngredients);
   const ingredientsFailed = useAppSelector(selectIngredientsFailed);
   const authChecked = useAppSelector(store => store.auth.authChecked);
+  const userName = useAppSelector(store => store.auth.name);
 
   const dispatch = useAppDispatch();
 
@@ -69,7 +70,7 @@ export function App() {
 
   return (
     <>
-      <AppHeader />
+      <AppHeader userName={userName} />
       <Switch location={background || location}>
         <Route path="/" exact>
           <ConstructorPage />
