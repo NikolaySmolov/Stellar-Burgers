@@ -10,6 +10,8 @@ import {
   IMailCode,
   IPassword,
   TProfileForm,
+  TIngredientsIdList,
+  IOrderDetails,
 } from './types/data';
 import { getCookie, setCookie } from './utils';
 
@@ -155,4 +157,17 @@ export const fetchSetUserLogout = async (): Promise<TResponseBody<''>> => {
   });
 
   return checkResponse(res);
+};
+
+export const fetchMakeOrder = (
+  ingredientsIdList: TIngredientsIdList
+): Promise<TResponseBody<''> & IOrderDetails> => {
+  return fetchWithUpdateToken(`${API}/orders`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + getCookie(ACCESS_TOKEN),
+    },
+    body: JSON.stringify({ ingredients: ingredientsIdList }),
+  });
 };

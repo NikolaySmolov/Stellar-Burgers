@@ -5,7 +5,7 @@ import { Loader } from '../../components/loader/loader';
 import { ModalError } from '../../components/modal-error/modal-error';
 import { setSocketConnection, setSocketDisconnect } from '../../services/actions/web-socket';
 import { useAppDispatch, useAppSelector } from '../../services/redux-hooks';
-import { selectFeedError, selectFeedOrders } from '../../services/selectors/orders';
+import { selectFeedError, selectFeedOrders } from '../../services/selectors/feed';
 import { IParamsForId } from '../../services/hooks';
 import { getWsProfileEndpoint } from '../../services/utils';
 import { WS_ENDPOINT_ALL } from '../../utils/constants';

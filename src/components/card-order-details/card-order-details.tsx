@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import { useOrderData } from '../../services/hooks';
 import { useAppSelector } from '../../services/redux-hooks';
 import { selectIngredients } from '../../services/selectors/ingredients';
-import { selectFeedOrders } from '../../services/selectors/orders';
+import { selectFeedOrders } from '../../services/selectors/feed';
 import { IParamsForId } from '../../services/hooks';
 import { DONE } from '../../utils/constants';
 import { OrderRow } from '../order-row/order-row';

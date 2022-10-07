@@ -1,26 +1,28 @@
 import styles from './ordering.module.css';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import { sendOrder } from '../../services/actions/order';
 import { Loader } from '../loader/loader';
-import {
-  selectConstructorIngredientsIdList,
-  selectTotalPrice,
-  selectBurgerCompleteState,
-} from '../../services/selectors/constructor';
-import { selectOrderRequest } from '../../services/selectors/order';
+import { selectTotalPrice, selectBurgerCompleteState } from '../../services/selectors/constructor';
 import { useAppDispatch, useAppSelector } from '../../services/redux-hooks';
+import { selectOrderState } from '../../services/selectors/order';
+import { useHistory } from 'react-router';
+import { makeOrderAction } from '../../services/actions/order';
 
 export function Ordering() {
-  const orderRequest = useAppSelector(selectOrderRequest);
   const totalPrice = useAppSelector(selectTotalPrice);
   const orderButtonState = !useAppSelector(selectBurgerCompleteState);
-  const burgerIngredientsList = useAppSelector(selectConstructorIngredientsIdList);
+  const { request } = useAppSelector(selectOrderState);
+  const failedAuth = useAppSelector(store => store.auth.failed);
 
+  const history = useHistory();
   const dispatch = useAppDispatch();
 
   const handleSendOrder = () => {
-    dispatch(sendOrder(burgerIngredientsList));
+    if (failedAuth) {
+      history.push({ pathname: '/login' });
+    } else {
+      dispatch(makeOrderAction());
+    }
   };
 
   return (
@@ -38,7 +40,7 @@ export function Ordering() {
           htmlType={'button'}>
           Оформить заказ
         </Button>
-        {orderRequest ? <Loader /> : null}
+        {request ? <Loader /> : null}
       </div>
     </div>
   );

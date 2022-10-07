@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { setSocketConnection, setSocketDisconnect } from '../../services/actions/web-socket';
 import { useAppDispatch, useAppSelector } from '../../services/redux-hooks';
-import { selectFeedError, selectFeedOrders } from '../../services/selectors/orders';
+import { selectFeedError, selectFeedOrders } from '../../services/selectors/feed';
 import { getWsProfileEndpoint } from '../../services/utils';
 import { CardOrder } from '../card-order/card-order';
 import { Loader } from '../loader/loader';

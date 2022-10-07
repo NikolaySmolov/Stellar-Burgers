@@ -9,7 +9,7 @@ import {
   selectFeedOrders,
   selectFeedTodayCount,
   selectFeedTotalCount,
-} from '../../services/selectors/orders';
+} from '../../services/selectors/feed';
 import { DONE, PENDING, WS_ENDPOINT_ALL } from '../../utils/constants';
 import style from './feed.module.css';
 

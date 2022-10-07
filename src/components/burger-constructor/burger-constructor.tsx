@@ -4,16 +4,15 @@ import { Ordering } from '../ordering/ordering';
 import { ADD, IIngredient } from '../../utils/constants';
 import { useDrop } from 'react-dnd';
 import { addIngredient } from '../../services/actions/constructor';
-import { selectBun, selectFillings } from '../../services/selectors/constructor';
-import { selectOrderRequest } from '../../services/selectors/order';
-import { useAppDispatch, useAppSelector } from '../../services/redux-hooks';
+import { useAppDispatch } from '../../services/redux-hooks';
 
-export function BurgerConstructor() {
-  const filling: ReadonlyArray<IIngredient & { tempId: string }> | null =
-    useAppSelector(selectFillings);
-  const bun: ReadonlyArray<IIngredient & { tempId: string }> | null = useAppSelector(selectBun);
-  const orderRequest: boolean = useAppSelector(selectOrderRequest);
+interface IBurgerConstructor {
+  blocked: boolean;
+  bun: ReadonlyArray<IIngredient & { tempId: string }> | null;
+  filling: ReadonlyArray<IIngredient & { tempId: string }> | null;
+}
 
+export function BurgerConstructor({ bun, filling, blocked }: IBurgerConstructor) {
   const dispatch = useAppDispatch();
 
   const [, dropRef] = useDrop({
@@ -24,8 +23,7 @@ export function BurgerConstructor() {
   });
 
   return (
-    <section
-      className={`${styles.constructor} ${orderRequest ? styles.constructor_blocked : null}`}>
+    <section className={`${styles.constructor} ${blocked ? styles.constructor_blocked : null}`}>
       <div className={styles.elements} ref={dropRef}>
         {bun ? <ConstructorRow isBun={true} type="top" ingredient={bun[0]} position={0} /> : null}
         {filling ? (

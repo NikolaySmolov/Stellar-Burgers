@@ -1,3 +1,5 @@
+import { IIngredient } from '../../utils/constants';
+
 export interface IUpdateToken {
   accessToken: string;
   refreshToken: string;
@@ -34,3 +36,25 @@ export type TAuthUser = IUpdateToken & {
 export type TResetPassword<T = {}> = {
   [K in keyof T]: T[K];
 };
+
+export type TIngredientsIdList = Array<string>;
+
+export interface IOrderDetails {
+  name: string;
+  order: {
+    ingredients: ReadonlyArray<IIngredient & { __v: number }>;
+    owner: {
+      name: string;
+      email: string;
+      createdAt: string;
+      updatedAt: string;
+    };
+    price: number;
+    _id: string;
+    status: string;
+    name: string;
+    createdAt: string;
+    updatedAt: string;
+    number: number;
+  };
+}

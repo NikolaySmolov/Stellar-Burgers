@@ -27,11 +27,11 @@ import {
 import { fetchIngredients } from '../../services/actions/ingredients';
 import { OrderDetails } from '../order-details/order-details';
 import { resetConstructor } from '../../services/actions/constructor';
-import { closeOrderDetails } from '../../services/actions/order';
 import { ORDER_PATH } from '../../utils/constants';
 import { useAppDispatch, useAppSelector } from '../../services/redux-hooks';
 import { TLocation } from '../../services/hooks';
 import { getUserInfo } from '../../services/actions/auth';
+import { getOrderCloseDetailsAction } from '../../services/actions/order';
 
 export function App() {
   const ingredientsRequest = useAppSelector(selectIngredientsRequest);
@@ -48,8 +48,9 @@ export function App() {
 
   const handleCloseModal = () => {
     if (location.pathname.includes(ORDER_PATH)) {
+      //переписать с хуком useRouteMatch
       dispatch(resetConstructor());
-      dispatch(closeOrderDetails());
+      dispatch(getOrderCloseDetailsAction());
       history.push({ pathname: '/' });
     } else {
       history.goBack();
