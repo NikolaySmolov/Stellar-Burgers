@@ -1,5 +1,5 @@
 import { fetchMakeOrder } from '../api';
-import { AppDispatch, RootState } from '../types';
+import { AppDispatch, AppThunk, RootState } from '../types';
 
 export const ORDER_REQUEST: 'ORDER_REQUEST' = 'ORDER_REQUEST';
 export const ORDER_SUCCESS: 'ORDER_SUCCESS' = 'ORDER_SUCCESS';
@@ -45,23 +45,24 @@ export const getOrderCloseDetailsAction = (): IGetOrderCloseDetailsAction => ({
   type: ORDER_CLOSE_DETAILS,
 });
 
-export const makeOrderAction = () => async (dispatch: AppDispatch, getState: () => RootState) => {
-  const { burgerConstructor } = getState();
-  const burgerIngredients = [...burgerConstructor.bun, ...burgerConstructor.filling].map(
-    ingredient => ingredient._id
-  );
-
-  dispatch(getOrderRequestAction());
-
-  try {
-    const res = await fetchMakeOrder(burgerIngredients);
-    dispatch(getOrderSuccessAction(res.order.number));
-  } catch (err) {
-    console.log('Order does not send', err);
-    dispatch(
-      getOrderFailedAction(
-        'Не удалось отправить заказ. Попробуйте обновить страницу и\xA0повторить заказ'
-      )
+export const makeOrderAction: AppThunk =
+  () => async (dispatch: AppDispatch, getState: () => RootState) => {
+    const { burgerConstructor } = getState();
+    const burgerIngredients = [...burgerConstructor.bun, ...burgerConstructor.filling].map(
+      ingredient => ingredient._id
     );
-  }
-};
+
+    dispatch(getOrderRequestAction());
+
+    try {
+      const res = await fetchMakeOrder(burgerIngredients);
+      dispatch(getOrderSuccessAction(res.order.number));
+    } catch (err) {
+      console.log('Order does not send', err);
+      dispatch(
+        getOrderFailedAction(
+          'Не удалось отправить заказ. Попробуйте обновить страницу и\xA0повторить заказ'
+        )
+      );
+    }
+  };

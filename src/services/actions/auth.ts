@@ -1,6 +1,6 @@
 import { ACCESS_TOKEN, TOKEN } from '../../utils/constants';
 import { fetchSetUserLogout, fetchUserInfo } from '../api';
-import { AppDispatch } from '../types';
+import { AppDispatch, AppThunk } from '../types';
 import { TUserInfo } from '../types/data';
 import { deleteCookie } from '../utils';
 
@@ -52,7 +52,7 @@ export const getAuthFailedAction = (): IGetAuthFailedAction => ({
   type: AUTH_FAILED,
 });
 
-export const getUserInfo = () => async (dispatch: AppDispatch) => {
+export const getUserInfo: AppThunk = () => async (dispatch: AppDispatch) => {
   dispatch(getAuthRequestAction());
 
   try {
@@ -65,7 +65,7 @@ export const getUserInfo = () => async (dispatch: AppDispatch) => {
   }
 };
 
-export const setUserLogout = () => async (dispatch: AppDispatch) => {
+export const setUserLogout: AppThunk = () => async (dispatch: AppDispatch) => {
   dispatch(getAuthRequestAction());
 
   try {

@@ -1,5 +1,5 @@
 import { fetchResetPasswordCode, fetchSetNewPassword, IStatusResponse } from '../api';
-import { AppDispatch } from '../types';
+import { AppDispatch, AppThunk } from '../types';
 import { IEmail, IMailCode, IPassword, TResetPassword } from '../types/data';
 
 export const RESET_PASS_FORM_REQUEST: 'RESET_PASS_FORM_REQUEST' = 'RESET_PASS_FORM_REQUEST';
@@ -91,7 +91,7 @@ export const getResetPassFormResetStateAction = (): IGetResetPassFormResetState 
   type: RESET_PASS_FORM_RESET_STATE,
 });
 
-export const getCodeForReset = (form: IEmail) => async (dispatch: AppDispatch) => {
+export const getCodeForReset: AppThunk = (form: IEmail) => async (dispatch: AppDispatch) => {
   dispatch(getResetPassFormRequestAction());
 
   try {
@@ -106,9 +106,9 @@ export const getCodeForReset = (form: IEmail) => async (dispatch: AppDispatch) =
   }
 };
 
-export const setNewPassword =
+export const setNewPassword: AppThunk =
   (form: TResetPassword<IPassword & IMailCode>) => async (dispatch: AppDispatch) => {
-    dispatch(getResetPassFormRequestAction);
+    dispatch(getResetPassFormRequestAction());
 
     try {
       const res = await fetchSetNewPassword(form);

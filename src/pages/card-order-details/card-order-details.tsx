@@ -3,7 +3,10 @@ import { useParams, Redirect, useRouteMatch } from 'react-router-dom';
 import { CardOrderDetails } from '../../components/card-order-details/card-order-details';
 import { Loader } from '../../components/loader/loader';
 import { ModalError } from '../../components/modal-error/modal-error';
-import { setSocketConnection, setSocketDisconnect } from '../../services/actions/web-socket';
+import {
+  getWSocketConnectionStartAction,
+  getWSocketConnectionCloseAction,
+} from '../../services/actions/web-socket';
 import { useAppDispatch, useAppSelector } from '../../services/redux-hooks';
 import { selectFeedError, selectFeedOrders } from '../../services/selectors/feed';
 import { IParamsForId } from '../../services/hooks';
@@ -23,13 +26,13 @@ export const OrderDetailsPage = () => {
 
   useEffect(() => {
     if (isProfileFeed) {
-      dispatch(setSocketConnection(getWsProfileEndpoint()));
+      dispatch(getWSocketConnectionStartAction(getWsProfileEndpoint()));
     } else {
-      dispatch(setSocketConnection(WS_ENDPOINT_ALL));
+      dispatch(getWSocketConnectionStartAction(WS_ENDPOINT_ALL));
     }
 
     return () => {
-      dispatch(setSocketDisconnect());
+      dispatch(getWSocketConnectionCloseAction());
     }; // eslint-disable-next-line
   }, [dispatch]);
 

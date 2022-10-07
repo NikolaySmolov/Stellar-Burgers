@@ -1,12 +1,22 @@
+import { IOrderInFeed } from '../../utils/constants';
 import {
   WS_CONNECTION_SUCCESS,
   WS_CONNECTION_ERROR,
   WS_CLEAR_STORE,
   WS_GET_MESSAGE,
   WS_CONNECTION_CLOSED,
+  TWebSocketActions,
 } from '../actions/web-socket';
 
-const initialState = {
+interface IWebSocketState {
+  connected: boolean;
+  orders: ReadonlyArray<IOrderInFeed>;
+  total: null | number;
+  totalToday: null | number;
+  error: null | string; //точный тип будет после типизации middleware
+}
+
+const initState: IWebSocketState = {
   connected: false,
   orders: [],
   total: null,
@@ -14,7 +24,7 @@ const initialState = {
   error: null,
 };
 
-export const wsReducer = (state = initialState, action) => {
+export const wsReducer = (state = initState, action: TWebSocketActions): IWebSocketState => {
   switch (action.type) {
     case WS_CONNECTION_SUCCESS:
       return { ...state, connected: true, error: null };
@@ -25,7 +35,7 @@ export const wsReducer = (state = initialState, action) => {
     case WS_GET_MESSAGE:
       return { ...state, ...action.payload };
     case WS_CLEAR_STORE:
-      return { ...initialState };
+      return { ...initState };
     default:
       return state;
   }

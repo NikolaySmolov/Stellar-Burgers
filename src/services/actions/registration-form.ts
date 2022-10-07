@@ -1,6 +1,6 @@
 import { ACCESS_TOKEN, TOKEN } from '../../utils/constants';
 import { fetchUserRegistration, IStatusResponse } from '../api';
-import { AppDispatch } from '../types';
+import { AppDispatch, AppThunk } from '../types';
 import { TRegistrationForm } from '../types/data';
 import { setCookie } from '../utils';
 import { getAuthFailedAction, getAuthSuccessAction } from './auth';
@@ -67,29 +67,30 @@ export const getRegistrationFormResetValuesAction = (): IGetRegistrationFormRese
   type: REGISTER_FORM_RESET_VALUES,
 });
 
-export const setUserSignUp = (form: TRegistrationForm) => async (dispatch: AppDispatch) => {
-  dispatch(getRegistrationFormRequestAction);
+export const setUserSignUp: AppThunk =
+  (form: TRegistrationForm) => async (dispatch: AppDispatch) => {
+    dispatch(getRegistrationFormRequestAction());
 
-  try {
-    const res = await fetchUserRegistration(form);
+    try {
+      const res = await fetchUserRegistration(form);
 
-    setCookie(ACCESS_TOKEN, res.accessToken.split('Bearer ')[1], { path: '/' });
-    setCookie(TOKEN, res.refreshToken, { path: '/' });
+      setCookie(ACCESS_TOKEN, res.accessToken.split('Bearer ')[1], { path: '/' });
+      setCookie(TOKEN, res.refreshToken, { path: '/' });
 
-    dispatch(getRegistrationFormSuccessAction());
-    dispatch(getAuthSuccessAction(res.user));
-  } catch (err) {
-    if ((err as IStatusResponse).message === 'Email, password and name are required fields') {
-      dispatch(getRegistrationFormFailedAction('Зполните все поля'));
-    } else if ((err as IStatusResponse).message === 'User already exists') {
-      dispatch(getRegistrationFormFailedAction('Пользователь уже зарегистрирован'));
-    } else {
-      dispatch(
-        getRegistrationFormFailedAction(
-          'Произошла ошибка, попробуйте обновить страницу и\xA0отправить форму повторно'
-        )
-      );
+      dispatch(getRegistrationFormSuccessAction());
+      dispatch(getAuthSuccessAction(res.user));
+    } catch (err) {
+      if ((err as IStatusResponse).message === 'Email, password and name are required fields') {
+        dispatch(getRegistrationFormFailedAction('Зполните все поля'));
+      } else if ((err as IStatusResponse).message === 'User already exists') {
+        dispatch(getRegistrationFormFailedAction('Пользователь уже зарегистрирован'));
+      } else {
+        dispatch(
+          getRegistrationFormFailedAction(
+            'Произошла ошибка, попробуйте обновить страницу и\xA0отправить форму повторно'
+          )
+        );
+      }
+      dispatch(getAuthFailedAction());
     }
-    dispatch(getAuthFailedAction());
-  }
-};
+  };

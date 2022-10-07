@@ -1,6 +1,6 @@
 import { IIngredient } from '../../utils/constants';
 import { fetchIngredients } from '../api';
-import { AppDispatch } from '../types';
+import { AppDispatch, AppThunk } from '../types';
 
 export const INGREDIENTS_REQUEST: 'INGREDIENTS_REQUEST' = 'INGREDIENTS_REQUEST';
 export const INGREDIENTS_SUCCESS: 'INGREDIENTS_SUCCESS' = 'INGREDIENTS_SUCCESS';
@@ -41,7 +41,7 @@ export const getIngredientsFailedAction = (payload: string): IGetIngredientsFail
   payload,
 });
 
-export const fetchIngredientsAction = () => async (dispatch: AppDispatch) => {
+export const fetchIngredientsAction: AppThunk = () => async (dispatch: AppDispatch) => {
   dispatch(getIngredientsRequestAction());
 
   try {

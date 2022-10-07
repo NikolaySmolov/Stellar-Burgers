@@ -1,6 +1,6 @@
 import { ACCESS_TOKEN, TOKEN } from '../../utils/constants';
 import { fetchUserLogin, IStatusResponse } from '../api';
-import { AppDispatch } from '../types';
+import { AppDispatch, AppThunk } from '../types';
 import { TLoginForm } from '../types/data';
 import { setCookie } from '../utils';
 import { getAuthFailedAction, getAuthSuccessAction } from './auth';
@@ -63,8 +63,8 @@ export const getLoginFormResetValuesAction = (): IGetLoginFormResetValuesAction 
   type: LOGIN_FORM_RESET_VALUES,
 });
 
-export const setUserSignIn = (form: TLoginForm) => async (dispatch: AppDispatch) => {
-  dispatch(getLoginFormRequestAction);
+export const setUserSignIn: AppThunk = (form: TLoginForm) => async (dispatch: AppDispatch) => {
+  dispatch(getLoginFormRequestAction());
 
   try {
     const res = await fetchUserLogin(form);

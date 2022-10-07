@@ -2,7 +2,10 @@ import { useEffect, useMemo } from 'react';
 import { CardOrder } from '../../components/card-order/card-order';
 import { Loader } from '../../components/loader/loader';
 import { ModalError } from '../../components/modal-error/modal-error';
-import { setSocketConnection, setSocketDisconnect } from '../../services/actions/web-socket';
+import {
+  getWSocketConnectionStartAction,
+  getWSocketConnectionCloseAction,
+} from '../../services/actions/web-socket';
 import { useAppSelector, useAppDispatch } from '../../services/redux-hooks';
 import {
   selectFeedError,
@@ -25,10 +28,10 @@ export const FeedPage = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(setSocketConnection(WS_ENDPOINT_ALL));
+    dispatch(getWSocketConnectionStartAction(WS_ENDPOINT_ALL));
 
     return () => {
-      dispatch(setSocketDisconnect());
+      dispatch(getWSocketConnectionCloseAction());
     };
   }, [dispatch]);
 

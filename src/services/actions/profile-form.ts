@@ -1,5 +1,5 @@
 import { fetchSetProfileData, IStatusResponse } from '../api';
-import { AppDispatch } from '../types';
+import { AppDispatch, AppThunk } from '../types';
 import { TProfileForm } from '../types/data';
 import { getAuthSuccessAction } from './auth';
 
@@ -66,18 +66,19 @@ export const getProfileFormResetValuesAction = (
   payload,
 });
 
-export const setNewProfileData = (form: TProfileForm) => async (dispatch: AppDispatch) => {
-  dispatch(getProfileFormRequestAction());
+export const setNewProfileData: AppThunk =
+  (form: TProfileForm) => async (dispatch: AppDispatch) => {
+    dispatch(getProfileFormRequestAction());
 
-  try {
-    const res = await fetchSetProfileData(form);
-    dispatch(getAuthSuccessAction(res.user));
-    dispatch(getProfileFormSuccessAction());
-  } catch (err) {
-    debugger;
-    if ((err as IStatusResponse).message === 'User with such email already exists') {
-      dispatch(getProfileFormFailedAction('Пользователь с таким email уже зарегистрирован'));
+    try {
+      const res = await fetchSetProfileData(form);
+      dispatch(getAuthSuccessAction(res.user));
+      dispatch(getProfileFormSuccessAction());
+    } catch (err) {
+      debugger;
+      if ((err as IStatusResponse).message === 'User with such email already exists') {
+        dispatch(getProfileFormFailedAction('Пользователь с таким email уже зарегистрирован'));
+      }
+      console.log(err);
     }
-    console.log(err);
-  }
-};
+  };

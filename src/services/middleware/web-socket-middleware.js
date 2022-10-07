@@ -17,11 +17,13 @@ export const wsMiddleware = (wsUrl, wsActions) => {
     }
 
     if (webSocket) {
+      debugger;
       webSocket.onopen = () => {
         dispatch({ type: onOpen });
       };
 
       webSocket.onerror = event => {
+        debugger;
         dispatch({ type: onError, payload: event });
       };
 
