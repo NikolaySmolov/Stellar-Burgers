@@ -4,7 +4,7 @@ import { IngredientThumbnail } from '../ingredient-thumbnail/ingredient-thumbnai
 import { useMemo } from 'react';
 import { DONE, TOrderStatus } from '../../utils/constants';
 import { Link, useRouteMatch } from 'react-router-dom';
-import { selectIngredients } from '../../services/selectors/ingredients';
+import { selectIngredientsState } from '../../services/selectors/ingredients';
 import { useOrderData } from '../../services/hooks';
 import { useAppSelector } from '../../services/redux-hooks';
 
@@ -27,7 +27,7 @@ export const CardOrder = ({
   createdAt,
   id,
 }: ICardOrder) => {
-  const ingredients = useAppSelector(selectIngredients);
+  const { ingredients } = useAppSelector(selectIngredientsState);
 
   const { url } = useRouteMatch();
 

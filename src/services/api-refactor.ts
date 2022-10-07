@@ -71,6 +71,12 @@ const fetchWithUpdateToken = async (url: string, options: IRequestWithAuthorizat
   }
 };
 
+export const fetchIngredients = async () => {
+  const res = await fetch(`${API}/ingredients`);
+
+  return checkResponse(res);
+};
+
 export const fetchUserInfo = (): Promise<TResponseBody<'user', TUserInfo>> => {
   return fetchWithUpdateToken(`${API}/auth/user`, {
     method: 'GET',

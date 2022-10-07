@@ -2,18 +2,18 @@ import { useMemo, useRef, useState } from 'react';
 import styles from './burger-ingredients.module.css';
 import { TabBar } from '../tab-bar/tab-bar';
 import { IngredientsSection } from '../ingredients-section/ingredients-section';
-import { selectIngredients } from '../../services/selectors/ingredients';
+import { selectIngredientsState } from '../../services/selectors/ingredients';
 import { BUN, IIngredient, MAIN, SAUCE, TIngredientType } from '../../utils/constants';
 import { useAppSelector } from '../../services/redux-hooks';
 
 type TIngredientsByCategory = {
-  [key in TIngredientType]: Array<IIngredient>
-}
+  [key in TIngredientType]: Array<IIngredient>;
+};
 
 export function BurgerIngredients() {
   const [currentTab, setCurrentTab] = useState<TIngredientType>(BUN);
 
-  const ingredients = useAppSelector(selectIngredients);
+  const { ingredients } = useAppSelector(selectIngredientsState);
 
   const bunHeading = useRef<HTMLHeadingElement>(null);
   const saucesHeading = useRef<HTMLHeadingElement>(null);
@@ -24,15 +24,14 @@ export function BurgerIngredients() {
       const saucesHeadingBox: DOMRect = saucesHeading.current.getBoundingClientRect();
       const mainHeadingBox = mainHeading.current?.getBoundingClientRect();
 
-    if (saucesHeadingBox.y < 275 && mainHeadingBox.y > 275 && currentTab !== SAUCE) {
-      setCurrentTab(SAUCE);
-    } else if (mainHeadingBox.y < 275 && currentTab !== MAIN) {
-      setCurrentTab(MAIN);
-    } else if (saucesHeadingBox.y > 275 && currentTab !== BUN) {
-      setCurrentTab(BUN);
+      if (saucesHeadingBox.y < 275 && mainHeadingBox.y > 275 && currentTab !== SAUCE) {
+        setCurrentTab(SAUCE);
+      } else if (mainHeadingBox.y < 275 && currentTab !== MAIN) {
+        setCurrentTab(MAIN);
+      } else if (saucesHeadingBox.y > 275 && currentTab !== BUN) {
+        setCurrentTab(BUN);
+      }
     }
-    }
-    
   };
 
   const content = useMemo(() => {
@@ -70,7 +69,7 @@ export function BurgerIngredients() {
       <section>
         <h1 className="text text_type_main-large mt-10 mb-5">Соберите бургер</h1>
         <TabBar
-          headingRefs={{[BUN]: bunHeading, [SAUCE]: saucesHeading, [MAIN]: mainHeading}}
+          headingRefs={{ [BUN]: bunHeading, [SAUCE]: saucesHeading, [MAIN]: mainHeading }}
           currentTab={currentTab}
         />
         <ul onScroll={tabsFollowing} className={`${styles.menu} custom-scroll`}>

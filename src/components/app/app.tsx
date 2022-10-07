@@ -19,12 +19,7 @@ import { useEffect } from 'react';
 import { Loader } from '../loader/loader';
 import { FeedPage } from '../../pages/feed/feed';
 import { CardOrderDetails } from '../card-order-details/card-order-details';
-import {
-  selectIngredients,
-  selectIngredientsFailed,
-  selectIngredientsRequest,
-} from '../../services/selectors/ingredients';
-import { fetchIngredients } from '../../services/actions/ingredients';
+import { selectIngredientsState } from '../../services/selectors/ingredients';
 import { OrderDetails } from '../order-details/order-details';
 import { resetConstructor } from '../../services/actions/constructor';
 import { ORDER_PATH } from '../../utils/constants';
@@ -32,11 +27,16 @@ import { useAppDispatch, useAppSelector } from '../../services/redux-hooks';
 import { TLocation } from '../../services/hooks';
 import { getUserInfo } from '../../services/actions/auth';
 import { getOrderCloseDetailsAction } from '../../services/actions/order';
+import { fetchIngredientsAction } from '../../services/actions/ingredients';
 
 export function App() {
-  const ingredientsRequest = useAppSelector(selectIngredientsRequest);
-  const ingredients = useAppSelector(selectIngredients);
-  const ingredientsFailed = useAppSelector(selectIngredientsFailed);
+  const {
+    request: ingredientsRequest,
+    ingredients,
+    failed: ingredientsFailed,
+    error,
+  } = useAppSelector(selectIngredientsState);
+
   const authChecked = useAppSelector(store => store.auth.authChecked);
   const userName = useAppSelector(store => store.auth.name);
 
@@ -58,7 +58,7 @@ export function App() {
   };
 
   useEffect(() => {
-    dispatch(fetchIngredients());
+    dispatch(fetchIngredientsAction());
 
     dispatch(getUserInfo());
   }, [dispatch]);

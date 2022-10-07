@@ -1,11 +1,11 @@
 import { useParams } from 'react-router';
 import { useAppSelector } from '../../services/redux-hooks';
-import { selectIngredients } from '../../services/selectors/ingredients';
+import { selectIngredientsState } from '../../services/selectors/ingredients';
 import { IParamsForId } from '../../services/hooks';
 import styles from './ingredient-details.module.css';
 
 export function IngredientDetails() {
-  const ingredients = useAppSelector(selectIngredients);
+  const { ingredients } = useAppSelector(selectIngredientsState);
   const { id: ingredientId } = useParams<IParamsForId>();
 
   const ingredientData = ingredients.find(({ _id }) => _id === ingredientId)!;

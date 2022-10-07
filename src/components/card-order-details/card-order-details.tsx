@@ -3,7 +3,7 @@ import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { useOrderData } from '../../services/hooks';
 import { useAppSelector } from '../../services/redux-hooks';
-import { selectIngredients } from '../../services/selectors/ingredients';
+import { selectIngredientsState } from '../../services/selectors/ingredients';
 import { selectFeedOrders } from '../../services/selectors/feed';
 import { IParamsForId } from '../../services/hooks';
 import { DONE } from '../../utils/constants';
@@ -11,7 +11,7 @@ import { OrderRow } from '../order-row/order-row';
 import style from './card-order-details.module.css';
 
 export const CardOrderDetails = () => {
-  const ingredientsMenu = useAppSelector(selectIngredients);
+  const { ingredients: ingredientsMenu } = useAppSelector(selectIngredientsState);
   const feedOrders = useAppSelector(selectFeedOrders);
 
   const { id: orderId } = useParams<IParamsForId>();
