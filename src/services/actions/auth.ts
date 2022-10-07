@@ -1,5 +1,5 @@
 import { ACCESS_TOKEN, TOKEN } from '../../utils/constants';
-import { fetchSetUserLogout, fetchUserInfo } from '../api-refactor';
+import { fetchSetUserLogout, fetchUserInfo } from '../api';
 import { AppDispatch } from '../types';
 import { TUserInfo } from '../types/data';
 import { deleteCookie } from '../utils';
@@ -9,7 +9,7 @@ export const AUTH_REQUEST: 'AUTH_REQUEST' = 'AUTH_REQUEST';
 export const AUTH_SUCCESS: 'AUTH_SUCCESS' = 'AUTH_SUCCESS';
 export const AUTH_FAILED: 'AUTH_FAILED' = 'AUTH_FAILED';
 
-interface IAuthCheckedAction {
+interface IGetAuthCheckedAction {
   readonly type: typeof AUTH_CHECKED;
 }
 
@@ -30,12 +30,12 @@ interface IGetAuthFailedAction {
 }
 
 export type TAuthActions =
-  | IAuthCheckedAction
+  | IGetAuthCheckedAction
   | IGetAuthRequestAction
   | IGetAuthSuccessAction
   | IGetAuthFailedAction;
 
-export const getCheckedAction = (): IAuthCheckedAction => ({
+export const getCheckedAction = (): IGetAuthCheckedAction => ({
   type: AUTH_CHECKED,
 });
 

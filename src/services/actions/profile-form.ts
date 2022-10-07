@@ -1,4 +1,4 @@
-import { fetchSetProfileData, IStatusResponse } from '../api-refactor';
+import { fetchSetProfileData, IStatusResponse } from '../api';
 import { AppDispatch } from '../types';
 import { TProfileForm } from '../types/data';
 import { getAuthSuccessAction } from './auth';
@@ -7,7 +7,7 @@ export const PROFILE_FORM_REQUEST: 'PROFILE_FORM_REQUEST' = 'PROFILE_FORM_REQUES
 export const PROFILE_FORM_SUCCESS: 'PROFILE_FORM_SUCCESS' = 'PROFILE_FORM_SUCCESS';
 export const PROFILE_FORM_FAILED: 'PROFILE_FORM_FAILED' = 'PROFILE_FORM_FAILED';
 export const PROFILE_FORM_SET_VALUE: 'PROFILE_FORM_SET_VALUE' = 'PROFILE_FORM_SET_VALUE';
-export const PROFILE_FORM_RESET_VALUES: 'PROFILE_FORM_RESET_VALUES' = 'PROFILE_FORM_RESET_VALUES'; // maybe delete
+export const PROFILE_FORM_RESET_VALUES: 'PROFILE_FORM_RESET_VALUES' = 'PROFILE_FORM_RESET_VALUES';
 
 interface IGetProfileFormRequestAction {
   readonly type: typeof PROFILE_FORM_REQUEST;

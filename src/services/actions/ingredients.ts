@@ -1,5 +1,5 @@
 import { IIngredient } from '../../utils/constants';
-import { fetchIngredients } from '../api-refactor';
+import { fetchIngredients } from '../api';
 import { AppDispatch } from '../types';
 
 export const INGREDIENTS_REQUEST: 'INGREDIENTS_REQUEST' = 'INGREDIENTS_REQUEST';
@@ -52,24 +52,3 @@ export const fetchIngredientsAction = () => async (dispatch: AppDispatch) => {
     dispatch(getIngredientsFailedAction('Что-то пошло не так. Попробуйте обновить страницу'));
   }
 };
-
-// const index = 'INGREDIENTS';
-
-// export const ACTION_TYPES = {
-//   REQUEST: `${index}/REQUEST`,
-//   SUCCESS: `${index}/SUCCESS`,
-//   FAILED: `${index}/FAILED`,
-// };
-
-// export const fetchIngredients = () => dispatch => {
-//   dispatch({ type: ACTION_TYPES.REQUEST });
-
-//   requireIngredients()
-//     .then(res => {
-//       dispatch({ type: ACTION_TYPES.SUCCESS, payload: res.data });
-//     })
-//     .catch(err => {
-//       dispatch({ type: ACTION_TYPES.FAILED });
-//       console.log(err);
-//     });
-// };

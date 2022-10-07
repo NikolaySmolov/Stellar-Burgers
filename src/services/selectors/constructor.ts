@@ -8,6 +8,10 @@ export const selectBun = (store: RootState) =>
 export const selectFillings = (store: RootState) =>
   store.burgerConstructor.filling.length > 0 ? store.burgerConstructor.filling : null;
 
+export const selectConstructorList = (store: RootState) => {
+  return [...store.burgerConstructor.bun, ...store.burgerConstructor.filling];
+};
+
 export const selectBurgerCompleteState = createSelector(
   [selectBun, selectFillings],
   (bun, fillings) => {
@@ -15,38 +19,12 @@ export const selectBurgerCompleteState = createSelector(
   }
 );
 
-const selectConstructorIngredients = createSelector(
-  [selectBun, selectFillings],
-  (bun, fillings) => {
-    const constructorIngredients = [];
-
-    if (bun) {
-      constructorIngredients.push(...bun);
-    } else if (fillings) {
-      constructorIngredients.push(...fillings);
-    }
-
-    return constructorIngredients;
-  }
-);
-
-export const selectConstructorIngredientsIdList = createSelector(
-  [selectConstructorIngredients],
-  ingredientsList => {
-    if (ingredientsList.length > 0) {
-      const ingredientsIdList = ingredientsList.map(({ _id }) => _id);
-      return ingredientsIdList;
-    } else {
-      return [];
-    }
-  }
-);
-
-export const selectTotalPrice = createSelector([selectConstructorIngredients], ingredientsList => {
+export const selectTotalPrice = createSelector([selectConstructorList], ingredientsList => {
   if (ingredientsList.length > 0) {
-    return ingredientsList.reduce((acc, item) => {
-      return item.type === BUN ? (acc += item.price * 2) : (acc += item.price);
-    }, 0);
+    return ingredientsList.reduce(
+      (acc, item) => (item.type === BUN ? (acc += item.price * 2) : (acc += item.price)),
+      0
+    );
   }
 
   return 0;

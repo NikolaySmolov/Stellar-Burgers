@@ -1,5 +1,5 @@
 import { ACCESS_TOKEN, TOKEN } from '../../utils/constants';
-import { fetchUserLogin, IStatusResponse } from '../api-refactor';
+import { fetchUserLogin, IStatusResponse } from '../api';
 import { AppDispatch } from '../types';
 import { TLoginForm } from '../types/data';
 import { setCookie } from '../utils';
@@ -32,6 +32,13 @@ interface IGetLoginFormResetValuesAction {
   readonly type: typeof LOGIN_FORM_RESET_VALUES;
 }
 
+export type TLoginFormActions =
+  | IGetLoginFormRequestAction
+  | IGetLoginFormSuccessAction
+  | IGetLoginFormFailedAction
+  | IGetLoginFormSetValueAction
+  | IGetLoginFormResetValuesAction;
+
 export const getLoginFormRequestAction = (): IGetLoginFormRequestAction => ({
   type: LOGIN_FORM_REQUEST,
 });
@@ -55,13 +62,6 @@ export const getLoginFormSetValueAction = (
 export const getLoginFormResetValuesAction = (): IGetLoginFormResetValuesAction => ({
   type: LOGIN_FORM_RESET_VALUES,
 });
-
-export type TLoginFormActions =
-  | IGetLoginFormRequestAction
-  | IGetLoginFormSuccessAction
-  | IGetLoginFormFailedAction
-  | IGetLoginFormSetValueAction
-  | IGetLoginFormResetValuesAction;
 
 export const setUserSignIn = (form: TLoginForm) => async (dispatch: AppDispatch) => {
   dispatch(getLoginFormRequestAction);

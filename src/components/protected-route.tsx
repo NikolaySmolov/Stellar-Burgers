@@ -2,14 +2,14 @@ import { Route, Redirect, RouteProps } from 'react-router-dom';
 import React from 'react';
 import { Loader } from './loader/loader';
 import { useAppSelector } from '../services/redux-hooks';
+import { selectAuthState } from '../services/selectors/auth';
 
 type TProtectedRoute = RouteProps & React.PropsWithChildren;
 
 export const ProtectedRoute = ({ children, ...props }: TProtectedRoute) => {
-  const authRequest = useAppSelector(store => store.auth.request);
-  const authFailed = useAppSelector(store => store.auth.failed);
+  const { request, failed } = useAppSelector(selectAuthState);
 
-  if (authRequest) {
+  if (request) {
     return (
       <div>
         <Loader />
@@ -21,7 +21,7 @@ export const ProtectedRoute = ({ children, ...props }: TProtectedRoute) => {
     <Route
       {...props}
       render={({ location }) =>
-        authFailed ? <Redirect to={{ pathname: '/login', state: { from: location } }} /> : children
+        failed ? <Redirect to={{ pathname: '/login', state: { from: location } }} /> : children
       }
     />
   );

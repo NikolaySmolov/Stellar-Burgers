@@ -14,6 +14,7 @@ import {
   getResetPassFormSetValueAction,
 } from '../../services/actions/reset-password-form';
 import { FormCaption } from '../../components/form-caption/form-caption';
+import { selectAuthState } from '../../services/selectors/auth';
 
 export const ForgotPasswordPage = () => {
   const {
@@ -24,7 +25,7 @@ export const ForgotPasswordPage = () => {
     error,
   } = useAppSelector(selectResetPasswordFormState);
 
-  const authFailed = useAppSelector(store => store.auth.failed);
+  const { failed: authFailed } = useAppSelector(selectAuthState);
 
   const dispatch = useAppDispatch();
 

@@ -15,6 +15,7 @@ import {
   getRegistrationFormSetValueAction,
   setUserSignUp,
 } from '../../services/actions/registration-form';
+import { selectAuthState } from '../../services/selectors/auth';
 
 export const RegisterPage = () => {
   const {
@@ -26,7 +27,7 @@ export const RegisterPage = () => {
     error,
   } = useAppSelector(selectRegistrationFormState);
 
-  const authFailed = useAppSelector(store => store.auth.failed);
+  const { failed: authFailed } = useAppSelector(selectAuthState);
 
   const dispatch = useAppDispatch();
 

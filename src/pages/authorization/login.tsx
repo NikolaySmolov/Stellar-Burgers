@@ -15,6 +15,7 @@ import {
   getLoginFormSetValueAction,
   setUserSignIn,
 } from '../../services/actions/login-form';
+import { selectAuthState } from '../../services/selectors/auth';
 
 export const LoginPage = () => {
   const {
@@ -25,7 +26,7 @@ export const LoginPage = () => {
     error,
   } = useAppSelector(selectLoginFormState);
 
-  const authFailed = useAppSelector(store => store.auth.failed);
+  const { failed: authFailed } = useAppSelector(selectAuthState);
 
   const dispatch = useAppDispatch();
 

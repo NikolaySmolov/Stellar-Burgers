@@ -21,24 +21,24 @@ import { FeedPage } from '../../pages/feed/feed';
 import { CardOrderDetails } from '../card-order-details/card-order-details';
 import { selectIngredientsState } from '../../services/selectors/ingredients';
 import { OrderDetails } from '../order-details/order-details';
-import { resetConstructor } from '../../services/actions/constructor';
+import { getConstructorResetAction } from '../../services/actions/constructor';
 import { ORDER_PATH } from '../../utils/constants';
 import { useAppDispatch, useAppSelector } from '../../services/redux-hooks';
 import { TLocation } from '../../services/hooks';
 import { getUserInfo } from '../../services/actions/auth';
 import { getOrderCloseDetailsAction } from '../../services/actions/order';
 import { fetchIngredientsAction } from '../../services/actions/ingredients';
+import { selectAuthState } from '../../services/selectors/auth';
 
 export function App() {
   const {
     request: ingredientsRequest,
     ingredients,
     failed: ingredientsFailed,
-    error,
+    error, //maybe delete
   } = useAppSelector(selectIngredientsState);
 
-  const authChecked = useAppSelector(store => store.auth.authChecked);
-  const userName = useAppSelector(store => store.auth.name);
+  const { authChecked, name: userName } = useAppSelector(selectAuthState);
 
   const dispatch = useAppDispatch();
 
@@ -48,8 +48,7 @@ export function App() {
 
   const handleCloseModal = () => {
     if (location.pathname.includes(ORDER_PATH)) {
-      //переписать с хуком useRouteMatch
-      dispatch(resetConstructor());
+      dispatch(getConstructorResetAction());
       dispatch(getOrderCloseDetailsAction());
       history.push({ pathname: '/' });
     } else {

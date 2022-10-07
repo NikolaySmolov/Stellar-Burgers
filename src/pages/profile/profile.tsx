@@ -6,9 +6,10 @@ import { UserInfo } from '../../components/user-info/user-info';
 import { UserOrders } from '../../components/user-orders/user-orders';
 import { useAppDispatch, useAppSelector } from '../../services/redux-hooks';
 import { Loader } from '../../components/loader/loader';
+import { selectAuthState } from '../../services/selectors/auth';
 
 export const ProfilePage = () => {
-  const { request } = useAppSelector(store => store.auth);
+  const { request } = useAppSelector(selectAuthState);
 
   const dispatch = useAppDispatch();
 

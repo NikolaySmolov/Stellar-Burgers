@@ -45,6 +45,11 @@ export interface IIngredient {
   image_mobile: string;
 }
 
+export type TConstructorIngredient<T = TIngredientType> = Omit<IIngredient, 'type'> & {
+  type: T;
+  tempId: string;
+};
+
 export type TOrderStatus = typeof CREATED | typeof PENDING | typeof DONE;
 
 export interface IOrderInFeed {

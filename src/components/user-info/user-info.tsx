@@ -14,6 +14,7 @@ import {
 } from '../../services/actions/profile-form';
 import { TProfileForm } from '../../services/types/data';
 import { FormCaption } from '../form-caption/form-caption';
+import { selectAuthState } from '../../services/selectors/auth';
 
 export const UserInfo = () => {
   const {
@@ -25,7 +26,7 @@ export const UserInfo = () => {
     error,
   } = useAppSelector(selectProfileFormState);
 
-  const { name: userName, email: userEmail } = useAppSelector(store => store.auth);
+  const { name: userName, email: userEmail } = useAppSelector(selectAuthState);
 
   const dispatch = useAppDispatch();
 

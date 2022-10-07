@@ -14,6 +14,7 @@ import {
   setNewPassword,
 } from '../../services/actions/reset-password-form';
 import { selectResetPasswordFormState } from '../../services/selectors/reset-password-form';
+import { selectAuthState } from '../../services/selectors/auth';
 
 export const ResetPasswordPage = () => {
   const {
@@ -26,7 +27,7 @@ export const ResetPasswordPage = () => {
     error,
   } = useAppSelector(selectResetPasswordFormState);
 
-  const authFailed = useAppSelector(store => store.auth.failed);
+  const { failed: authFailed } = useAppSelector(selectAuthState);
 
   const dispatch = useAppDispatch();
 

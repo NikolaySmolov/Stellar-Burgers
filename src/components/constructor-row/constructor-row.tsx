@@ -4,7 +4,10 @@ import { ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-comp
 import { DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useDrag, useDrop } from 'react-dnd';
 import { IIngredient, SORT } from '../../utils/constants';
-import { deleteIngredient, sortIngredient } from '../../services/actions/constructor';
+import {
+  getConstructorDeleteAction,
+  getConstructorSortAction,
+} from '../../services/actions/constructor';
 import { useAppDispatch } from '../../services/redux-hooks';
 
 interface IDragAndDropProp {
@@ -29,7 +32,7 @@ export const ConstructorRow = React.memo<IConstructorRow>(
     const [{ isHover }, dropRef] = useDrop({
       accept: SORT,
       drop(item: IDragAndDropProp) {
-        dispatch(sortIngredient(item.position, position));
+        dispatch(getConstructorSortAction(item.position, position));
       },
       collect: monitor => ({
         isHover: monitor.isOver(),
@@ -37,7 +40,7 @@ export const ConstructorRow = React.memo<IConstructorRow>(
     });
 
     const handleDelete = () => {
-      dispatch(deleteIngredient(position));
+      dispatch(getConstructorDeleteAction(position));
     };
 
     return isBun ? (

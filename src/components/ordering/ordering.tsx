@@ -7,12 +7,13 @@ import { useAppDispatch, useAppSelector } from '../../services/redux-hooks';
 import { selectOrderState } from '../../services/selectors/order';
 import { useHistory } from 'react-router';
 import { makeOrderAction } from '../../services/actions/order';
+import { selectAuthState } from '../../services/selectors/auth';
 
 export function Ordering() {
   const totalPrice = useAppSelector(selectTotalPrice);
   const orderButtonState = !useAppSelector(selectBurgerCompleteState);
   const { request } = useAppSelector(selectOrderState);
-  const failedAuth = useAppSelector(store => store.auth.failed);
+  const { failed: failedAuth } = useAppSelector(selectAuthState);
 
   const history = useHistory();
   const dispatch = useAppDispatch();

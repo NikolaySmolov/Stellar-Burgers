@@ -1,23 +1,35 @@
-import { BUN } from '../../utils/constants';
-import { ACTION_TYPES } from '../actions/constructor';
+import { BUN, MAIN, SAUCE, TConstructorIngredient } from '../../utils/constants';
+import {
+  CONSTRUCTOR_ADD,
+  CONSTRUCTOR_DELETE,
+  CONSTRUCTOR_RESET,
+  CONSTRUCTOR_SORT,
+  TConstructorActions,
+} from '../actions/constructor';
 
-const initialState = {
+interface IConstructorState {
+  bun: ReadonlyArray<TConstructorIngredient<typeof BUN>>;
+  filling: ReadonlyArray<TConstructorIngredient<typeof SAUCE | typeof MAIN>>;
+}
+
+const initState: IConstructorState = {
   bun: [],
   filling: [],
 };
 
-export const constructorReducer = (state = initialState, action) => {
+export const constructorReducer = (
+  state = initState,
+  action: TConstructorActions
+): IConstructorState => {
   switch (action.type) {
-    case ACTION_TYPES.ADD:
+    case CONSTRUCTOR_ADD:
       if (action.payload.type === BUN) {
         return { ...state, bun: [action.payload] };
       }
-
       const filling = [...state.filling];
       filling.push(action.payload);
       return { ...state, filling };
-
-    case ACTION_TYPES.SORT:
+    case CONSTRUCTOR_SORT:
       const sortableItem = state.filling.find((_, index) => index === action.payload.dragItemPos);
 
       const sortedFillings = [...state.filling].filter(
@@ -28,13 +40,13 @@ export const constructorReducer = (state = initialState, action) => {
 
       return { ...state, filling: sortedFillings };
 
-    case ACTION_TYPES.DELETE:
+    case CONSTRUCTOR_DELETE:
       const filteredFiling = [...state.filling].filter((_, index) => index !== action.payload);
 
       return { ...state, filling: filteredFiling };
 
-    case ACTION_TYPES.RESET:
-      return { ...initialState };
+    case CONSTRUCTOR_RESET:
+      return { ...initState };
 
     default:
       return state;

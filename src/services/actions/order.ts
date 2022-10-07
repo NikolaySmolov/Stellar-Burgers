@@ -1,4 +1,4 @@
-import { fetchMakeOrder } from '../api-refactor';
+import { fetchMakeOrder } from '../api';
 import { AppDispatch, RootState } from '../types';
 
 export const ORDER_REQUEST: 'ORDER_REQUEST' = 'ORDER_REQUEST';
@@ -47,7 +47,9 @@ export const getOrderCloseDetailsAction = (): IGetOrderCloseDetailsAction => ({
 
 export const makeOrderAction = () => async (dispatch: AppDispatch, getState: () => RootState) => {
   const { burgerConstructor } = getState();
-  const burgerIngredients = [...burgerConstructor.bun, ...burgerConstructor.filling];
+  const burgerIngredients = [...burgerConstructor.bun, ...burgerConstructor.filling].map(
+    ingredient => ingredient._id
+  );
 
   dispatch(getOrderRequestAction());
 

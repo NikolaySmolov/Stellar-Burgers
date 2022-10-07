@@ -1,15 +1,15 @@
 import styles from './burger-constructor.module.css';
 import { ConstructorRow } from '../constructor-row/constructor-row';
 import { Ordering } from '../ordering/ordering';
-import { ADD, IIngredient } from '../../utils/constants';
+import { ADD, IIngredient, TConstructorIngredient } from '../../utils/constants';
 import { useDrop } from 'react-dnd';
-import { addIngredient } from '../../services/actions/constructor';
+import { getConstructorAddAction } from '../../services/actions/constructor';
 import { useAppDispatch } from '../../services/redux-hooks';
 
 interface IBurgerConstructor {
   blocked: boolean;
-  bun: ReadonlyArray<IIngredient & { tempId: string }> | null;
-  filling: ReadonlyArray<IIngredient & { tempId: string }> | null;
+  bun: ReadonlyArray<TConstructorIngredient> | null;
+  filling: ReadonlyArray<TConstructorIngredient> | null;
 }
 
 export function BurgerConstructor({ bun, filling, blocked }: IBurgerConstructor) {
@@ -18,7 +18,7 @@ export function BurgerConstructor({ bun, filling, blocked }: IBurgerConstructor)
   const [, dropRef] = useDrop({
     accept: ADD,
     drop({ ingredient }: { ingredient: IIngredient }) {
-      dispatch(addIngredient(ingredient));
+      dispatch(getConstructorAddAction(ingredient));
     },
   });
 
