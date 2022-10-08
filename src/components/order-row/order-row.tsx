@@ -1,7 +1,7 @@
 import style from './order-row.module.css';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { IngredientThumbnail } from '../ingredient-thumbnail/ingredient-thumbnail';
-import { IIngredientDataInOrder } from '../../utils/constants';
+import { IIngredientDataInOrder } from '../../utils/types';
 
 type TOrderRow = Omit<IIngredientDataInOrder, 'id'>;
 

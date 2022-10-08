@@ -1,7 +1,7 @@
 import { Route, Redirect, RouteProps } from 'react-router-dom';
 import React from 'react';
 import { Loader } from './loader/loader';
-import { useAppSelector } from '../services/redux-hooks';
+import { useAppSelector } from '../services/hooks';
 import { selectAuthState } from '../services/selectors/auth';
 
 type TProtectedRoute = RouteProps & React.PropsWithChildren;

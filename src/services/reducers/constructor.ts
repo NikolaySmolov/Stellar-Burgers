@@ -1,4 +1,5 @@
-import { BUN, MAIN, SAUCE, TConstructorIngredient } from '../../utils/constants';
+import { BUN, MAIN, SAUCE } from '../../utils/constants';
+import { TConstructorIngredient } from '../../utils/types';
 import {
   CONSTRUCTOR_ADD,
   CONSTRUCTOR_DELETE,

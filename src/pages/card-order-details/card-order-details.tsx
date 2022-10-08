@@ -7,16 +7,15 @@ import {
   getWSocketConnectionStartAction,
   getWSocketConnectionCloseAction,
 } from '../../services/actions/web-socket';
-import { useAppDispatch, useAppSelector } from '../../services/redux-hooks';
-import { selectFeedError, selectFeedOrders } from '../../services/selectors/feed';
+import { useAppDispatch, useAppSelector } from '../../services/hooks';
+import { selectFeedOrdersState } from '../../services/selectors/feed';
 import { IParamsForId } from '../../services/hooks';
 import { getWsProfileEndpoint } from '../../services/utils';
-import { WS_ENDPOINT_ALL } from '../../utils/constants';
+import { WS_URL } from '../../utils/constants';
 import style from './card-order-details.module.css';
 
 export const OrderDetailsPage = () => {
-  const feedError = useAppSelector(selectFeedError);
-  const feedOrders = useAppSelector(selectFeedOrders);
+  const { orders: feedOrders, error: feedError } = useAppSelector(selectFeedOrdersState);
 
   const dispatch = useAppDispatch();
 
@@ -26,9 +25,9 @@ export const OrderDetailsPage = () => {
 
   useEffect(() => {
     if (isProfileFeed) {
-      dispatch(getWSocketConnectionStartAction(getWsProfileEndpoint()));
+      dispatch(getWSocketConnectionStartAction(WS_URL + getWsProfileEndpoint()));
     } else {
-      dispatch(getWSocketConnectionStartAction(WS_ENDPOINT_ALL));
+      dispatch(getWSocketConnectionStartAction(`${WS_URL}/all`));
     }
 
     return () => {

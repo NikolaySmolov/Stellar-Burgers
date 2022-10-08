@@ -1,10 +1,11 @@
 import styles from './burger-constructor.module.css';
 import { ConstructorRow } from '../constructor-row/constructor-row';
 import { Ordering } from '../ordering/ordering';
-import { ADD, IIngredient, TConstructorIngredient } from '../../utils/constants';
+import { ADD } from '../../utils/constants';
+import { IIngredient, TConstructorIngredient } from '../../utils/types';
 import { useDrop } from 'react-dnd';
 import { getConstructorAddAction } from '../../services/actions/constructor';
-import { useAppDispatch } from '../../services/redux-hooks';
+import { useAppDispatch } from '../../services/hooks';
 
 interface IBurgerConstructor {
   blocked: boolean;

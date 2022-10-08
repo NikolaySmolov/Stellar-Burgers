@@ -2,11 +2,12 @@ import style from './card-order.module.css';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { IngredientThumbnail } from '../ingredient-thumbnail/ingredient-thumbnail';
 import { useMemo } from 'react';
-import { DONE, TOrderStatus } from '../../utils/constants';
+import { DONE } from '../../utils/constants';
+import { TOrderStatus } from '../../utils/types';
 import { Link, useRouteMatch } from 'react-router-dom';
 import { selectIngredientsState } from '../../services/selectors/ingredients';
 import { useOrderData } from '../../services/hooks';
-import { useAppSelector } from '../../services/redux-hooks';
+import { useAppSelector } from '../../services/hooks';
 
 interface ICardOrder {
   withStatus: boolean;

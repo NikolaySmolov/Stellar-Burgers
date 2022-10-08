@@ -1,28 +1,13 @@
+import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
+import { RootState, AppDispatch, AppThunk } from './types';
 import { TICons } from '@ya.praktikum/react-developer-burger-ui-components/dist/ui/icons';
 import { useRef, useState, useMemo, useEffect, FocusEvent } from 'react';
-import {
-  BUN,
-  CREATED,
-  DONE,
-  IIngredient,
-  IIngredientDataInOrder,
-  PENDING,
-  TOrderStatus,
-} from '../utils/constants';
+import { BUN, CREATED, DONE, PENDING } from '../utils/constants';
+import { IIngredient, IIngredientDataInOrder, TOrderStatus } from '../utils/types';
 import { setTimeFormat } from './utils';
 
-export type TLocation<S extends 'from' | 'background'> = {
-  [key in S]: {
-    hash: string;
-    pathname: string;
-    search: string;
-    state: unknown;
-  };
-};
-
-export interface IParamsForId {
-  id: string;
-}
+export const useAppDispatch: () => AppDispatch | AppThunk = useDispatch;
+export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 
 type TInputType = 'text' | 'email' | 'password';
 
@@ -235,3 +220,16 @@ export const useOrderData: TUseOrderData = (
 
   return [ingredientList, orderDate, totalPrice, statusText];
 };
+
+export type TLocation<S extends 'from' | 'background'> = {
+  [key in S]: {
+    hash: string;
+    pathname: string;
+    search: string;
+    state: unknown;
+  };
+};
+
+export interface IParamsForId {
+  id: string;
+}

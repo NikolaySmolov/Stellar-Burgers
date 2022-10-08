@@ -6,29 +6,24 @@ import {
   getWSocketConnectionStartAction,
   getWSocketConnectionCloseAction,
 } from '../../services/actions/web-socket';
-import { useAppSelector, useAppDispatch } from '../../services/redux-hooks';
-import {
-  selectFeedError,
-  selectFeedOrders,
-  selectFeedTodayCount,
-  selectFeedTotalCount,
-} from '../../services/selectors/feed';
-import { DONE, PENDING, WS_ENDPOINT_ALL } from '../../utils/constants';
+import { useAppSelector, useAppDispatch } from '../../services/hooks';
+import { selectFeedOrdersState } from '../../services/selectors/feed';
+import { DONE, PENDING, WS_URL } from '../../utils/constants';
 import style from './feed.module.css';
 
 export const FeedPage = () => {
-  const feedOrders = useAppSelector(selectFeedOrders);
-
-  const feedTotal = useAppSelector(selectFeedTotalCount);
-
-  const feedToday = useAppSelector(selectFeedTodayCount);
-
-  const feedError = useAppSelector(selectFeedError);
+  const {
+    orders: feedOrders,
+    total: feedTotal,
+    totalToday: feedToday,
+    connecting: feedConnecting,
+    error: feedError,
+  } = useAppSelector(selectFeedOrdersState);
 
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(getWSocketConnectionStartAction(WS_ENDPOINT_ALL));
+    dispatch(getWSocketConnectionStartAction(`${WS_URL}/all`));
 
     return () => {
       dispatch(getWSocketConnectionCloseAction());
@@ -55,7 +50,7 @@ export const FeedPage = () => {
     return preparedStats;
   }, [feedOrders]);
 
-  if (feedOrders.length === 0 && !feedError) {
+  if ((feedOrders.length === 0 && !feedError) || feedConnecting) {
     return <Loader />;
   } else if (feedError) {
     return <ModalError />;

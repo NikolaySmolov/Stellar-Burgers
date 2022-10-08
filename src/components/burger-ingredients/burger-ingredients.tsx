@@ -3,8 +3,9 @@ import styles from './burger-ingredients.module.css';
 import { TabBar } from '../tab-bar/tab-bar';
 import { IngredientsSection } from '../ingredients-section/ingredients-section';
 import { selectIngredientsState } from '../../services/selectors/ingredients';
-import { BUN, IIngredient, MAIN, SAUCE, TIngredientType } from '../../utils/constants';
-import { useAppSelector } from '../../services/redux-hooks';
+import { BUN, MAIN, SAUCE } from '../../utils/constants';
+import { IIngredient, TIngredientType } from '../../utils/types';
+import { useAppSelector } from '../../services/hooks';
 
 type TIngredientsByCategory = {
   [key in TIngredientType]: Array<IIngredient>;

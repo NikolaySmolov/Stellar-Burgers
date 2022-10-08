@@ -1,5 +1,5 @@
 import { useParams } from 'react-router';
-import { useAppSelector } from '../../services/redux-hooks';
+import { useAppSelector } from '../../services/hooks';
 import { selectIngredientsState } from '../../services/selectors/ingredients';
 import { IParamsForId } from '../../services/hooks';
 import styles from './ingredient-details.module.css';

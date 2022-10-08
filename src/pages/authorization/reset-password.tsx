@@ -7,7 +7,7 @@ import { useHistory, Redirect } from 'react-router-dom';
 import React, { useEffect } from 'react';
 import { FormCaption } from '../../components/form-caption/form-caption';
 import { Loader } from '../../components/loader/loader';
-import { useAppDispatch, useAppSelector } from '../../services/redux-hooks';
+import { useAppDispatch, useAppSelector } from '../../services/hooks';
 import {
   getResetPassFormResetStateAction,
   getResetPassFormSetValueAction,

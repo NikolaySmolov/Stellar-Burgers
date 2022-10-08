@@ -75,7 +75,6 @@ export const setNewProfileData: AppThunk =
       dispatch(getAuthSuccessAction(res.user));
       dispatch(getProfileFormSuccessAction());
     } catch (err) {
-      debugger;
       if ((err as IStatusResponse).message === 'User with such email already exists') {
         dispatch(getProfileFormFailedAction('Пользователь с таким email уже зарегистрирован'));
       }

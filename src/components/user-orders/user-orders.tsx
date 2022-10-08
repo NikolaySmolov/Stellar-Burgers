@@ -3,24 +3,21 @@ import {
   getWSocketConnectionStartAction,
   getWSocketConnectionCloseAction,
 } from '../../services/actions/web-socket';
-import { useAppDispatch, useAppSelector } from '../../services/redux-hooks';
-import { selectFeedError, selectFeedOrders } from '../../services/selectors/feed';
+import { useAppDispatch, useAppSelector } from '../../services/hooks';
+import { selectFeedOrdersState } from '../../services/selectors/feed';
 import { getWsProfileEndpoint } from '../../services/utils';
+import { WS_URL } from '../../utils/constants';
 import { CardOrder } from '../card-order/card-order';
 import { Loader } from '../loader/loader';
 import style from './user-orders.module.css';
 
 export const UserOrders = () => {
-  const feedOrders = useAppSelector(selectFeedOrders);
-
-  const feedError = useAppSelector(selectFeedError);
+  const { orders: feedOrders, error: feedError } = useAppSelector(selectFeedOrdersState);
 
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    const wsProfileEndpoint = getWsProfileEndpoint();
-
-    dispatch(getWSocketConnectionStartAction(wsProfileEndpoint));
+    dispatch(getWSocketConnectionStartAction(WS_URL + getWsProfileEndpoint()));
 
     return () => {
       dispatch(getWSocketConnectionCloseAction());

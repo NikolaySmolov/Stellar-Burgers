@@ -5,7 +5,7 @@ import { useInputLogic } from '../../services/hooks';
 import { FAKE_PASSWORD } from '../../utils/constants';
 import styles from './user-info.module.css';
 import { Loader } from '../loader/loader';
-import { useAppDispatch, useAppSelector } from '../../services/redux-hooks';
+import { useAppDispatch, useAppSelector } from '../../services/hooks';
 import { selectProfileFormState } from '../../services/selectors/profile-form';
 import {
   getProfileFormResetValuesAction,

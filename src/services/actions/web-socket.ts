@@ -25,7 +25,7 @@ interface IGetWSocketConnectionClosedAction {
 
 interface IGetWSocketConnectionErrorAction {
   readonly type: typeof WS_CONNECTION_ERROR;
-  payload: string; //реальный тип будет после типизации middleware
+  payload: string;
 }
 
 interface IGetWSocketGetMessageAction {

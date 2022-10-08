@@ -3,7 +3,7 @@ import { AdditionalAction } from '../../components/additional-action/additional-
 import { Form } from '../../components/form/form';
 import { useHistory, useLocation, Redirect } from 'react-router-dom';
 import styles from './index.module.css';
-import { useAppDispatch, useAppSelector } from '../../services/redux-hooks';
+import { useAppDispatch, useAppSelector } from '../../services/hooks';
 import React, { useEffect } from 'react';
 import { FormCaption } from '../../components/form-caption/form-caption';
 import { useInputLogic } from '../../services/hooks';

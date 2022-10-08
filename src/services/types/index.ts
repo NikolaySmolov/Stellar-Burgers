@@ -1,4 +1,4 @@
-import { ActionCreator, Action } from 'redux';
+import { ActionCreator, Dispatch } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 import { TAuthActions } from '../actions/auth';
 import { TConstructorActions } from '../actions/constructor';
@@ -9,7 +9,7 @@ import { TProfileFormActions } from '../actions/profile-form';
 import { TRegistrationFormActions } from '../actions/registration-form';
 import { TResetPassFormActions } from '../actions/reset-password-form';
 import { TWebSocketActions } from '../actions/web-socket';
-import { store } from '../store';
+import { rootReducer } from '../reducers';
 
 export type TApplicationActions =
   | TAuthActions
@@ -22,8 +22,8 @@ export type TApplicationActions =
   | TResetPassFormActions
   | TWebSocketActions;
 
-export type RootState = ReturnType<typeof store.getState>;
-export type AppDispatch = typeof store.dispatch;
+export type RootState = ReturnType<typeof rootReducer>;
+export type AppDispatch = Dispatch<TApplicationActions>;
 export type AppThunk<ReturnType = void> = ActionCreator<
   ThunkAction<ReturnType, RootState, unknown, TApplicationActions>
 >;

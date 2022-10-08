@@ -3,7 +3,7 @@ import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components
 import { Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Loader } from '../loader/loader';
 import { selectTotalPrice, selectBurgerCompleteState } from '../../services/selectors/constructor';
-import { useAppDispatch, useAppSelector } from '../../services/redux-hooks';
+import { useAppDispatch, useAppSelector } from '../../services/hooks';
 import { selectOrderState } from '../../services/selectors/order';
 import { useHistory } from 'react-router';
 import { makeOrderAction } from '../../services/actions/order';

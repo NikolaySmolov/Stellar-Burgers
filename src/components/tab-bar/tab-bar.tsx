@@ -1,4 +1,5 @@
-import { BUN, MAIN, SAUCE, TIngredientType } from '../../utils/constants';
+import { BUN, MAIN, SAUCE } from '../../utils/constants';
+import { TIngredientType } from '../../utils/types';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './tab-bar.module.css';
 
@@ -10,7 +11,6 @@ interface ITabBar {
 }
 
 export const TabBar = ({ headingRefs, currentTab }: ITabBar) => {
-
   const scrollToCategory = (ref: React.RefObject<HTMLHeadingElement>) => {
     ref.current?.scrollIntoView({ behavior: 'smooth' });
   };
@@ -22,7 +22,7 @@ export const TabBar = ({ headingRefs, currentTab }: ITabBar) => {
           active={currentTab === BUN}
           value={BUN}
           onClick={() => scrollToCategory(headingRefs[BUN])}
-          children='Булки'
+          children="Булки"
         />
       </li>
       <li className={styles.item}>
@@ -30,7 +30,7 @@ export const TabBar = ({ headingRefs, currentTab }: ITabBar) => {
           active={currentTab === SAUCE}
           value={SAUCE}
           onClick={() => scrollToCategory(headingRefs[SAUCE])}
-          children='Соусы'
+          children="Соусы"
         />
       </li>
       <li className={styles.item}>
@@ -38,7 +38,7 @@ export const TabBar = ({ headingRefs, currentTab }: ITabBar) => {
           active={currentTab === MAIN}
           value={MAIN}
           onClick={() => scrollToCategory(headingRefs[MAIN])}
-          children='Начинка'
+          children="Начинка"
         />
       </li>
     </ul>

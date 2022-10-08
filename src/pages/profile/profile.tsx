@@ -4,7 +4,7 @@ import styles from './profile.module.css';
 import { setUserLogout } from '../../services/actions/auth';
 import { UserInfo } from '../../components/user-info/user-info';
 import { UserOrders } from '../../components/user-orders/user-orders';
-import { useAppDispatch, useAppSelector } from '../../services/redux-hooks';
+import { useAppDispatch, useAppSelector } from '../../services/hooks';
 import { Loader } from '../../components/loader/loader';
 import { selectAuthState } from '../../services/selectors/auth';
 

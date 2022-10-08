@@ -1,5 +1,6 @@
 import { v4 as uuid } from 'uuid';
-import { TConstructorIngredient, IIngredient, BUN, SAUCE, MAIN } from '../../utils/constants';
+import { BUN, SAUCE, MAIN } from '../../utils/constants';
+import { TConstructorIngredient, IIngredient } from '../../utils/types';
 
 export const CONSTRUCTOR_ADD: 'CONSTRUCTOR_ADD' = 'CONSTRUCTOR_ADD';
 export const CONSTRUCTOR_SORT: 'CONSTRUCTOR_SORT' = 'CONSTRUCTOR_SORT';

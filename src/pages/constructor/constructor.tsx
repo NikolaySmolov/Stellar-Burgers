@@ -7,7 +7,7 @@ import { Redirect, useLocation } from 'react-router-dom';
 
 import { ModalError } from '../../components/modal-error/modal-error';
 
-import { useAppSelector } from '../../services/redux-hooks';
+import { useAppSelector } from '../../services/hooks';
 import { selectOrderState } from '../../services/selectors/order';
 import { selectBun, selectFillings } from '../../services/selectors/constructor';
 

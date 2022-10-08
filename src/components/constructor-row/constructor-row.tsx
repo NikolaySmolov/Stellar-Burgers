@@ -3,12 +3,13 @@ import styles from './constructor-row.module.css';
 import { ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
 import { DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useDrag, useDrop } from 'react-dnd';
-import { IIngredient, SORT } from '../../utils/constants';
+import { SORT } from '../../utils/constants';
+import { IIngredient } from '../../utils/types';
 import {
   getConstructorDeleteAction,
   getConstructorSortAction,
 } from '../../services/actions/constructor';
-import { useAppDispatch } from '../../services/redux-hooks';
+import { useAppDispatch } from '../../services/hooks';
 
 interface IDragAndDropProp {
   position: number;

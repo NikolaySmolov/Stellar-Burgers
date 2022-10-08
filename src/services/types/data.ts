@@ -1,4 +1,4 @@
-import { IIngredient } from '../../utils/constants';
+import { IIngredient } from '../../utils/types';
 
 export interface IUpdateToken {
   accessToken: string;

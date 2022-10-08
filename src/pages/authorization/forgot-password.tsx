@@ -5,7 +5,7 @@ import { Form } from '../../components/form/form';
 import { useHistory, Redirect } from 'react-router-dom';
 import React, { useEffect } from 'react';
 import { Loader } from '../../components/loader/loader';
-import { useAppDispatch, useAppSelector } from '../../services/redux-hooks';
+import { useAppDispatch, useAppSelector } from '../../services/hooks';
 import { useInputLogic } from '../../services/hooks';
 import { selectResetPasswordFormState } from '../../services/selectors/reset-password-form';
 import {

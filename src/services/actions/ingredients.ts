@@ -1,4 +1,4 @@
-import { IIngredient } from '../../utils/constants';
+import { IIngredient } from '../../utils/types';
 import { fetchIngredients } from '../api';
 import { AppDispatch, AppThunk } from '../types';
 

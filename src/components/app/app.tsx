@@ -22,8 +22,7 @@ import { CardOrderDetails } from '../card-order-details/card-order-details';
 import { selectIngredientsState } from '../../services/selectors/ingredients';
 import { OrderDetails } from '../order-details/order-details';
 import { getConstructorResetAction } from '../../services/actions/constructor';
-import { ORDER_PATH } from '../../utils/constants';
-import { useAppDispatch, useAppSelector } from '../../services/redux-hooks';
+import { useAppDispatch, useAppSelector } from '../../services/hooks';
 import { TLocation } from '../../services/hooks';
 import { getUserInfo } from '../../services/actions/auth';
 import { getOrderCloseDetailsAction } from '../../services/actions/order';
@@ -35,7 +34,6 @@ export function App() {
     request: ingredientsRequest,
     ingredients,
     failed: ingredientsFailed,
-    error, //maybe delete
   } = useAppSelector(selectIngredientsState);
 
   const { authChecked, name: userName } = useAppSelector(selectAuthState);
@@ -47,7 +45,7 @@ export function App() {
   const background = location.state?.background;
 
   const handleCloseModal = () => {
-    if (location.pathname.includes(ORDER_PATH)) {
+    if (location.pathname.includes('/order/')) {
       dispatch(getConstructorResetAction());
       dispatch(getOrderCloseDetailsAction());
       history.push({ pathname: '/' });
