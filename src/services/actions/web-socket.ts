@@ -4,7 +4,6 @@ export const WS_CONNECTION_CLOSE: 'WS_CONNECTION_CLOSE' = 'WS_CONNECTION_CLOSE';
 export const WS_CONNECTION_CLOSED: 'WS_CONNECTION_CLOSED' = 'WS_CONNECTION_CLOSED';
 export const WS_CONNECTION_ERROR: 'WS_CONNECTION_ERROR' = 'WS_CONNECTION_ERROR';
 export const WS_GET_MESSAGE: 'WS_GET_MESSAGE' = 'WS_GET_MESSAGE';
-export const WS_CLEAR_STORE: 'WS_CLEAR_STORE' = 'WS_CLEAR_STORE';
 
 interface IGetWSocketConnectionStartAction {
   readonly type: typeof WS_CONNECTION_START;
@@ -33,18 +32,13 @@ interface IGetWSocketGetMessageAction {
   payload: ReadonlyArray<string>;
 }
 
-interface IGetWSocketClearStoreAction {
-  readonly type: typeof WS_CLEAR_STORE;
-}
-
 export type TWebSocketActions =
   | IGetWSocketConnectionStartAction
   | IGetWSocketConnectionSuccessAction
   | IGetWSocketConnectionCloseAction
   | IGetWSocketConnectionClosedAction
   | IGetWSocketConnectionErrorAction
-  | IGetWSocketGetMessageAction
-  | IGetWSocketClearStoreAction;
+  | IGetWSocketGetMessageAction;
 
 export const getWSocketConnectionStartAction = (
   payload: string
@@ -77,8 +71,4 @@ export const getWSocketGetMessageAction = (
 ): IGetWSocketGetMessageAction => ({
   type: WS_GET_MESSAGE,
   payload,
-});
-
-export const getWSocketClearStoreAction = (): IGetWSocketClearStoreAction => ({
-  type: WS_CLEAR_STORE,
 });

@@ -46,6 +46,8 @@ export const registrationFormReducer = (
     case REGISTER_FORM_RESET_VALUES:
       return { ...initState };
     default:
+      //eslint-disable-next-line
+      const _exhaustiveCheck: never = action;
       return state;
   }
 };

@@ -25,6 +25,8 @@ export const orderReducer = (state = initState, action: TOrderActions): IOrderSt
     case 'ORDER_CLOSE_DETAILS':
       return { ...state, details: null };
     default:
+      //eslint-disable-next-line
+      const _exhaustiveCheck: never = action;
       return state;
   }
 };

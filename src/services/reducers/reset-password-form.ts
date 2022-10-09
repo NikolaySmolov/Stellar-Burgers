@@ -51,6 +51,8 @@ export const resetPasswordFormReducer = (
     case RESET_PASS_FORM_RESET_STATE:
       return { ...initState };
     default:
+      //eslint-disable-next-line
+      const _exhaustiveCheck: never = action;
       return state;
   }
 };

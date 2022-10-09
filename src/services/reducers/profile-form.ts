@@ -40,6 +40,8 @@ export const profileFormReducer = (
     case PROFILE_FORM_RESET_VALUES:
       return { ...initState, request: false, ...action.payload };
     default:
+      //eslint-disable-next-line
+      const _exhaustiveCheck: never = action;
       return state;
   }
 };

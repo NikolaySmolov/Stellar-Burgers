@@ -12,7 +12,11 @@ import { Loader } from '../loader/loader';
 import style from './user-orders.module.css';
 
 export const UserOrders = () => {
-  const { orders: feedOrders, error: feedError } = useAppSelector(selectFeedOrdersState);
+  const {
+    orders: feedOrders,
+    connecting: feedConnecting,
+    error: feedError,
+  } = useAppSelector(selectFeedOrdersState);
 
   const dispatch = useAppDispatch();
 
@@ -24,7 +28,7 @@ export const UserOrders = () => {
     };
   }, [dispatch]);
 
-  if (feedOrders.length === 0 && !feedError) {
+  if ((feedOrders.length === 0 && !feedError) || feedConnecting) {
     return (
       <div className={style.loaderWrapper}>
         <Loader />

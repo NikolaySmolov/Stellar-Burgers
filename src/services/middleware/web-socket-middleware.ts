@@ -1,6 +1,5 @@
 import { Middleware } from 'redux';
 import {
-  getWSocketClearStoreAction,
   getWSocketConnectionCloseAction,
   getWSocketConnectionClosedAction,
   getWSocketConnectionErrorAction,
@@ -13,7 +12,6 @@ import { AppDispatch, RootState } from '../types';
 interface IWsActions {
   wsConnect: typeof getWSocketConnectionStartAction;
   wsDisconnect: typeof getWSocketConnectionCloseAction;
-  wsClearStore: typeof getWSocketClearStoreAction;
   onOpen: typeof getWSocketConnectionSuccessAction;
   onMessage: typeof getWSocketGetMessageAction;
   onClose: typeof getWSocketConnectionClosedAction;
@@ -28,8 +26,7 @@ export const wsMiddleware = (wsActions: IWsActions): Middleware<{}, RootState, A
     const { dispatch } = store;
     const { type, payload } = action;
 
-    const { wsConnect, wsDisconnect, wsClearStore, onOpen, onMessage, onClose, onError } =
-      wsActions;
+    const { wsConnect, wsDisconnect, onOpen, onMessage, onClose, onError } = wsActions;
 
     if (wsConnect.toString().match(type)) {
       url = payload;
@@ -37,9 +34,10 @@ export const wsMiddleware = (wsActions: IWsActions): Middleware<{}, RootState, A
     }
 
     if (wsDisconnect.toString().match(type)) {
-      dispatch(wsClearStore());
-      webSocket.close(1000, 'CLOSE_NORMAL');
-      webSocket = null;
+      if (webSocket) {
+        webSocket.close(1000, 'CLOSE_NORMAL');
+        webSocket = null;
+      }
     }
 
     if (webSocket) {

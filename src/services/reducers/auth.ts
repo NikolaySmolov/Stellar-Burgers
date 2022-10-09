@@ -33,6 +33,8 @@ export const authReducer = (state = initState, action: TAuthActions): IAuthState
     case AUTH_FAILED:
       return { ...state, request: false, failed: true, name: null, email: null };
     default:
+      //eslint-disable-next-line
+      const _exhaustiveCheck: never = action;
       return state;
   }
 };

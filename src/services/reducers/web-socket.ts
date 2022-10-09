@@ -2,11 +2,11 @@ import { IOrderInFeed } from '../../utils/types';
 import {
   WS_CONNECTION_SUCCESS,
   WS_CONNECTION_ERROR,
-  WS_CLEAR_STORE,
   WS_GET_MESSAGE,
   WS_CONNECTION_CLOSED,
   TWebSocketActions,
   WS_CONNECTION_START,
+  WS_CONNECTION_CLOSE,
 } from '../actions/web-socket';
 
 interface IWebSocketState {
@@ -15,7 +15,7 @@ interface IWebSocketState {
   orders: ReadonlyArray<IOrderInFeed>;
   total: null | number;
   totalToday: null | number;
-  error: string;
+  error: string | null;
 }
 
 const initState: IWebSocketState = {
@@ -39,9 +39,11 @@ export const wsReducer = (state = initState, action: TWebSocketActions): IWebSoc
       return { ...state, connected: false };
     case WS_GET_MESSAGE:
       return { ...state, ...action.payload };
-    case WS_CLEAR_STORE:
+    case WS_CONNECTION_CLOSE:
       return { ...initState };
     default:
+      //eslint-disable-next-line
+      const _exhaustiveCheck: never = action;
       return state;
   }
 };

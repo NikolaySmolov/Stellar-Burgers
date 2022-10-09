@@ -31,7 +31,7 @@ export const constructorReducer = (
       filling.push(action.payload);
       return { ...state, filling };
     case CONSTRUCTOR_SORT:
-      const sortableItem = state.filling.find((_, index) => index === action.payload.dragItemPos);
+      const sortableItem = state.filling.find((_, index) => index === action.payload.dragItemPos)!;
 
       const sortedFillings = [...state.filling].filter(
         (_, index) => index !== action.payload.dragItemPos
@@ -50,6 +50,8 @@ export const constructorReducer = (
       return { ...initState };
 
     default:
+      //eslint-disable-next-line
+      const _exhaustiveCheck: never = action;
       return state;
   }
 };

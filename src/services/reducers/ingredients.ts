@@ -32,6 +32,8 @@ export const ingredientsReducer = (
     case INGREDIENTS_FAILED:
       return { ...state, request: false, failed: true, error: action.payload };
     default:
+      //eslint-disable-next-line
+      const _exhaustiveCheck: never = action;
       return state;
   }
 };

@@ -92,18 +92,10 @@ export const useInputLogic = ({
   return { icon, ref: inputRef, onIconClick, onBlur, onFocus, error, type, disabled, fieldReset };
 };
 
-interface IIngredientData {
-  id: string;
-  name: string;
-  price: number;
-  image: string;
-  qty: number;
-}
-
 type TStatusText = 'Создан' | 'Готовится' | 'Выполнен';
 
 type TUseOrderData = (
-  burgerIngredientsId: Array<string>,
+  burgerIngredientsId: ReadonlyArray<string>,
   ingredients: ReadonlyArray<IIngredient>,
   dateString: string,
   status: TOrderStatus
@@ -115,7 +107,7 @@ export const useOrderData: TUseOrderData = (
   dateString,
   status
 ) => {
-  const [ingredientList, setIngredientsList] = useState<Array<IIngredientData>>([]);
+  const [ingredientList, setIngredientsList] = useState<Array<IIngredientDataInOrder>>([]);
   const [orderDate, setOrderDate] = useState<string>('');
   const [totalPrice, setTotalPrice] = useState<string>('');
   const [statusText, setStatusText] = useState<TStatusText>('Выполнен');
@@ -163,24 +155,31 @@ export const useOrderData: TUseOrderData = (
   }, [dateString]);
 
   const preparedIngredientsData = useMemo(() => {
-    const result: Array<IIngredientData> = burgerIngredientsId.reduce(
-      (acc: Array<any> | Array<IIngredientData>, item) => {
+    const result: Array<IIngredientDataInOrder> = burgerIngredientsId.reduce(
+      (acc: Array<IIngredientDataInOrder>, item) => {
         const itemIndex = acc.findIndex(ingredient => ingredient.id === item);
 
         if (~itemIndex) {
           acc[itemIndex].qty++;
         } else {
-          const { name, image, price, type } = ingredients.find(
-            ({ _id }) => _id === item
-          ) as IIngredient;
+          const ingredient = ingredients.find(({ _id }) => _id === item);
 
-          const ingredientData: IIngredientData = { id: item, name, price, image, qty: 1 };
+          if (ingredient) {
+            const { name, image, price, type } = ingredient;
 
-          if (type === BUN) {
-            ingredientData.qty = 2;
+            const renderingIngredient: IIngredientDataInOrder = {
+              id: item,
+              name,
+              price,
+              image,
+              qty: 1,
+            };
+            if (type === BUN) {
+              renderingIngredient.qty = 2;
+            }
+
+            acc.push(renderingIngredient);
           }
-
-          acc.push(ingredientData);
         }
         return acc;
       },
