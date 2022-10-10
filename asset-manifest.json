@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "./static/css/main.cdca3bbe.css",
-    "main.js": "./static/js/main.d49a974e.js",
+    "main.css": "./static/css/main.e1cbd415.css",
+    "main.js": "./static/js/main.d3611f66.js",
     "static/media/404page.png": "./static/media/404page.1ea1000a7d9993e374be.png",
     "static/media/JetBrainsMono-Bold.woff": "./static/media/JetBrainsMono-Bold.3914674f1cb2335acf26.woff",
     "static/media/JetBrainsMono-Regular.woff": "./static/media/JetBrainsMono-Regular.f52bee61d00ce995b89f.woff",
@@ -10,13 +10,13 @@
     "static/media/iceland.woff": "./static/media/iceland.77ad7fc2baffd9305538.woff",
     "static/media/iceland.woff2": "./static/media/iceland.4ae67a017a5ff82bbbb7.woff2",
     "static/media/error.jpg": "./static/media/error.d87539bebd18a8fdc589.jpg",
-    "static/media/thumbnail-stroke.svg": "./static/media/thumbnail-stroke.149eb6aa518e21270ffc.svg",
+    "static/media/thumbnail-stroke.svg": "./static/media/thumbnail-stroke.f68c24c519c1cd0c5bea.svg",
     "index.html": "./index.html",
-    "main.cdca3bbe.css.map": "./static/css/main.cdca3bbe.css.map",
-    "main.d49a974e.js.map": "./static/js/main.d49a974e.js.map"
+    "main.e1cbd415.css.map": "./static/css/main.e1cbd415.css.map",
+    "main.d3611f66.js.map": "./static/js/main.d3611f66.js.map"
   },
   "entrypoints": [
-    "static/css/main.cdca3bbe.css",
-    "static/js/main.d49a974e.js"
+    "static/css/main.e1cbd415.css",
+    "static/js/main.d3611f66.js"
   ]
 }
