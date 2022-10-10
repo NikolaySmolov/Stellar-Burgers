@@ -1,4 +1,4 @@
-import { fetchSetProfileData, IStatusResponse } from '../api';
+import { fetchSetProfileData, isErrorWithMessage } from '../api';
 import { AppDispatch, AppThunk } from '../types';
 import { TProfileForm } from '../types/data';
 import { getAuthSuccessAction } from './auth';
@@ -75,9 +75,12 @@ export const setNewProfileData: AppThunk =
       dispatch(getAuthSuccessAction(res.user));
       dispatch(getProfileFormSuccessAction());
     } catch (err) {
-      if ((err as IStatusResponse).message === 'User with such email already exists') {
-        dispatch(getProfileFormFailedAction('Пользователь с таким email уже зарегистрирован'));
+      if (isErrorWithMessage(err)) {
+        if (err.message === 'User with such email already exists') {
+          dispatch(getProfileFormFailedAction('Пользователь с таким email уже зарегистрирован'));
+        }
+      } else {
+        console.log(err);
       }
-      console.log(err);
     }
   };

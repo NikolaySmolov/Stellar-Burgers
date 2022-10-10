@@ -8,7 +8,7 @@ export function IngredientDetails() {
   const { ingredients } = useAppSelector(selectIngredientsState);
   const { id: ingredientId } = useParams<IParamsForId>();
 
-  const ingredientData = ingredients.find(({ _id }) => _id === ingredientId)!;
+  const ingredientData = ingredients.find(({ _id }) => _id === ingredientId)!; //id from rendered ingredients
 
   return (
     <div className={`${styles.wrapper} pt-10 pr-10 pb-15 pl-10`}>

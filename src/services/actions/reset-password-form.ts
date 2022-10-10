@@ -1,4 +1,4 @@
-import { fetchResetPasswordCode, fetchSetNewPassword, IStatusResponse } from '../api';
+import { fetchResetPasswordCode, fetchSetNewPassword, isErrorWithMessage } from '../api';
 import { AppDispatch, AppThunk } from '../types';
 import { IEmail, IMailCode, IPassword, TResetPassword } from '../types/data';
 
@@ -119,10 +119,14 @@ export const setNewPassword: AppThunk =
         throw new Error('error text');
       }
     } catch (err) {
-      if ((err as IStatusResponse).message === 'Invalid credentials provided') {
-        dispatch(getResetPassFormFailedAction('Заполните все поля'));
-      } else if ((err as IStatusResponse).message === 'Incorrect reset token') {
-        dispatch(getResetPassFormFailedAction('Неверный код из письма'));
+      if (isErrorWithMessage(err)) {
+        if (err.message === 'Invalid credentials provided') {
+          dispatch(getResetPassFormFailedAction('Заполните все поля'));
+        }
+
+        if (err.message === 'Incorrect reset token') {
+          dispatch(getResetPassFormFailedAction('Неверный код из письма'));
+        }
       } else {
         dispatch(
           getResetPassFormFailedAction(

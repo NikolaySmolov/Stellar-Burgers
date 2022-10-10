@@ -1,5 +1,5 @@
 import { ACCESS_TOKEN, TOKEN } from '../../utils/constants';
-import { fetchUserRegistration, IStatusResponse } from '../api';
+import { fetchUserRegistration, isErrorWithMessage } from '../api';
 import { AppDispatch, AppThunk } from '../types';
 import { TRegistrationForm } from '../types/data';
 import { setCookie } from '../utils';
@@ -80,10 +80,14 @@ export const setUserSignUp: AppThunk =
       dispatch(getRegistrationFormSuccessAction());
       dispatch(getAuthSuccessAction(res.user));
     } catch (err) {
-      if ((err as IStatusResponse).message === 'Email, password and name are required fields') {
-        dispatch(getRegistrationFormFailedAction('Зполните все поля'));
-      } else if ((err as IStatusResponse).message === 'User already exists') {
-        dispatch(getRegistrationFormFailedAction('Пользователь уже зарегистрирован'));
+      if (isErrorWithMessage(err)) {
+        if (err.message === 'Email, password and name are required fields') {
+          dispatch(getRegistrationFormFailedAction('Зполните все поля'));
+        }
+
+        if (err.message === 'User already exists') {
+          dispatch(getRegistrationFormFailedAction('Пользователь уже зарегистрирован'));
+        }
       } else {
         dispatch(
           getRegistrationFormFailedAction(
@@ -91,6 +95,7 @@ export const setUserSignUp: AppThunk =
           )
         );
       }
+
       dispatch(getAuthFailedAction());
     }
   };

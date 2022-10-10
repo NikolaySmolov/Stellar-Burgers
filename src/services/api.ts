@@ -49,19 +49,32 @@ const updateToken = async (): Promise<TResponseBody<''> & IUpdateToken> => {
   return await checkResponse(res);
 };
 
+//typeGuard
+export function isErrorWithMessage(err: unknown): err is IStatusResponse {
+  return (
+    (err as IStatusResponse).message !== undefined && (err as IStatusResponse).success !== undefined
+  );
+}
+
 const fetchWithUpdateToken = async (url: string, options: IRequestWithAuthorization) => {
   try {
     const res = await fetch(url, options);
     return await checkResponse(res);
   } catch (err) {
-    if ((err as IStatusResponse).message === 'jwt expired') {
+    if (isErrorWithMessage(err)) {
+      if (err.message !== 'jwt expired') {
+        return Promise.reject(err);
+      }
+
       const updateData = await updateToken();
 
       if (!updateData.success) {
         return Promise.reject(updateData);
       }
+
       setCookie(TOKEN, updateData.refreshToken, { path: '/' });
       setCookie(ACCESS_TOKEN, updateData.accessToken.split('Bearer ')[1], { path: '/' });
+
       options.headers.Authorization = updateData.accessToken;
       const res = await fetch(url, options);
       return await checkResponse(res);

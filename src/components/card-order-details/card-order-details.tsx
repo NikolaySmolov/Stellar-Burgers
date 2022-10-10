@@ -18,7 +18,7 @@ export const CardOrderDetails = () => {
 
   const orderData = useMemo(() => {
     return feedOrders.find(({ _id }) => _id === orderId);
-  }, [feedOrders, orderId])!; //id from rendered cards in feed
+  }, [feedOrders, orderId])!; //id from rendered feedOrders
 
   const [ingredientsList, orderDate, totalPrice, statusText] = useOrderData(
     orderData.ingredients,

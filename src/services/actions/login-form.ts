@@ -1,5 +1,5 @@
 import { ACCESS_TOKEN, TOKEN } from '../../utils/constants';
-import { fetchUserLogin, IStatusResponse } from '../api';
+import { fetchUserLogin, isErrorWithMessage } from '../api';
 import { AppDispatch, AppThunk } from '../types';
 import { TLoginForm } from '../types/data';
 import { setCookie } from '../utils';
@@ -75,8 +75,10 @@ export const setUserSignIn: AppThunk = (form: TLoginForm) => async (dispatch: Ap
     dispatch(getLoginFormSuccessAction());
     dispatch(getAuthSuccessAction(res.user));
   } catch (err) {
-    if ((err as IStatusResponse).success === false) {
-      dispatch(getLoginFormFailedAction('Неверное имя пользователя или пароль'));
+    if (isErrorWithMessage(err)) {
+      if (!err.success) {
+        dispatch(getLoginFormFailedAction('Неверное имя пользователя или пароль'));
+      }
     } else {
       dispatch(
         getLoginFormFailedAction(
@@ -84,6 +86,7 @@ export const setUserSignIn: AppThunk = (form: TLoginForm) => async (dispatch: Ap
         )
       );
     }
+
     dispatch(getAuthFailedAction());
   }
 };
