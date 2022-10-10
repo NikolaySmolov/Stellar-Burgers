@@ -3,7 +3,6 @@ import thunk from 'redux-thunk';
 import { rootReducer } from './reducers';
 import { wsMiddleware } from './middleware/web-socket-middleware';
 import {
-  getWSocketConnectionCloseAction,
   getWSocketConnectionClosedAction,
   getWSocketConnectionErrorAction,
   getWSocketConnectionStartAction,
@@ -19,7 +18,6 @@ declare global {
 
 const WS_ACTIONS = {
   wsConnect: getWSocketConnectionStartAction,
-  wsDisconnect: getWSocketConnectionCloseAction,
   onOpen: getWSocketConnectionSuccessAction,
   onMessage: getWSocketGetMessageAction,
   onClose: getWSocketConnectionClosedAction,

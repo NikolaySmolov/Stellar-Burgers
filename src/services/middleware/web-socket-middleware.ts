@@ -1,21 +1,40 @@
 import { Middleware } from 'redux';
 import {
-  getWSocketConnectionCloseAction,
   getWSocketConnectionClosedAction,
   getWSocketConnectionErrorAction,
   getWSocketConnectionStartAction,
   getWSocketConnectionSuccessAction,
   getWSocketGetMessageAction,
+  TWebSocketActions,
+  WS_CONNECTION_CLOSE,
+  WS_CONNECTION_CLOSED,
+  WS_CONNECTION_ERROR,
+  WS_CONNECTION_START,
+  WS_CONNECTION_SUCCESS,
+  WS_GET_MESSAGE,
 } from '../actions/web-socket';
 import { AppDispatch, RootState } from '../types';
 
 interface IWsActions {
   wsConnect: typeof getWSocketConnectionStartAction;
-  wsDisconnect: typeof getWSocketConnectionCloseAction;
   onOpen: typeof getWSocketConnectionSuccessAction;
   onMessage: typeof getWSocketGetMessageAction;
   onClose: typeof getWSocketConnectionClosedAction;
   onError: typeof getWSocketConnectionErrorAction;
+}
+
+//typeGuard
+function isWsAction(action: any): action is TWebSocketActions {
+  const wsActionTypes = [
+    WS_CONNECTION_START,
+    WS_CONNECTION_SUCCESS,
+    WS_CONNECTION_CLOSE,
+    WS_CONNECTION_CLOSED,
+    WS_CONNECTION_ERROR,
+    WS_GET_MESSAGE,
+  ];
+
+  return wsActionTypes.some(type => type === action?.type);
 }
 
 export const wsMiddleware = (wsActions: IWsActions): Middleware<{}, RootState, AppDispatch> => {
@@ -23,50 +42,51 @@ export const wsMiddleware = (wsActions: IWsActions): Middleware<{}, RootState, A
   let url: string = '';
 
   return store => next => action => {
-    const { dispatch } = store;
-    const { type, payload } = action;
+    if (isWsAction(action)) {
+      const { dispatch } = store;
 
-    const { wsConnect, wsDisconnect, onOpen, onMessage, onClose, onError } = wsActions;
+      const { wsConnect, onOpen, onMessage, onClose, onError } = wsActions;
 
-    if (wsConnect.toString().match(type)) {
-      url = payload;
-      webSocket = new WebSocket(url);
-    }
-
-    if (wsDisconnect.toString().match(type)) {
-      if (webSocket) {
-        webSocket.close(1000, 'CLOSE_NORMAL');
-        webSocket = null;
+      if (action.type === WS_CONNECTION_START) {
+        url = action.payload;
+        webSocket = new WebSocket(url);
       }
-    }
 
-    if (webSocket) {
-      webSocket.onopen = () => {
-        dispatch(onOpen());
-      };
-
-      webSocket.onerror = event => {
-        dispatch(onError('websocket connection error'));
-      };
-
-      webSocket.onclose = event => {
-        if (event.wasClean) {
-          dispatch(onClose());
-        } else {
-          setTimeout(() => {
-            dispatch(wsConnect(url));
-          }, 5000);
+      if (action.type === WS_CONNECTION_CLOSE) {
+        if (webSocket) {
+          webSocket.close(1000, 'CLOSE_NORMAL');
+          webSocket = null;
         }
-      };
+      }
 
-      webSocket.onmessage = event => {
-        const { success, ...data } = JSON.parse(event.data);
-        if (success) {
-          dispatch(onMessage(data));
-        } else {
-          dispatch(onError(data.message));
-        }
-      };
+      if (webSocket) {
+        webSocket.onopen = () => {
+          dispatch(onOpen());
+        };
+
+        webSocket.onerror = event => {
+          dispatch(onError('websocket connection error'));
+        };
+
+        webSocket.onclose = event => {
+          if (event.wasClean) {
+            dispatch(onClose());
+          } else {
+            setTimeout(() => {
+              dispatch(wsConnect(url));
+            }, 5000);
+          }
+        };
+
+        webSocket.onmessage = event => {
+          const { success, ...data } = JSON.parse(event.data);
+          if (success) {
+            dispatch(onMessage(data));
+          } else {
+            dispatch(onError(data.message));
+          }
+        };
+      }
     }
     return next(action);
   };
