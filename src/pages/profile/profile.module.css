@@ -25,6 +25,18 @@
   color: var(--text-primary-color);
 }
 
+.logoutButton {
+  color: var(--text-inactive-color);
+  transition: var(--common-transition);
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.logoutButton:hover {
+  color: var(--text-primary-color);
+}
+
 .navLinkActive {
   color: var(--text-primary-color);
 }
