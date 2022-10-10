@@ -7,16 +7,16 @@ import {
 } from '../actions/auth';
 
 interface IAuthState {
-  name: string | null;
-  email: string | null;
+  name: string;
+  email: string;
   request: boolean;
   failed: boolean;
   authChecked: boolean;
 }
 
 const initState: IAuthState = {
-  name: null,
-  email: null,
+  name: '',
+  email: '',
   request: false,
   failed: false,
   authChecked: false,
@@ -31,7 +31,7 @@ export const authReducer = (state = initState, action: TAuthActions): IAuthState
     case AUTH_SUCCESS:
       return { ...state, request: false, failed: false, ...action.payload };
     case AUTH_FAILED:
-      return { ...state, request: false, failed: true, name: null, email: null };
+      return { ...state, request: false, failed: true, name: '', email: '' };
     default:
       //eslint-disable-next-line
       const _exhaustiveCheck: never = action;

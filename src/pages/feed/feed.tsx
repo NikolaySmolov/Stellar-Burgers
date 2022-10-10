@@ -111,7 +111,7 @@ export const FeedPage = () => {
             Выполнено за&nbsp;все время:
           </h2>
           <p className={`${style.counterText} text text_type_digits-large`}>
-            {feedTotal.toLocaleString('ru-RU')}
+            {feedTotal ? feedTotal.toLocaleString('ru-RU') : 0}
           </p>
         </div>
         <div className={style.completedTodayWrapper}>
@@ -119,7 +119,7 @@ export const FeedPage = () => {
             Выполнено за&nbsp;сегодня:
           </h2>
           <p className={`${style.counterText} text text_type_digits-large`}>
-            {feedToday.toLocaleString('ru-RU')}
+            {feedToday ? feedToday.toLocaleString('ru-RU') : 0}
           </p>
         </div>
       </section>
