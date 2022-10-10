@@ -3,19 +3,17 @@ import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components
 import { IngredientThumbnail } from '../ingredient-thumbnail/ingredient-thumbnail';
 import { useMemo } from 'react';
 import { DONE } from '../../utils/constants';
-import { TOrderStatus } from '../../utils/types';
+import { IIngredientDataInOrder } from '../../utils/types';
 import { Link, useRouteMatch } from 'react-router-dom';
-import { selectIngredientsState } from '../../services/selectors/ingredients';
-import { useOrderData } from '../../services/hooks';
-import { useAppSelector } from '../../services/hooks';
 
 interface ICardOrder {
   withStatus: boolean;
   number: number;
   name: string;
-  burgerIngredientsId: Array<string>;
-  status: TOrderStatus;
+  burgerIngredients: Array<IIngredientDataInOrder>;
+  status: string;
   createdAt: string;
+  totalPrice: string;
   id: string;
 }
 
@@ -23,27 +21,18 @@ export const CardOrder = ({
   withStatus,
   number,
   name,
-  burgerIngredientsId,
+  burgerIngredients,
   status,
   createdAt,
+  totalPrice,
   id,
 }: ICardOrder) => {
-  const { ingredients } = useAppSelector(selectIngredientsState);
-
   const { url } = useRouteMatch();
 
-  const [ingredientsList, orderDate, totalPrice, statusText] = useOrderData(
-    burgerIngredientsId,
-    ingredients,
-    createdAt,
-    status
-  );
-
   const thumbnailList = useMemo(() => {
-    if (ingredientsList) {
-      const uniqList = new Set(ingredientsList);
-      const renderList = Array.from(uniqList).slice(0, 6).reverse();
-      const more = uniqList.size > 6 ? uniqList.size - 6 : null;
+    if (burgerIngredients) {
+      const renderList = Array.from(burgerIngredients).slice(0, 6).reverse();
+      const more = burgerIngredients.length > 6 ? burgerIngredients.length - 6 : null;
 
       return (
         <ul className={`${style.thumbnailList} mr-10`}>
@@ -57,7 +46,7 @@ export const CardOrder = ({
         </ul>
       );
     }
-  }, [ingredientsList]);
+  }, [burgerIngredients]);
 
   return (
     <Link
@@ -69,7 +58,7 @@ export const CardOrder = ({
       <article className={style.wrapper}>
         <div className={`${style.heading} mb-6`}>
           <p className={'text text_type_digits-default'}>#{number}</p>
-          <p className={'text text_type_main-default text_color_inactive'}>{orderDate}</p>
+          <p className={'text text_type_main-default text_color_inactive'}>{createdAt}</p>
         </div>
         <p className={'text text_type_main-medium'}>{name}</p>
         {withStatus ? (
@@ -77,7 +66,7 @@ export const CardOrder = ({
             className={`text text_type_main-default mt-2 ${
               status === DONE ? 'text_color_success' : null
             }`}>
-            {statusText}
+            {status}
           </p>
         ) : null}
         <div className={`${style.footer} mt-6`}>

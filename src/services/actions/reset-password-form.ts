@@ -115,7 +115,6 @@ export const setNewPassword: AppThunk =
       if (res.message === 'Password successfully reset') {
         dispatch(getResetPassFormSetPassSuccessAction());
       } else {
-        debugger;
         throw new Error('error text');
       }
     } catch (err) {

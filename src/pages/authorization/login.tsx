@@ -40,7 +40,7 @@ export const LoginPage = () => {
     dispatch(getLoginFormSetValueAction({ [field.name]: field.value }));
   };
 
-  const handleSignIn = (evt: React.SyntheticEvent<HTMLFormElement, SubmitEvent>) => {
+  const handleSignIn = (evt: React.FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
 
     dispatch(setUserSignIn({ email: emailValue, password: passwordValue }));

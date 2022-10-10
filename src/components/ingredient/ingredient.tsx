@@ -5,12 +5,12 @@ import { Counter } from '@ya.praktikum/react-developer-burger-ui-components';
 import { ADD } from '../../utils/constants';
 import { IIngredient } from '../../utils/types';
 import { useDrag } from 'react-dnd';
-import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import { selectCounter } from '../../services/selectors/constructor';
+import { useAppSelector } from '../../services/hooks';
 
 export const Ingredient = React.memo<IIngredient>(props => {
-  const counter: any = useSelector(selectCounter);
+  const counter = useAppSelector(selectCounter);
   const history = useHistory();
 
   const qty = counter?.[props._id] || null;

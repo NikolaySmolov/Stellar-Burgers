@@ -4,7 +4,7 @@ import {
   getWSocketConnectionCloseAction,
 } from '../../services/actions/web-socket';
 import { useAppDispatch, useAppSelector } from '../../services/hooks';
-import { selectFeedOrdersState } from '../../services/selectors/feed';
+import { selectFeedOrders, selectFeedOrdersState } from '../../services/selectors/feed';
 import { getWsProfileEndpoint } from '../../services/utils';
 import { WS_URL } from '../../utils/constants';
 import { CardOrder } from '../card-order/card-order';
@@ -12,11 +12,9 @@ import { Loader } from '../loader/loader';
 import style from './user-orders.module.css';
 
 export const UserOrders = () => {
-  const {
-    orders: feedOrders,
-    connecting: feedConnecting,
-    error: feedError,
-  } = useAppSelector(selectFeedOrdersState);
+  const { connecting: feedConnecting, error: feedError } = useAppSelector(selectFeedOrdersState);
+
+  const feedOrders = useAppSelector(selectFeedOrders);
 
   const dispatch = useAppDispatch();
 
@@ -47,16 +45,17 @@ export const UserOrders = () => {
   return (
     <div className={`${style.ordersWrapper} custom-scroll`}>
       <ul className={`${style.orderList} pl-2 pr-2`}>
-        {reversedOrders.map(({ _id, number, createdAt, name, status, ingredients }) => {
+        {reversedOrders.map(({ _id, number, createdAt, name, status, ingredients, totalPrice }) => {
           return (
             <li className={style.orderListItem} key={_id}>
               <CardOrder
                 withStatus={true}
                 number={number}
                 name={name}
-                burgerIngredientsId={ingredients}
+                burgerIngredients={ingredients}
                 status={status}
                 createdAt={createdAt}
+                totalPrice={totalPrice}
                 id={_id}
               />
             </li>

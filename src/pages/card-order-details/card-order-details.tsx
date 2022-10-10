@@ -8,14 +8,15 @@ import {
   getWSocketConnectionCloseAction,
 } from '../../services/actions/web-socket';
 import { useAppDispatch, useAppSelector } from '../../services/hooks';
-import { selectFeedOrdersState } from '../../services/selectors/feed';
+import { selectFeedOrders, selectFeedOrdersState } from '../../services/selectors/feed';
 import { IParamsForId } from '../../services/hooks';
 import { getWsProfileEndpoint } from '../../services/utils';
 import { WS_URL } from '../../utils/constants';
 import style from './card-order-details.module.css';
 
 export const OrderDetailsPage = () => {
-  const { orders: feedOrders, error: feedError } = useAppSelector(selectFeedOrdersState);
+  const { error: feedError } = useAppSelector(selectFeedOrdersState);
+  const feedOrders = useAppSelector(selectFeedOrders);
 
   const dispatch = useAppDispatch();
 

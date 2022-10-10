@@ -7,18 +7,19 @@ import {
   getWSocketConnectionCloseAction,
 } from '../../services/actions/web-socket';
 import { useAppSelector, useAppDispatch } from '../../services/hooks';
-import { selectFeedOrdersState } from '../../services/selectors/feed';
-import { DONE, PENDING, WS_URL } from '../../utils/constants';
+import { selectFeedOrders, selectFeedOrdersState } from '../../services/selectors/feed';
+import { WS_URL } from '../../utils/constants';
 import style from './feed.module.css';
 
 export const FeedPage = () => {
   const {
-    orders: feedOrders,
     total: feedTotal,
     totalToday: feedToday,
     connecting: feedConnecting,
     error: feedError,
   } = useAppSelector(selectFeedOrdersState);
+
+  const feedOrders = useAppSelector(selectFeedOrders);
 
   const dispatch = useAppDispatch();
 
@@ -33,9 +34,9 @@ export const FeedPage = () => {
   const ordersStats = useMemo(() => {
     const preparedStats = feedOrders.reduce(
       (acc: { done: number[]; inProgress: number[] }, curr) => {
-        if (curr.status === DONE && acc.done.length < 20) {
+        if (curr.status === 'Выполнен' && acc.done.length < 20) {
           acc.done.push(curr.number);
-        } else if (curr.status === PENDING && acc.inProgress.length < 20) {
+        } else if (curr.status === 'Готовится' && acc.inProgress.length < 20) {
           acc.inProgress.push(curr.number);
         }
 
@@ -61,16 +62,17 @@ export const FeedPage = () => {
       <section>
         <h1 className={'text text_type_main-large mt-10 mb-5 pl-2'}>Лента заказов</h1>
         <ul className={`${style.orderList} pl-2 pr-2 custom-scroll`}>
-          {feedOrders.map(({ _id, number, createdAt, name, status, ingredients }) => {
+          {feedOrders.map(({ _id, number, createdAt, name, status, ingredients, totalPrice }) => {
             return (
               <li className={style.orderListItem} key={_id}>
                 <CardOrder
                   withStatus={false}
                   number={number}
                   name={name}
-                  burgerIngredientsId={ingredients}
+                  burgerIngredients={ingredients}
                   status={status}
                   createdAt={createdAt}
+                  totalPrice={totalPrice}
                   id={_id}
                 />
               </li>
