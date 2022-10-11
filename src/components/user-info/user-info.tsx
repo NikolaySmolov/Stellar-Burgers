@@ -72,7 +72,9 @@ export const UserInfo = () => {
     if (passwordValue !== FAKE_PASSWORD) {
       formData.password = passwordValue;
     }
+
     dispatch(setNewProfileData(formData));
+    resetFields();
   };
 
   const handleReset = () => {

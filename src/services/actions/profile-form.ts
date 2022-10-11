@@ -80,7 +80,12 @@ export const setNewProfileData: AppThunk =
           dispatch(getProfileFormFailedAction('Пользователь с таким email уже зарегистрирован'));
         }
       } else {
-        console.log(err);
+        console.error(err);
+        dispatch(
+          getProfileFormFailedAction(
+            'Произошла ошибка, попробуйте обновить страницу и\xA0отправить форму повторно'
+          )
+        );
       }
     }
   };

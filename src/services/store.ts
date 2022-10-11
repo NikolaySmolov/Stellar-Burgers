@@ -3,11 +3,12 @@ import thunk from 'redux-thunk';
 import { rootReducer } from './reducers';
 import { wsMiddleware } from './middleware/web-socket-middleware';
 import {
-  getWSocketConnectionClosedAction,
-  getWSocketConnectionErrorAction,
-  getWSocketConnectionStartAction,
-  getWSocketConnectionSuccessAction,
-  getWSocketGetMessageAction,
+  WS_CONNECTION_CLOSE,
+  WS_CONNECTION_CLOSED,
+  WS_CONNECTION_START,
+  WS_CONNECTION_SUCCESS,
+  WS_GET_ERROR,
+  WS_GET_MESSAGE,
 } from './actions/web-socket';
 
 declare global {
@@ -17,11 +18,12 @@ declare global {
 }
 
 const WS_ACTIONS = {
-  wsConnect: getWSocketConnectionStartAction,
-  onOpen: getWSocketConnectionSuccessAction,
-  onMessage: getWSocketGetMessageAction,
-  onClose: getWSocketConnectionClosedAction,
-  onError: getWSocketConnectionErrorAction,
+  wsConnect: WS_CONNECTION_START,
+  wsClose: WS_CONNECTION_CLOSE,
+  onOpen: WS_CONNECTION_SUCCESS,
+  onClose: WS_CONNECTION_CLOSED,
+  onError: WS_GET_ERROR,
+  onMessage: WS_GET_MESSAGE,
 };
 
 export const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

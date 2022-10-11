@@ -32,7 +32,7 @@ export const profileFormReducer = (
     case PROFILE_FORM_REQUEST:
       return { ...state, request: true };
     case PROFILE_FORM_SUCCESS:
-      return { ...state, request: false, failed: false };
+      return { ...state, request: false, failed: false, password: initState.password };
     case PROFILE_FORM_FAILED:
       return { ...state, request: false, failed: true, error: action.payload };
     case PROFILE_FORM_SET_VALUE:

@@ -2,7 +2,7 @@ export const WS_CONNECTION_START: 'WS_CONNECTION_START' = 'WS_CONNECTION_START';
 export const WS_CONNECTION_SUCCESS: 'WS_CONNECTION_SUCCESS' = 'WS_CONNECTION_SUCCESS';
 export const WS_CONNECTION_CLOSE: 'WS_CONNECTION_CLOSE' = 'WS_CONNECTION_CLOSE';
 export const WS_CONNECTION_CLOSED: 'WS_CONNECTION_CLOSED' = 'WS_CONNECTION_CLOSED';
-export const WS_CONNECTION_ERROR: 'WS_CONNECTION_ERROR' = 'WS_CONNECTION_ERROR';
+export const WS_GET_ERROR: 'WS_GET_ERROR' = 'WS_GET_ERROR';
 export const WS_GET_MESSAGE: 'WS_GET_MESSAGE' = 'WS_GET_MESSAGE';
 
 interface IGetWSocketConnectionStartAction {
@@ -22,8 +22,8 @@ interface IGetWSocketConnectionClosedAction {
   readonly type: typeof WS_CONNECTION_CLOSED;
 }
 
-interface IGetWSocketConnectionErrorAction {
-  readonly type: typeof WS_CONNECTION_ERROR;
+interface IGetWSocketGetErrorAction {
+  readonly type: typeof WS_GET_ERROR;
   payload: string;
 }
 
@@ -37,7 +37,7 @@ export type TWebSocketActions =
   | IGetWSocketConnectionSuccessAction
   | IGetWSocketConnectionCloseAction
   | IGetWSocketConnectionClosedAction
-  | IGetWSocketConnectionErrorAction
+  | IGetWSocketGetErrorAction
   | IGetWSocketGetMessageAction;
 
 export const getWSocketConnectionStartAction = (
@@ -59,10 +59,8 @@ export const getWSocketConnectionClosedAction = (): IGetWSocketConnectionClosedA
   type: WS_CONNECTION_CLOSED,
 });
 
-export const getWSocketConnectionErrorAction = (
-  payload: string
-): IGetWSocketConnectionErrorAction => ({
-  type: WS_CONNECTION_ERROR,
+export const getWSocketGetErrorAction = (payload: string): IGetWSocketGetErrorAction => ({
+  type: WS_GET_ERROR,
   payload,
 });
 

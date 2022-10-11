@@ -74,7 +74,9 @@ export const setUserLogout: AppThunk = () => async (dispatch: AppDispatch) => {
     deleteCookie(ACCESS_TOKEN);
     dispatch(getAuthFailedAction());
   } catch (err) {
-    //infinite loader
     console.log(err);
+    deleteCookie(TOKEN);
+    deleteCookie(ACCESS_TOKEN);
+    dispatch(getAuthFailedAction());
   }
 };

@@ -1,58 +1,43 @@
 import { Middleware } from 'redux';
 import {
-  getWSocketConnectionClosedAction,
-  getWSocketConnectionErrorAction,
-  getWSocketConnectionStartAction,
-  getWSocketConnectionSuccessAction,
-  getWSocketGetMessageAction,
   TWebSocketActions,
   WS_CONNECTION_CLOSE,
   WS_CONNECTION_CLOSED,
-  WS_CONNECTION_ERROR,
   WS_CONNECTION_START,
   WS_CONNECTION_SUCCESS,
+  WS_GET_ERROR,
   WS_GET_MESSAGE,
 } from '../actions/web-socket';
 import { AppDispatch, RootState } from '../types';
 
 interface IWsActions {
-  wsConnect: typeof getWSocketConnectionStartAction;
-  onOpen: typeof getWSocketConnectionSuccessAction;
-  onMessage: typeof getWSocketGetMessageAction;
-  onClose: typeof getWSocketConnectionClosedAction;
-  onError: typeof getWSocketConnectionErrorAction;
+  wsConnect: typeof WS_CONNECTION_START;
+  wsClose: typeof WS_CONNECTION_CLOSE;
+  onOpen: typeof WS_CONNECTION_SUCCESS;
+  onClose: typeof WS_CONNECTION_CLOSED;
+  onError: typeof WS_GET_ERROR;
+  onMessage: typeof WS_GET_MESSAGE;
 }
 
-//typeGuard
-function isWsAction(action: any): action is TWebSocketActions {
-  const wsActionTypes = [
-    WS_CONNECTION_START,
-    WS_CONNECTION_SUCCESS,
-    WS_CONNECTION_CLOSE,
-    WS_CONNECTION_CLOSED,
-    WS_CONNECTION_ERROR,
-    WS_GET_MESSAGE,
-  ];
-
-  return wsActionTypes.some(type => type === action?.type);
-}
-
-export const wsMiddleware = (wsActions: IWsActions): Middleware<{}, RootState, AppDispatch> => {
+export const wsMiddleware = (wsActionTypes: IWsActions): Middleware<{}, RootState, AppDispatch> => {
+  const { wsConnect, wsClose, onOpen, onMessage, onClose, onError } = wsActionTypes;
   let webSocket: null | WebSocket = null;
   let url: string = '';
+
+  function isWsAction(action: any): action is TWebSocketActions {
+    return Object.values(wsActionTypes).some(wsActionType => wsActionType === action?.type);
+  }
 
   return store => next => action => {
     if (isWsAction(action)) {
       const { dispatch } = store;
 
-      const { wsConnect, onOpen, onMessage, onClose, onError } = wsActions;
-
-      if (action.type === WS_CONNECTION_START) {
+      if (action.type === wsConnect) {
         url = action.payload;
         webSocket = new WebSocket(url);
       }
 
-      if (action.type === WS_CONNECTION_CLOSE) {
+      if (action.type === wsClose) {
         if (webSocket) {
           webSocket.close(1000, 'CLOSE_NORMAL');
           webSocket = null;
@@ -61,19 +46,19 @@ export const wsMiddleware = (wsActions: IWsActions): Middleware<{}, RootState, A
 
       if (webSocket) {
         webSocket.onopen = () => {
-          dispatch(onOpen());
+          dispatch({ type: onOpen });
         };
 
         webSocket.onerror = event => {
-          dispatch(onError('websocket connection error'));
+          dispatch({ type: onError, payload: 'websocket connection error' });
         };
 
         webSocket.onclose = event => {
           if (event.wasClean) {
-            dispatch(onClose());
+            dispatch({ type: onClose });
           } else {
             setTimeout(() => {
-              dispatch(wsConnect(url));
+              dispatch({ type: wsConnect, payload: url });
             }, 5000);
           }
         };
@@ -81,9 +66,9 @@ export const wsMiddleware = (wsActions: IWsActions): Middleware<{}, RootState, A
         webSocket.onmessage = event => {
           const { success, ...data } = JSON.parse(event.data);
           if (success) {
-            dispatch(onMessage(data));
+            dispatch({ type: onMessage, payload: data });
           } else {
-            dispatch(onError(data.message));
+            dispatch({ type: onError, payload: data.message });
           }
         };
       }

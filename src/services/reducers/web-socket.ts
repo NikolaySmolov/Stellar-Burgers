@@ -1,7 +1,7 @@
 import { IOrderInFeed } from '../../utils/types';
 import {
   WS_CONNECTION_SUCCESS,
-  WS_CONNECTION_ERROR,
+  WS_GET_ERROR,
   WS_GET_MESSAGE,
   WS_CONNECTION_CLOSED,
   TWebSocketActions,
@@ -33,7 +33,7 @@ export const wsReducer = (state = initState, action: TWebSocketActions): IWebSoc
       return { ...state, connecting: true };
     case WS_CONNECTION_SUCCESS:
       return { ...state, connecting: false, connected: true, error: null };
-    case WS_CONNECTION_ERROR:
+    case WS_GET_ERROR:
       return { ...state, connected: false, error: action.payload };
     case WS_CONNECTION_CLOSED:
       return { ...state, connected: false };
