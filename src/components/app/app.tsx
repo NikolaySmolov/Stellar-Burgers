@@ -28,6 +28,7 @@ import { getUserInfo } from '../../services/actions/auth';
 import { getOrderCloseDetailsAction } from '../../services/actions/order';
 import { fetchIngredientsAction } from '../../services/actions/ingredients';
 import { selectAuthState } from '../../services/selectors/auth';
+import './app.module.css';
 
 export function App() {
   const {
@@ -112,7 +113,9 @@ export function App() {
             </Route>
             <Route
               path="/order/:number"
-              render={({ match }) => <OrderDetails orderNumber={match.params.number} />}
+              render={({ match }) => (
+                <OrderDetails orderNumber={match.params.number} />
+              )}
             />
             <Route path="/feed/:id">
               <CardOrderDetails />
